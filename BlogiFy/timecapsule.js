@@ -43,17 +43,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const title = document.getElementById("capsule-title").value;
       const message = document.getElementById("capsule-message").value;
       const unlockDate = document.getElementById("unlock-date").value;
-  
+      const unlockTime = document.getElementById("unlock-time").value; // get time value
+
       const capsuleEntry = document.createElement("div");
       capsuleEntry.classList.add("capsule-entry");
   
       const previewMessage = message.length > 100 ? message.substring(0, 100) + "..." : message;
   
+      // add time value
       capsuleEntry.innerHTML = `
         <h3>${title}</h3>
         <p>${previewMessage}</p>
-        <div class="unlock-date">Unlocks on: ${unlockDate}</div>
-      `;
+        <div class="unlock-date">Unlocks on: ${unlockDate} at ${unlockTime} clock</div>
+      `; 
   
       capsuleContainer.appendChild(capsuleEntry);
       
