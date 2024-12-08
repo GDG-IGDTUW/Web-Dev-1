@@ -103,7 +103,7 @@
     border-top-right-radius: 5px;
   
   }
-  .btn{
+  /* .btn{
     width: 100px;
     height: 40px;
     background: #ff7200;
@@ -125,7 +125,70 @@
     background-color:#ff7200;
     border: none;
     box-shadow: 3px 3px 0  2px black;
+  } */
+
+  /* Base button styles */
+  .btn {
+    width: 100px;
+    height: 40px;
+    background: #ff7200; /* Vibrant orange */
+    border: 2px solid #ff7200; /* Matching border */
+    margin-top: 13px;
+    margin-left: 10px;
+    color: #ffffff; /* White text for better contrast */
+    font-size: 15px;
+    font-weight: bold; /* Bold text for emphasis */
+    border-radius: 7px;
+    cursor: pointer; /* Pointer for interactivity */
+    overflow: hidden; /* Ensures effects stay within the button */
+    position: relative; /* Needed for pseudo-elements */
+    transition: all 0.4s ease; /* Smooth transitions */
   }
+
+  /* Text inside the button */
+  .btn a {
+    text-decoration: none;
+    color: #ffffff; /* Matches button text color */
+    transition: all 0.3s ease; /* Smooth text color transition */
+    position: relative;
+    z-index: 2; /* Ensures text stays above effects */
+  }
+
+  /* Ripple effect */
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: all 0.6s ease;
+    z-index: 1; /* Sits behind the text */
+  }
+
+  /* Hover effects */
+  .btn:hover {
+    background-color: #e66a00; /* Slightly darker orange for hover */
+    border-color: #e66a00; /* Match the background */
+    box-shadow: 0 5px 15px rgba(255, 114, 0, 0.4); /* Subtle glow */
+    transform: scale(1.05); /* Slight button enlargement */
+  }
+
+  /* Ripple animation on hover */
+  .btn:hover::before {
+    transform: translate(-50%, -50%) scale(1); /* Expand ripple */
+    opacity: 1; /* Make the ripple visible */
+  }
+
+  /* Text hover effect */
+  .btn:hover a {
+    color: #000000; /* Transition text color to black */
+  }
+
+  
   @media screen and (max-width:768px){
     .hamburger-menu{
       visibility: visible;
