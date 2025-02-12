@@ -12,6 +12,10 @@
             font-family: Arial, sans-serif;
         }
 
+        body {
+            background-color: #f0f0f0; 
+        }
+
         .navbar {
             background-color: #333;
             padding: 1rem;
@@ -69,9 +73,10 @@
         }
 
         .contact-form {
-            background: white;
+            background: #dad3ca; 
             padding: 2rem;
             border-radius: 8px;
+            border: 3px solid #87CEEB; 
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -101,7 +106,7 @@
         }
 
         .submit-btn {
-            background-color: #28a745;
+            background-color: #007bff;
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -113,7 +118,7 @@
         }
 
         .submit-btn:hover {
-            background-color: #218838;
+            background-color: #7096d1;
         }
 
         .error {
@@ -160,7 +165,6 @@
     <div class="container">
         <div class="contact-header">
             <h1>Contact Us</h1>
-            <p>Have questions or suggestions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
         </div>
 
         <form class="contact-form" id="contactForm">
@@ -199,23 +203,19 @@
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Reset errors
             document.querySelectorAll('.error').forEach(error => error.textContent = '');
             
-            // Get form values
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const message = document.getElementById('message').value.trim();
             
             let hasError = false;
             
-            // Validate name
             if (!name) {
                 document.getElementById('nameError').textContent = 'Name is required';
                 hasError = true;
             }
             
-            // Validate email
             if (!email) {
                 document.getElementById('emailError').textContent = 'Email is required';
                 hasError = true;
@@ -224,7 +224,6 @@
                 hasError = true;
             }
             
-            // Validate message
             if (!message) {
                 document.getElementById('messageError').textContent = 'Message is required';
                 hasError = true;
