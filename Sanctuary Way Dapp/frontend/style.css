@@ -48,6 +48,12 @@ p{
     background:transparent; 
 }
 
+/* customise chatbot*/
+.bpw-widget-btn {
+  bottom: 20px !important; 
+  right: 20px !important;  
+  z-index: 1000 !important; 
+}
 
 /* Navigation CSS */ 
 
