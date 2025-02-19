@@ -1,15 +1,23 @@
-const scrollTopBack = () =>{
-    let scrollTopButton = document.querySelector("#scrollUp");
-    window.onscroll = () =>{
-        let scroll = document.documentElement.scrollTop;
-        if(scroll >= 250){
-            scrollTopButton.classList.add('scrollActive');
-        } else{
-            scrollTopButton.classList.remove('scrollActive');
+// Scroll to Top Button Functionality
+document.addEventListener("DOMContentLoaded", function () {
+    const scrollUp = document.getElementById("scrollUp");
+
+    // Show or hide the button based on scroll position
+    window.addEventListener("scroll", function () {
+        if (window.scrollY > 300) {
+            scrollUp.style.display = "block";
+        } else {
+            scrollUp.style.display = "none";
         }
-    }
-}
-scrollTopBack();
+    });
+
+    // Scroll smoothly to top when clicked
+    scrollUp.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+});
+
 
 
 // nav hide  

@@ -692,27 +692,37 @@ footer.contact {
   }
 
 /* Scroll Back To Top */
-#scrollUp{
-    position:fixed;
-    right:2%;
-    bottom:3%;
-    height:2.813rem;
-    width:2.5rem;
-    border-radius: 0.25rem;
-    text-align: center;
-    cursor:pointer;
-    z-index: 500;
-    display:none;
-    -webkit-transition:all 0.4s ease-in-out 0s;
-    transition:all 0.4s ease-in-out 0s;
-    background:var(--bg-danger);
+#scrollUp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #be2a31;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.3s ease-in-out;
 }
-#scrollUp span{
-    line-height: 2.625rem;
+
+#scrollUp a {
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
 }
-#scrollUp.scrollActive{
-    display:block;
+
+#scrollUp:hover {
+    background: #5f040b;
+    transition: 0.3s ease-in-out;
 }
+
+/* Webchat */
+#bp-web-widget {
+    position: fixed !important;
+    bottom: 60px !important;
+    right: 16px !important;
+    z-index: 9999 !important;
+}
+
 
 @media (max-width:1030px){
     /* Home CSS */ 
