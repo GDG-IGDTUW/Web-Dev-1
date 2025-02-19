@@ -124,6 +124,7 @@ ul li a:hover {
   border-bottom-right-radius: 5px;
   border-bottom-right-radius: 5px;
   margin-bottom: 15px;
+
 }
 .btn.bt.bt3{
   margin-left: 2px;
@@ -135,10 +136,23 @@ ul li a:hover {
   transition: 0.3s ease;
 }
 .btn:hover {
-  background-color: #ff7200;
-  border: none;
-  opacity: 0.92;
+   color: #001F3F;
+  background-color: #FFD580	;
+  transform: scale(1.1);
+  box-shadow: 3px 3px 0  2px black;
+
+  
 }
+.btn.bt.bt3:hover {
+   color: #001F3F;
+  background-color: #FFD580	;
+  transform: scale(1.1);
+  box-shadow: 3px 3px 0  2px black;
+
+ 
+}
+
+
 /* changed the hover from shadow to opacity, cleaner look */
 @media screen and (max-width: 768px) {
   .hamburger-menu {
@@ -285,9 +299,9 @@ ul li a:hover {
   }
 }
 
-.btn.bt:hover{
+/*.btn.bt:hover{
   background-color:#ff7f24;
-}
+}*/
 
 .switch {
   position: relative;

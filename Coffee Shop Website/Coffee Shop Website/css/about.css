@@ -55,9 +55,10 @@
     transition: .4s ease;
 }
 .hero-content button:hover{
-    background-color:#ff7200;
-    border: none;
-    box-shadow: 3px 3px 0  2px black;
+    color: #001F3F;
+  background-color: #FFD580;
+  transform: scale(1.1);
+  box-shadow: 3px 3px 0  2px black;
 }
 
 
