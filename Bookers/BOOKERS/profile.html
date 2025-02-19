@@ -1,458 +1,591 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Bookers.com</title>
-    <style>
-        :root {
-            --primary: #f5a623;
-            --primary-dark: #e69512;
-            --bg-dark: #1a1a1a;
-            --bg-card: #242424;
-            --border: #333333;
-            --text-light: #ffffff;
-            --text-gray: #a0a0a0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile - Bookers.com</title>
+  <style>
+    :root {
+      --primary: #f5a623;
+      --primary-dark: #e69512;
+      --bg-dark: #1a1a1a;
+      --bg-card: #242424;
+      --border: #333333;
+      --text-light: #ffffff;
+      --text-gray: #a0a0a0;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .nav {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-light);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    .hero {
+      background-image: url('/api/placeholder/1920/1080');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      flex: 1;
+      padding-top: 3rem; 
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    .welcome-banner {
+      text-align: center;
+      padding: 4rem 1rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      margin-bottom: 2rem;
+    }
+    .welcome-banner h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .welcome-banner p {
+      color: var(--text-gray);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--text-light);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+    .btn-outline:hover {
+      background-color: rgba(245, 166, 35, 0.1);
+    }
+    .profile-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .profile-header {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      background-color: var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .profile-info h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .join-date {
+      color: var(--text-gray);
+      margin-bottom: 1rem;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    .stat-number {
+      font-size: 2rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      color: var(--text-gray);
+    }
+    /* Books Grid */
+    .section-title {
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .book-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      position: relative;
+      transition: transform 0.3s;
+    }
+    .book-card:hover {
+      transform: translateY(-5px);
+    }
+    .book-cover {
+      aspect-ratio: 2/3;
+      background-color: var(--border);
+      border-radius: 0.25rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .book-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .book-condition {
+      color: var(--text-gray);
+      font-size: 0.875rem;
+    }
+    /* Footer */
+    .footer {
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+    }
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    .footer-section h3 {
+      color: var(--primary);
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .footer-section ul {
+      list-style: none;
+    }
+    .footer-section li {
+      margin-bottom: 0.5rem;
+    }
+    .footer-section a {
+      color: var(--text-gray);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-section a:hover {
+      color: var(--primary);
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-gray);
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .action-buttons {
+        justify-content: center;
+      }
+    }
 
-        /* Navigation */
-        .nav {
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-light);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        /* Main Content */
-        .hero {
-            background-image: url('/api/placeholder/1920/1080');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            flex: 1;
-        }
-
-        .welcome-banner {
-            text-align: center;
-            padding: 4rem 1rem;
-            background-color: rgba(0, 0, 0, 0.7);
-            margin-bottom: 2rem;
-        }
-
-        .welcome-banner h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .welcome-banner p {
-            color: var(--text-gray);
-            margin-bottom: 1.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: var(--text-light);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background-color: rgba(245, 166, 35, 0.1);
-        }
-
-        /* Profile Section */
-        .profile-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .profile-header {
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-        }
-
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            background-color: var(--border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-info {
-            flex: 1;
-        }
-
-        .profile-info h2 {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .join-date {
-            color: var(--text-gray);
-            margin-bottom: 1rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            color: var(--primary);
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-gray);
-        }
-
-        /* Books Grid */
-        .section-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .book-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            transition: transform 0.3s;
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .book-cover {
-            aspect-ratio: 2/3;
-            background-color: var(--border);
-            border-radius: 0.25rem;
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-
-        .book-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .book-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .book-condition {
-            color: var(--text-gray);
-            font-size: 0.875rem;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: var(--bg-card);
-            border-top: 1px solid var(--border);
-            padding: 3rem 0;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-
-        .footer-section h3 {
-            color: var(--primary);
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: var(--text-gray);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-section a:hover {
-            color: var(--primary);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            margin-top: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-gray);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .profile-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .action-buttons {
-                justify-content: center;
-            }
-        }
-    </style>
+.profile-cover {
+      height: 300px;
+      background: linear-gradient(45deg, var(--bg-card), var(--primary-dark));
+      position: relative;
+      margin-bottom: 120px;
+      border-bottom: 3px solid var(--primary);
+    }
+    .profile-cover .profile-image {
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      bottom: -75px;
+      left: 2rem;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
+    }
+    .rating-stars {
+      display: flex;
+      gap: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    .rating-stars svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--primary);
+    }
+    .progress-container {
+      background-color: var(--border);
+      border-radius: 10px;
+      height: 10px;
+      margin: 1rem 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    .activity-timeline {
+      border-left: 2px solid var(--primary);
+      padding-left: 2rem;
+      margin: 2rem 0;
+    }
+    .activity-item {
+      position: relative;
+      padding: 1rem;
+      background: var(--bg-card);
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .activity-item::before {
+      content: '';
+      position: absolute;
+      left: -2.3rem;
+      top: 20px;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      background: var(--primary-dark);
+      color: var(--text-light);
+    }
+    .book-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--primary);
+      color: var(--text-light);
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.25rem;
+      font-size: 0.8rem;
+    }
+    .verification-status {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg-card);
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .verification-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
-    <nav class="nav">
-        <div class="container nav-content">
-            <a href="/" class="logo">Bookers.com</a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="login.html">Login</a>
-                <a href="register.html">Register</a>
+  <nav class="nav">
+    <div class="container nav-content">
+      <a href="/" class="logo">Bookers.com</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-cover">
+    <div class="container">
+      <div class="profile-image">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+<main class="hero">
+    <div class="container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-info">
+            <div class="rating-stars">
+              <svg viewBox="0 0 24 24">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"></polygon>
+              </svg>
+              <svg viewBox="0 0 24 24">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"></polygon>
+              </svg>
+              <svg viewBox="0 0 24 24">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"></polygon>
+              </svg>
+              <svg viewBox="0 0 24 24">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"></polygon>
+              </svg>
+              <svg viewBox="0 0 24 24">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"></polygon>
+              </svg>
             </div>
+            <h2>Ajay <span class="badge">Pro Member</span></h2>
+            <p class="join-date">Member since January 2024</p>
+            <div class="verification-status">
+              <div class="verification-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h4>Verified Account</h4>
+                <p>Identity confirmed • Email verified</p>
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: 75%;"></div>
+            </div>
+            <p>Profile Completeness: 75%</p>
+            <div class="action-buttons" style="margin-top:1rem;">
+              <button class="btn btn-primary">Message</button>
+              <button class="btn btn-outline">Follow</button>
+            </div>
+          </div>
         </div>
-    </nav>
+      </div>
 
-    <main class="hero">
-        <div class="welcome-banner">
-            <h1>Welcome to Bookers.com</h1>
-            <p>Your online Book Trading Platform For All Your Inline Book Needs</p>
-            <button class="btn btn-primary">Get Started</button>
+      <h2 class="section-title">Recent Activity</h2>
+      <div class="activity-timeline">
+        <div class="activity-item">
+          <h4>New Booking Created</h4>
+          <p>Booked "Great Big Beautiful Life" • 2 hours ago</p>
         </div>
-
-        <div class="container">
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-image">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4"/>
-                        </svg>
-                    </div>
-                    <div class="profile-info">
-                        <h2>Ajay</h2>
-                        <p class="join-date">Member since January 2024</p>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary">Message</button>
-                            <button class="btn btn-outline">Follow</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">127</div>
-                    <div class="stat-label">Books Listed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">43</div>
-                    <div class="stat-label">Trades Completed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">4.9</div>
-                    <div class="stat-label">Rating (38 reviews)</div>
-                </div>
-            </div>
-
-            <h2 class="section-title">Books Available for Trade</h2>
-            <div class="books-grid">
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="images/b1.png" alt="Book cover">
-                    </div>
-                    <div class="book-title">Great Big Beautiful Life</div>
-                    <div class="book-condition">Condition: Very Good</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="images/b2.png" alt="Book cover">
-                    </div>
-                    <div class="book-title">Onyx Storm</div>
-                    <div class="book-condition">Condition: Good</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="images/b3.png" alt="Book cover">
-                    </div>
-                    <div class="book-title">
-                        We Do Not Part</div>
-                    <div class="book-condition">Condition: Like New</div>
-                </div>
-            </div>
-
-            <h2 class="section-title">Wishlist</h2>
-            <div class="books-grid">
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="images/b4.png" alt="Book cover">
-                    </div>
-                    <div class="book-title">Sunrise on the Reaping</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="images/b5.png" alt="Book cover">
-                    </div>
-                    <div class="book-title">The Emperor of Gladness</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="images/b6.png" alt="Book cover">
-                    </div>
-                    <div class="book-title">Say You'll Remember Me/div>
-                </div>
-            </div>
+        <div class="activity-item">
+          <h4>Trade Completed</h4>
+          <p>Successfully traded "Onyx Storm" • 1 day ago</p>
         </div>
-    </main>
+      </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>About</h3>
-                    <ul>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/how-it-works">How It Works</a></li>
-                        <li><a href="/terms">Terms of Service</a></li>
-                        <li><a href="/privacy">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Community</h3>
-                    <ul>
-                        <li><a href="/blog">Blog</a></li>
-                        <li><a href="/forum">Forum</a></li>
-                        <li><a href="/help">Help Center</a></li>
-                        <li><a href="/contact">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Connect</h3>
-                    <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">LinkedIn</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Bookers.com. All rights reserved.</p>
-            </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20v13H6.5A2.5 2.5 0 0 1 4 17.5z"></path>
+          </svg>
+          <div class="stat-number">127</div>
+          <div class="stat-label">Books Listed</div>
         </div>
-    </footer>
+        <div class="stat-card">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)">
+            <polyline points="17 1 21 5 17 9"></polyline>
+            <path d="M21 5H9"></path>
+            <polyline points="7 23 3 19 7 15"></polyline>
+            <path d="M3 19h12"></path>
+          </svg>
+          <div class="stat-number">43</div>
+          <div class="stat-label">Trades Completed</div>
+        </div>
+        <div class="stat-card">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)">
+            <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"></polygon>
+          </svg>
+          <div class="stat-number">4.9</div>
+          <div class="stat-label">Rating (38 reviews)</div>
+        </div>
+      </div>
+
+<h2 class="section-title">Books Available for Trade</h2>
+      <div class="books-grid">
+        <div class="book-card">
+          <div class="book-badge">Bestseller</div>
+          <div class="book-cover">
+            <img src="images/b1.png" alt="Book cover">
+          </div>
+          <div class="book-title">Great Big Beautiful Life</div>
+          <div class="book-condition">Condition: Very Good</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="images/b2.png" alt="Book cover">
+          </div>
+          <div class="book-title">Onyx Storm</div>
+          <div class="book-condition">Condition: Good</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="images/b3.png" alt="Book cover">
+          </div>
+          <div class="book-title">We Do Not Part</div>
+          <div class="book-condition">Condition: Like New</div>
+        </div>
+      </div>
+
+      
+
+      <h2 class="section-title">Wishlist</h2>
+      <div class="books-grid">
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="images/b4.png" alt="Book cover">
+          </div>
+          <div class="book-title">Sunrise on the Reaping</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="images/b5.png" alt="Book cover">
+          </div>
+          <div class="book-title">The Emperor of Gladness</div>
+        </div>
+        <div class="book-card">
+          <div class="book-cover">
+            <img src="images/b6.png" alt="Book cover">
+          </div>
+          <div class="book-title">Say You'll Remember Me</div>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h3>Trust &amp; Safety</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)">
+              <path d="M12 1l8 4v6c0 5-3 9-8 11-5-2-8-6-8-11V5l8-4z"></path>
+            </svg>
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Verified Trades</div>
+          </div>
+          <div class="stat-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div class="stat-number">24h</div>
+            <div class="stat-label">Avg. Response Time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About</h3>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/how-it-works">How It Works</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Community</h3>
+          <ul>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/forum">Forum</a></li>
+            <li><a href="/help">Help Center</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Bookers.com. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
