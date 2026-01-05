@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Task Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+
+        /* ISSUE 1: Improve navbar design - current navbar is too basic */
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* ISSUE 2: Add user profile section in header */
+
+        /* ISSUE 3: Make the input field and button more visually appealing */
+        .task-input-section {
+            background-color: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        #taskInput {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        #addTaskBtn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #addTaskBtn:hover {
+            background-color: #2563eb;
+        }
+
+        /* ISSUE 4: Add filter buttons for All/Active/Completed tasks */
+        .filter-section {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #e5e7eb;
+            color: #333;
+        }
+
+        .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* ISSUE 5: Improve the task card design with better spacing and shadows */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .task-item {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .task-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .task-title.completed {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        /* ISSUE 6: Add priority badges (High/Medium/Low) with colors */
+        .task-priority {
+            display: none; /* Will be implemented by contributors */
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* ISSUE 7: Add edit functionality for tasks */
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: none; /* Will be implemented by contributors */
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .delete-btn:hover {
+            color: #dc2626;
+        }
+
+        /* ISSUE 8: Add a footer showing task statistics */
+        .stats-footer {
+            display: none; /* Will be implemented by contributors */
+        }
+
+        /* ISSUE 9: Add dark mode toggle functionality */
+        .dark-mode-toggle {
+            display: none; /* Will be implemented by contributors */
+        }
+
+        /* ISSUE 13: Add search functionality */
+        .search-section {
+            display: none; /* Will be implemented by contributors */
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- ISSUE 1: Improve navbar design - current navbar is too basic -->
+    <nav class="navbar">
+        <h1>TaskFlow</h1>
+        <!-- ISSUE 2: Add user profile section in header -->
+    </nav>
+
+    <div class="container">
+        <!-- ISSUE 3: Make the input field and button more visually appealing -->
+        <div class="task-input-section">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="taskInput" 
+                    placeholder="Add a new task..."
+                    autocomplete="off"
+                >
+                <button id="addTaskBtn">Add Task</button>
+            </div>
+        </div>
+
+        <!-- ISSUE 13: Add search functionality to filter tasks -->
+        
+        <!-- ISSUE 4: Enhance filter buttons styling -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </div>
+
+        <!-- Task List -->
+        <div class="task-list" id="taskList">
+            <!-- Tasks will be added here dynamically -->
+        </div>
+
+        <!-- ISSUE 8: Add a footer showing task statistics (total, completed, pending) -->
+        
+        <!-- ISSUE 9: Add dark mode toggle functionality -->
+    </div>
+
+    <script>
+        // Task Manager Application
+        let tasks = [
+            { id: 1, title: 'Sample Task 1', completed: false, priority: 'high' },
+            { id: 2, title: 'Sample Task 2', completed: true, priority: 'low' }
+        ];
+        let currentFilter = 'all';
+
+        // DOM Elements
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // Initialize
+        renderTasks();
+
+        // Event Listeners
+        addTaskBtn.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTask();
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderTasks();
+            });
+        });
+
+        // Functions
+        function addTask() {
+            const taskTitle = taskInput.value.trim();
+            if (taskTitle === '') return;
+
+            const newTask = {
+                id: Date.now(),
+                title: taskTitle,
+                completed: false,
+                priority: 'medium'
+            };
+
+            tasks.push(newTask);
+            taskInput.value = '';
+            renderTasks();
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            renderTasks();
+        }
+
+        function toggleTask(id) {
+            tasks = tasks.map(task => 
+                task.id === id ? { ...task, completed: !task.completed } : task
+            );
+            renderTasks();
+        }
+
+        // ISSUE 7: Add edit functionality for tasks
+        function editTask(id) {
+            // To be implemented by contributors
+        }
+
+        function getFilteredTasks() {
+            if (currentFilter === 'active') {
+                return tasks.filter(task => !task.completed);
+            } else if (currentFilter === 'completed') {
+                return tasks.filter(task => task.completed);
+            }
+            return tasks;
+        }
+
+        // ISSUE 14: Implement animations for task addition/deletion
+        function renderTasks() {
+            const filteredTasks = getFilteredTasks();
+            
+            if (filteredTasks.length === 0) {
+                taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
+                return;
+            }
+
+            taskList.innerHTML = filteredTasks.map(task => `
+                <div class="task-item">
+                    <div class="task-content">
+                        <input 
+                            type="checkbox" 
+                            class="task-checkbox" 
+                            ${task.completed ? 'checked' : ''}
+                            onchange="toggleTask(${task.id})"
+                        >
+                        <span class="task-title ${task.completed ? 'completed' : ''}">
+                            ${task.title}
+                        </span>
+                        <!-- ISSUE 6: Add priority badges (High/Medium/Low) with colors -->
+                    </div>
+                    <div class="task-actions">
+                        <!-- ISSUE 7: Add edit button and functionality -->
+                        <button class="delete-btn" onclick="deleteTask(${task.id})">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ISSUE 10: Implement drag and drop to reorder tasks
+        
+        // ISSUE 11: Add due date picker for each task
+        
+        // ISSUE 12: Create a settings page with user preferences
+        
+        // ISSUE 13: Add search functionality to filter tasks
+        
+        // ISSUE 15: Make the app responsive for mobile devices
+    </script>
+</body>
+</html>
