@@ -1,0 +1,179 @@
+.society-module {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 28px;
+}
+
+.society-selection {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.society-selection button {
+    padding: 12px 25px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.society-selection button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.section-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.section-buttons button {
+    padding: 12px 25px;
+    font-size: 18px;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.section-buttons button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.about-section, .events-list, .subscribe-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.about-section, .events-list {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-section h3, .events-list h3 {
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.about-section p, .events-list ul {
+    font-size: 16px;
+    color: #555;
+}
+
+.about-section p {
+    margin: 10px 0;
+}
+
+.about-section .highlight {
+    color: #007BFF; /* Highlight color for president and team heads */
+    font-weight: 600;
+    border-bottom: 2px solid #007BFF;
+    display: inline-block;
+}
+
+.events-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.events-list li {
+    background-color: #fff;
+    padding: 20px;
+    margin: 12px 0;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.events-list li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.events-list li strong {
+    color: #007BFF;
+    font-size: 18px;
+}
+
+.subscribe-section {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.subscribe-section form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subscribe-section input {
+    padding: 12px 20px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: border 0.3s ease;
+}
+
+.subscribe-section input:focus {
+    border: 1px solid #007BFF;
+    outline: none;
+}
+
+.subscribe-section button {
+    padding: 12px 20px;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+    width: 100%;
+}
+
+.subscribe-section button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.subscribe-section p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+/* Add space between the buttons and the displayed content below */
+.section-buttons {
+    margin-bottom: 30px; /* Add space below the section buttons */
+}

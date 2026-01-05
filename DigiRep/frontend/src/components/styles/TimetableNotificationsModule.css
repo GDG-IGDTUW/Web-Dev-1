@@ -1,0 +1,109 @@
+.timetable-notifications-module {
+    margin-top: 60px;
+    text-align: center;
+    background-color: white;
+    min-height: 100vh; /* Ensure it covers the full height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center the content */
+    align-items: center; /* Horizontally center the content */
+    padding: 0 20px; /* Padding to avoid content touching the edges */
+}
+
+h1 {
+    color: #1E88E5; /* Primary Blue */
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    color: #616161; /* Dark Gray */
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px; /* Space between buttons and subscription form */
+}
+
+button {
+    background-color: #007bff; /* Primary Blue */
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker Blue */
+}
+
+button:active {
+    background-color: #003d80; /* Even Darker Blue for active state */
+}
+
+.subscribe-section {
+    text-align: center;
+    margin-top: 20px;
+    width: 80%; /* Ensure the form doesn't stretch too wide */
+    max-width: 600px; /* Max width for readability */
+}
+
+.subscribe-section p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.subscribe-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px; /* Space between the form and message */
+}
+
+.subscribe-form input {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 40%; /* Input field takes up most space */
+    max-width: 300px; /* Limit the width of the input */
+}
+
+.subscribe-form select {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 25%; /* Select box size */
+}
+
+.subscribe-form button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+    width: 150px; /* Set button width */
+}
+
+.subscribe-form button:hover {
+    background-color: #0056b3;
+}
+
+.subscription-message {
+    margin-top: 10px;
+    color: #4CAF50;
+    font-weight: bold;
+}

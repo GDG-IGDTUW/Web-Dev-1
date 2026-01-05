@@ -1,0 +1,113 @@
+.attendance-tracker-page {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .development-banner {
+    background-color: #ffcc00;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .development-banner p {
+    margin: 0;
+  }
+  
+  .enrollment-input {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .enrollment-input input {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .enrollment-input button {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .attendance-details {
+    text-align: center;
+  }
+  
+  .attendance-details h3 {
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  .attendance-details p {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+  
+  .attendance-details table {
+    margin: 20px auto;
+    width: 80%;
+    border-collapse: collapse;
+  }
+  
+  .attendance-details th,
+  .attendance-details td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .attendance-details th {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  .attendance-details tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .attendance-details tr:hover {
+    background-color: #ddd;
+  }
+  
+  .attendance-details tr[style*="background-color: red"] {
+    background-color: red !important;
+    color: white !important;
+  }
+  
+  /* Preview Button Styles */
+  .preview-button {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .preview-button button {
+    padding: 20px 40px;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .preview-button button:hover {
+    background-color: #0056b3;
+  }
+  

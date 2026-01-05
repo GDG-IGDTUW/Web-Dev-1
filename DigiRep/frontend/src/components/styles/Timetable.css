@@ -1,0 +1,64 @@
+.timetable-container {
+    text-align: center;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #1E88E5;
+    margin-bottom: 10px;
+}
+
+.tt-btn {
+    background-color: #4CAF50; /* Green */
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tt-btn:hover {
+    background-color: #45A049;
+}
+
+.tt-btn-selected {
+    background-color: #FF9800; /* Accent Orange */
+    color: #FFFFFF;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+table th {
+    background-color: #1E88E5;
+    color: white;
+}
+
+.update-form, .login-section form {
+    margin-top: 20px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 200px;
+}
+
+input:focus {
+    border-color: #1E88E5;
+    outline: none;
+}

@@ -1,0 +1,115 @@
+.student-profile-page {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.enrollment-input {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.enrollment-input input {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.enrollment-input button {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.student-details {
+    text-align: center;
+}
+
+.student-details h3 {
+    margin-top: 20px;
+    color: #333;
+}
+
+.student-details p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.semester-result {
+    margin-top: 20px;
+}
+
+.semester-result h5 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+/* styles/StudentProfilePage.css */
+
+.development-banner {
+    background-color: #ffcc00;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* styles/StudentProfilePage.css */
+
+/* Style for Preview Button */
+.preview-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.preview-button button {
+    padding: 10px 20px;
+    font-size: 56px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.preview-button button:hover {
+    background-color: #0056b3;
+}
