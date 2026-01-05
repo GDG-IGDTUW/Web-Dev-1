@@ -16,8 +16,8 @@ Welcome to our **Web Development Repository**! 🚀 This collection showcases a 
 
 # 🙌 Maintainers :
 
-- [Shriya](https://github.com/vanivaranya)
-- [Shruti](https://github.com/sharma-anushka)
+- [Shriya]()
+- [Anushka Sharma](https://github.com/sharma-anushka)
 
 # 🙌 Collaborators :
 - [Aayushi](https://github.com/aayushi-singhhh)
