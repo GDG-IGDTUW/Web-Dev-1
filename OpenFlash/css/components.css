@@ -1,0 +1,195 @@
+/* Component Styles */
+
+/* View Header */
+.view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+/* Deck List */
+.deck-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-md);
+}
+
+.deck-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.deck-info {
+    margin-bottom: var(--space-md);
+}
+
+.deck-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: auto;
+}
+
+.btn-outline {
+    border: 1px solid var(--surface-3);
+    color: var(--text-2);
+    text-decoration: none;
+}
+
+.btn-outline:hover {
+    background-color: var(--surface-3);
+    color: var(--text-1);
+}
+
+.btn-sm {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.875rem;
+}
+
+/* Progress Bar */
+.progress-bar-bg {
+    background-color: var(--surface-3);
+    height: 6px;
+    border-radius: var(--radius-full);
+    margin-top: var(--space-sm);
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background-color: var(--success);
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width 0.3s ease;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--surface-1);
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--surface-3);
+}
+
+/* Editor View */
+#deck-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-input-row {
+    margin-bottom: var(--space-md);
+    position: relative;
+    padding-right: var(--space-xl);
+    /* Space for delete button */
+}
+
+.card-input-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+@media (max-width: 600px) {
+    .card-input-fields {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+}
+
+.remove-card-btn {
+    position: absolute;
+    top: var(--space-sm);
+    right: 0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+/* Study View */
+.study-progress {
+    text-align: center;
+    color: var(--text-2);
+    margin-bottom: var(--space-md);
+    font-weight: 500;
+}
+
+.scene {
+    width: 100%;
+    max-width: 500px;
+    height: 300px; /* Fixed height for consistency */
+    perspective: 1000px;
+    margin: 0 auto var(--space-lg);
+    cursor: pointer;
+}
+
+.flashcard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-lg);
+}
+
+.flashcard.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    font-size: 1.5rem;
+    text-align: center;
+    background: var(--surface-1);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-3);
+    overflow-y: auto;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    background: var(--surface-2);
+    border-color: var(--primary);
+}
+
+.study-controls {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.rating-btns {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.rating-btns button {
+    flex: 1;
+    height: 50px;
+    font-size: 1.1rem;
+}
+
+.session-complete {
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--surface-1);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.stats-box {
+    margin: var(--space-md) 0;
+    font-size: 1.2rem;
+}

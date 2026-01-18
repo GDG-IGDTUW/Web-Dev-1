@@ -1,0 +1,175 @@
+/* Landing View */
+.landing-view {
+    text-align: center;
+    /* Richer mesh-like gradient background */
+    background:
+        radial-gradient(circle at top right, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+}
+
+.landing-hero-split {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-md);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+    text-align: left;
+    min-height: 80vh;
+    /* Make it feel like a full screen intro */
+}
+
+@media (max-width: 900px) {
+    .landing-hero-split {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--space-lg);
+        min-height: auto;
+    }
+
+    .hero-image {
+        order: -1;
+        /* Image first on mobile? Or last? Let's keep text first usually, but image sets mood. */
+        /* Actually image second is fine if it's supplemental. */
+    }
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+    background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-2);
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+}
+
+.btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.25rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-lg:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.5);
+}
+
+/* Hero Image */
+.hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.floating-img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Features */
+.features-section {
+    padding: var(--space-xl) var(--space-md);
+    background: linear-gradient(to bottom, transparent, var(--surface-2));
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /* slightly wider */
+    gap: var(--space-xl);
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    padding: var(--space-xl);
+    background: rgba(255, 255, 255, 0.8);
+    /* Slight transparency */
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    transition: all 0.3s ease;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    /* Align card text left for cleaner look */
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), #ec4899);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+    background: var(--surface-2);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--text-2);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
