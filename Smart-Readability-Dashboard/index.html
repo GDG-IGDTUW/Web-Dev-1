@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Readability Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Compromise.js CDN for basic NLP -->
+    <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>📊 Smart Readability Dashboard</h1>
+        <p>Analyze text readability with simple, beginner-friendly tools</p>
+    </header>
+
+    <main class="container">
+        <!-- Left Panel: Text Input -->
+        <section class="input-panel">
+            <h2>📝 Enter Your Text</h2>
+            <textarea 
+                id="textInput" 
+                placeholder="Paste or type your text here to analyze its readability..."
+                rows="20"
+            ></textarea>
+            <div class="input-controls">
+                <button id="analyzeBtn" class="primary-btn">Analyze Text</button>
+                <button id="clearBtn" class="secondary-btn">Clear</button>
+            </div>
+            
+            <!-- Demo Content Buttons -->
+            <div class="demo-section">
+                <h3>📚 Try Demo Content</h3>
+                <div class="demo-buttons">
+                    <button onclick="loadDemo('easy')" class="demo-btn demo-easy">Easy Text</button>
+                    <button onclick="loadDemo('medium')" class="demo-btn demo-medium">Medium Text</button>
+                    <button onclick="loadDemo('hard')" class="demo-btn demo-hard">Hard Text</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Smart Stats -->
+        <section class="stats-panel">
+            <h2>📈 Smart Stats</h2>
+            
+            <!-- Quick Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="wordCount">0</div>
+                    <div class="stat-label">Words</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="sentenceCount">0</div>
+                    <div class="stat-label">Sentences</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="readingTime">0 min</div>
+                    <div class="stat-label">Reading Time</div>
+                </div>
+            </div>
+
+            <!-- Readability Level -->
+            <div class="readability-level">
+                <h3>📊 Readability Level</h3>
+                <div id="readabilityBadge" class="level-badge level-easy">Easy</div>
+                <p id="readabilityDescription">Your text is easy to read!</p>
+            </div>
+
+            <!-- Detailed Analysis -->
+            <div class="detailed-stats">
+                <h3>🔍 Detailed Analysis</h3>
+                <div class="stat-row">
+                    <span>Long Sentences (>20 words):</span>
+                    <strong id="longSentences">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Hard Words (>8 characters):</span>
+                    <strong id="hardWords">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Nouns Found:</span>
+                    <strong id="nounCount">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Verbs Found:</span>
+                    <strong id="verbCount">0</strong>
+                </div>
+            </div>
+
+            <!-- Plugin Results -->
+            <div class="plugin-results">
+                <h3>🔧 Plugin Analysis</h3>
+                <div id="pluginOutput"></div>
+            </div>
+
+            <!-- Export & Actions -->
+            <div class="actions-section">
+                <h3>💾 Actions</h3>
+                <button id="exportBtn" class="action-btn">📄 Export Report</button>
+                <button id="darkModeBtn" class="action-btn">🌙 Dark Mode</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Text Display with Highlighting -->
+    <section class="highlighted-text-section" id="highlightedSection" style="display: none;">
+        <h2>🎨 Text Analysis Highlights</h2>
+        <div class="legend">
+            <span class="legend-item">
+                <span class="highlight-sample long-sentence"></span>
+                Long Sentences
+            </span>
+            <span class="legend-item">
+                <span class="highlight-sample hard-word"></span>
+                Hard Words
+            </span>
+        </div>
+        <div id="highlightedText" class="highlighted-text"></div>
+    </section>
+
+    <footer>
+        <p>Built with ❤️ using HTML, CSS, and Vanilla JavaScript | Open Source & Beginner Friendly</p>
+        <div class="keyboard-shortcuts">
+            <h4>⌨️ Keyboard Shortcuts</h4>
+            <div class="shortcuts-grid">
+                <span><kbd>Ctrl</kbd> + <kbd>Enter</kbd> - Analyze text</span>
+                <span><kbd>Ctrl</kbd> + <kbd>L</kbd> - Clear text</span>
+                <span><kbd>Ctrl</kbd> + <kbd>S</kbd> - Export report</span>
+                <span><kbd>Ctrl</kbd> + <kbd>D</kbd> - Toggle dark mode</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load plugins -->
+    <script src="js/plugins/wordCount.js"></script>
+    <script src="js/plugins/readingTime.js"></script>
+    <script src="js/plugins/longSentence.js"></script>
+    <script src="js/plugins/questionCount.js"></script>
+    <script src="js/plugins/averageWordLength.js"></script>
+    <script src="js/plugins/emotionDetection.js"></script>
+    
+    <!-- Main application -->
+    <script src="js/main.js"></script>
+</body>
+</html>
