@@ -629,3 +629,95 @@ body.dark-mode {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+
+
+/* ============================= */
+/* Mobile Responsive Styles */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+    /* Header */
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    /* Main layout stack */
+    .container {
+        flex-direction: column;
+        padding: 0 0.75rem;
+    }
+
+    .input-panel,
+    .stats-panel {
+        width: 100%;
+        position: static;
+    }
+
+    /* Buttons stack */
+    .input-controls {
+        flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Highlighted text */
+    .highlighted-text {
+        padding: 1.2rem;
+        font-size: 1rem;
+    }
+
+    /* Legend stack */
+    .legend {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    /* Demo buttons */
+    .demo-buttons {
+        flex-direction: column;
+    }
+
+    .demo-btn {
+        width: 100%;
+    }
+
+    /* Actions buttons */
+    .action-btn {
+        font-size: 0.85rem;
+    }
+
+    /* Keyboard shortcuts */
+    .shortcuts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+
+    header h1 {
+        font-size: 1.7rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
