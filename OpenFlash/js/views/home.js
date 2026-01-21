@@ -6,14 +6,47 @@ export function render() {
     const container = createElement('div', 'home-view fade-in');
     
     // Header
-    const header = createElement('header', 'view-header');
-    header.innerHTML = `
-        <h1>My Decks</h1>
-        <a href="#/create" class="btn btn-primary">
-            + Create New Deck
-        </a>
-    `;
+const header = createElement('header', 'view-header');
+
+header.innerHTML = `
+  <div class="header-left">
+    <h1>My Decks</h1>
+  </div>
+
+  <div class="header-right">
+    <label class="theme-toggle">
+      <input type="checkbox" id="theme-toggle" />
+      <span>Dark Mode</span>
+    </label>
+
+    <a href="#/create" class="btn btn-primary">
+      + Create New Deck
+    </a>
+  </div>
+`;
+
     container.appendChild(header);
+    
+const toggle = header.querySelector('#theme-toggle');
+
+
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+  document.body.classList.add('dark-mode');
+  toggle.checked = true;
+}
+
+// Toggle theme on change
+toggle.addEventListener('change', () => {
+  if (toggle.checked) {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
+  }
+});
+
 
     // Deck List
     const decks = StorageManager.getDecks();

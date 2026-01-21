@@ -162,3 +162,31 @@ textarea:focus {
 .fade-in {
     animation: fadeIn 0.3s ease-out forwards;
 }
+
+.view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+      --text-1: #e0e0e0; 
+}
+
+body.dark-mode a {
+  color: #90caf9;
+}
+
