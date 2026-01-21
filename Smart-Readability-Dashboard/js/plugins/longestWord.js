@@ -1,6 +1,14 @@
 function findLongestWord(str) {
+
+     if (!str || str.trim() === '') {
+        return {
+            label: "Longest Word",
+            value: 0
+        };
+    }
     let words = str.split(" ");
     let longestWord = "";
+    
 
     for (let word of words) {
         if (word.length > longestWord.length) {
@@ -9,7 +17,7 @@ function findLongestWord(str) {
     }
     return
   {
-    label:"Longest Word"
+    label:"Longest Word",
     value:longestWord
   };
 }
