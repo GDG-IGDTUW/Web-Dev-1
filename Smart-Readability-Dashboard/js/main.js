@@ -8,7 +8,8 @@ const plugins = [
     longSentencePlugin,
     questionCountPlugin,
     averageWordLengthPlugin,
-    emotionDetectionPlugin
+    emotionDetectionPlugin,
+    longestWordPlugin
 ];
 
 // Demo texts for different difficulty levels
