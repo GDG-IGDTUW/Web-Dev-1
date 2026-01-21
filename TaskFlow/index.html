@@ -211,7 +211,7 @@
         <!-- ISSUE 13: Add search functionality to filter tasks -->
         
         <!-- ISSUE 4: Enhance filter buttons styling -->
-        <div class="filter-section">
+        <div class="filter-section">    
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="active">Active</button>
             <button class="filter-btn" data-filter="completed">Completed</button>
@@ -234,6 +234,7 @@
             { id: 2, title: 'Sample Task 2', completed: true, priority: 'low' }
         ];
         let currentFilter = 'all';
+        let draggedTaskId = null;
 
         // DOM Elements
         const taskInput = document.getElementById('taskInput');
@@ -288,6 +289,24 @@
             renderTasks();
         }
 
+        // ISSUE 10: Implement drag and drop to reorder tasks
+        function dragStart(id) {
+            draggedTaskId = id;
+        }
+
+        function dropTask(targetId) {
+            if (draggedTaskId === targetId) return;
+
+            const from = tasks.findIndex(t => t.id === draggedTaskId);
+            const to = tasks.findIndex(t => t.id === targetId);
+
+            const item = tasks.splice(from, 1)[0];
+            tasks.splice(to, 0, item);
+
+            renderTasks();
+        }
+
+
         // ISSUE 7: Add edit functionality for tasks
         function editTask(id) {
             // To be implemented by contributors
@@ -312,7 +331,7 @@
             }
 
             taskList.innerHTML = filteredTasks.map(task => `
-                <div class="task-item">
+                <div class="task-item" draggable="true" ondragstart="dragStart(${task.id})" ondragover="event.preventDefault()" ondrop="dropTask(${task.id})">
                     <div class="task-content">
                         <input 
                             type="checkbox" 
