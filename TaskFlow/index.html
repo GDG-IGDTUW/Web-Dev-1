@@ -15,6 +15,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f3f4f6;
             min-height: 100vh;
+           
+            padding-bottom: 60px;
         }
 
         /* ISSUE 1: Improve navbar design - current navbar is too basic */
@@ -167,7 +169,18 @@
 
         /* ISSUE 8: Add a footer showing task statistics */
         .stats-footer {
-            display: none; /* Will be implemented by contributors */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.95rem;
+            color: #374151;  /* Will be implemented by contributors */
         }
 
         /* ISSUE 9: Add dark mode toggle functionality */
@@ -223,7 +236,11 @@
         </div>
 
         <!-- ISSUE 8: Add a footer showing task statistics (total, completed, pending) -->
-        
+          <footer class="stats-footer">
+        <span id="totalTasks">Total: 0</span>
+        <span id="completedTasks">Completed: 0</span>
+        <span id="pendingTasks">Pending: 0</span>
+    </footer>
         <!-- ISSUE 9: Add dark mode toggle functionality -->
     </div>
 
@@ -241,6 +258,9 @@
         const taskList = document.getElementById('taskList');
         const filterBtns = document.querySelectorAll('.filter-btn');
 
+         const totalTasksEl = document.getElementById('totalTasks');
+        const completedTasksEl = document.getElementById('completedTasks');
+        const pendingTasksEl = document.getElementById('pendingTasks');
         // Initialize
         renderTasks();
 
@@ -286,6 +306,7 @@
                 task.id === id ? { ...task, completed: !task.completed } : task
             );
             renderTasks();
+            
         }
 
         // ISSUE 7: Add edit functionality for tasks
@@ -302,6 +323,16 @@
             return tasks;
         }
 
+        function updateFooterStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const pending = total - completed;
+
+            totalTasksEl.textContent = `Total: ${total}`;
+            completedTasksEl.textContent = `Completed: ${completed}`;
+            pendingTasksEl.textContent = `Pending: ${pending}`;
+        }
+
         // ISSUE 14: Implement animations for task addition/deletion
         function renderTasks() {
             const filteredTasks = getFilteredTasks();
@@ -310,7 +341,7 @@
                 taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
                 return;
             }
-
+            else{
             taskList.innerHTML = filteredTasks.map(task => `
                 <div class="task-item">
                     <div class="task-content">
@@ -334,6 +365,7 @@
                 </div>
             `).join('');
         }
+        updateFooterStats();  }
 
         // ISSUE 10: Implement drag and drop to reorder tasks
         
