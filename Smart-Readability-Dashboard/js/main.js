@@ -109,22 +109,25 @@ function analyzeText() {
         resetStats();
         return;
     }
-    
+
     // Basic text analysis
     const basicStats = getBasicStats(text);
-    
-    // NLP analysis using Compromise.js
+
+    // NLP analysis
     const nlpStats = getNLPStats(text);
-    
-    // Update UI with results
+
+    // Update UI
     updateUI(basicStats, nlpStats, text);
-    
-    // Run plugins
+
+    updateReadabilityProgress(basicStats);
+
+    // Plugins
     runPlugins(text);
-    
+
     // Highlight text
     highlightText(text, basicStats);
 }
+
 
 function getBasicStats(text) {
     // Word count
@@ -439,3 +442,41 @@ function safePluginExecution(plugin, text) {
 // LEARNING: This is an example of the debounce pattern
 // Debouncing prevents functions from being called too frequently
 // It's commonly used for search inputs, resize events, and scroll events
+
+
+
+function updateReadabilityProgress(basicStats) {
+    // Example simple calculation (you can improve later)
+    // Using wordCount and longSentenceCount as placeholders for demo
+
+    const fleschScore = Math.min(100, Math.round(100 - basicStats.longSentenceCount * 2));
+    const fleschKincaidScore = Math.min(100, Math.round((basicStats.hardWordCount / basicStats.wordCount) * 100));
+    const gunningFogScore = Math.min(100, Math.round((basicStats.longSentenceCount + basicStats.hardWordCount) / basicStats.wordCount * 100));
+
+    // Update DOM elements and progress bars
+    const metrics = [
+        { id: 'fleschScore', value: fleschScore },
+        { id: 'fleschKincaidScore', value: fleschKincaidScore },
+        { id: 'gunningFogScore', value: gunningFogScore }
+    ];
+
+    metrics.forEach(metric => {
+        const textEl = document.getElementById(metric.id);
+        const fillEl = textEl.closest('.progress-container').querySelector('.progress-fill');
+
+        textEl.textContent = `${metric.value}%`;
+        fillEl.style.width = `${metric.value}%`;
+
+        // Optional: change color based on value
+        if (metric.value >= 75) {
+            fillEl.style.background = 'var(--success-color)';
+        } else if (metric.value >= 50) {
+            fillEl.style.background = 'var(--warning-color)';
+        } else {
+            fillEl.style.background = 'var(--danger-color)';
+        }
+    });
+}
+
+
+

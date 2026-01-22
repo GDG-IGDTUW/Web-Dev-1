@@ -721,3 +721,10 @@ body.dark-mode {
         grid-template-columns: 1fr;
     }
 }
+
+
+@media (min-width: 768px) {
+    .progress-bar {
+        height: 12px;
+    }
+}
