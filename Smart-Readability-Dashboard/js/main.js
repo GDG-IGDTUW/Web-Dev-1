@@ -9,7 +9,6 @@ const plugins = [
     questionCountPlugin,
     averageWordLengthPlugin,
     emotionDetectionPlugin,
-    paragraphCountPlugin
 ];
 
 // Demo texts for different difficulty levels
@@ -28,6 +27,10 @@ let clearBtn;
 let exportBtn;
 let darkModeBtn;
 let highlightedSection;
+let isSpeaking = false;
+let ttsUtterance = null;
+let isDemoText = true;
+
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -35,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     textInput = document.getElementById('textInput');
     analyzeBtn = document.getElementById('analyzeBtn');
     clearBtn = document.getElementById('clearBtn');
+    const ttsBtn = document.getElementById('ttsBtn');
     exportBtn = document.getElementById('exportBtn');
     darkModeBtn = document.getElementById('darkModeBtn');
     highlightedSection = document.getElementById('highlightedSection');
@@ -42,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     analyzeBtn.addEventListener('click', analyzeText);
     clearBtn.addEventListener('click', clearText);
+    ttsBtn.addEventListener('click', toggleSpeech);
     exportBtn.addEventListener('click', () => {
         showError('Export functionality coming soon! Contributors welcome to implement this feature.');
     });
@@ -65,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initialize with sample text for demo
-    textInput.value = "Welcome to the Smart Readability Dashboard! This is a simple tool that helps you analyze the readability of your text. You can paste any text here and see detailed statistics about word count, sentence length, reading time, and more. The tool uses basic natural language processing to identify nouns and verbs, and highlights potentially difficult sentences. This makes it perfect for writers, students, and anyone who wants to make their writing more accessible and easier to read.";
+    textInput.value = '';
     
     // TODO for beginners: Implement dark mode persistence with localStorage
     // TODO for beginners: Add keyboard shortcuts for better UX
@@ -104,6 +109,10 @@ function loadDemo(difficulty) {
 // function getReadabilityRecommendations(stats) { ... }
 
 function analyzeText() {
+    speechSynthesis.cancel();
+    isSpeaking = false;
+    document.getElementById('ttsBtn').textContent = "Preview Speech";
+
     const text = textInput.value.trim();
     
     if (!text) {
@@ -126,6 +135,48 @@ function analyzeText() {
     // Highlight text
     highlightText(text, basicStats);
 }
+
+function toggleSpeech() {
+    const text = textInput.value.trim();
+
+    if (!text) {
+        showError("Please enter some text first.");
+        return;
+    }
+
+    // If already speaking → STOP
+    if (isSpeaking) {
+        speechSynthesis.cancel();
+        isSpeaking = false;
+        ttsBtn.textContent = "Preview Speech";
+        return;
+    }
+
+    // Start speaking
+    speechSynthesis.cancel();
+    ttsUtterance = new SpeechSynthesisUtterance(text);
+
+    ttsUtterance.rate = 1;
+    ttsUtterance.pitch = 1;
+    ttsUtterance.volume = 1;
+
+    const voices = speechSynthesis.getVoices();
+    const englishVoice = voices.find(v => v.lang.startsWith('en'));
+    if (englishVoice) {
+        ttsUtterance.voice = englishVoice;
+    }
+
+    ttsUtterance.onend = () => {
+        isSpeaking = false;
+        ttsBtn.textContent = "Preview Speech";
+    };
+
+    speechSynthesis.speak(ttsUtterance);
+
+    isSpeaking = true;
+    ttsBtn.textContent = "Stop Speech";
+}
+
 
 function getBasicStats(text) {
     // Word count
@@ -321,6 +372,10 @@ function highlightText(text, basicStats) {
 }
 
 function clearText() {
+    speechSynthesis.cancel();
+    isSpeaking = false;
+    document.getElementById('ttsBtn').textContent = "Preview Speech";
+
     textInput.value = '';
     resetStats();
     highlightedSection.style.display = 'none';
