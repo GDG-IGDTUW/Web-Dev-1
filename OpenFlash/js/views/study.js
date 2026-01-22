@@ -1,6 +1,17 @@
 import { StorageManager } from '../storage.js';
 import { createElement } from '../utils.js';
 
+// Store reference to the current keyboard handler for cleanup
+let currentKeydownHandler = null;
+
+// Cleanup function to remove the keyboard listener
+export function cleanup() {
+    if (currentKeydownHandler) {
+        document.removeEventListener('keydown', currentKeydownHandler);
+        currentKeydownHandler = null;
+    }
+}
+
 export function render(deckId) {
     const deck = StorageManager.getDeck(deckId);
     if (!deck) {
@@ -159,11 +170,17 @@ export function render(deckId) {
     });
 
     // Keyboard support
-    document.addEventListener('keydown', (e) => {
+    // Remove any existing listener first
+    cleanup();
+    
+    // Create a named handler for this session
+    currentKeydownHandler = (e) => {
         if (e.code === 'Space') {
             handleFlip();
         }
-    });
+    };
+    
+    document.addEventListener('keydown', currentKeydownHandler);
 
     // Initialize
     if (deck.cards.length === 0) {
