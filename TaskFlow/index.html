@@ -185,12 +185,53 @@
             padding: 3rem;
             color: #9ca3af;
         }
+        /* ================= DARK MODE ================= */
+        body.dark {
+            background-color: #111827;
+            color: #e5e7eb;
+        }
+
+        body.dark .navbar,
+        body.dark .task-input-section,
+        body.dark .task-item {
+            background-color: #1f2933;
+        }
+
+        body.dark .navbar h1,
+        body.dark .task-title {
+            color: #e5e7eb;
+        }
+
+        body.dark #taskInput {
+            background-color: #111827;
+            color: #e5e7eb;
+            border-color: #374151;
+        }
+
+        body.dark .filter-btn {
+            background-color: #374151;
+            color: #e5e7eb;
+        }
+
+        body.dark .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        /* ============================================= */
+
+
     </style>
 </head>
 <body>
     <!-- ISSUE 1: Improve navbar design - current navbar is too basic -->
     <nav class="navbar">
         <h1>TaskFlow</h1>
+        <button id="darkToggle" style="
+            background:none;
+            border:none;
+            font-size:1.3rem;
+            cursor:pointer;
+        ">🌙</button>
         <!-- ISSUE 2: Add user profile section in header -->
     </nav>
 
@@ -240,6 +281,21 @@
         const addTaskBtn = document.getElementById('addTaskBtn');
         const taskList = document.getElementById('taskList');
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const darkToggle = document.getElementById('darkToggle');
+
+        // Load saved preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark');
+            darkToggle.textContent = '☀️';
+        }
+
+        // Toggle dark mode
+        darkToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const enabled = document.body.classList.contains('dark');
+            darkToggle.textContent = enabled ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', enabled ? 'enabled' : 'disabled');
+        });
 
         // Initialize
         renderTasks();
@@ -305,7 +361,6 @@
         // ISSUE 14: Implement animations for task addition/deletion
         function renderTasks() {
             const filteredTasks = getFilteredTasks();
-            
             if (filteredTasks.length === 0) {
                 taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
                 return;
