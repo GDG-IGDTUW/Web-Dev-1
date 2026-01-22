@@ -46,7 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
         showError('Export functionality coming soon! Contributors welcome to implement this feature.');
     });
     darkModeBtn.addEventListener('click', () => {
-        showError('Dark mode coming soon! Contributors welcome to implement this feature.');
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
     });
     
     // TODO for beginners: Implement keyboard shortcuts functionality
