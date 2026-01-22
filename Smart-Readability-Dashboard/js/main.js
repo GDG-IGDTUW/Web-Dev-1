@@ -9,7 +9,8 @@ const plugins = [
     questionCountPlugin,
     averageWordLengthPlugin,
     emotionDetectionPlugin,
-    paragraphCountPlugin
+    paragraphCountPlugin,
+    countLettersPlugin
 ];
 
 // Demo texts for different difficulty levels
