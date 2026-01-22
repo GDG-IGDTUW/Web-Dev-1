@@ -439,3 +439,28 @@ function safePluginExecution(plugin, text) {
 // LEARNING: This is an example of the debounce pattern
 // Debouncing prevents functions from being called too frequently
 // It's commonly used for search inputs, resize events, and scroll events
+
+
+/* ============================= */
+/* Navbar Hamburger Toggle */
+/* ============================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    // Toggle menu on hamburger click
+    hamburger.addEventListener("click", function () {
+        navLinks.classList.toggle("active");
+    });
+
+    // Close menu when any link is clicked
+    const links = document.querySelectorAll(".nav-links a");
+    links.forEach(function (link) {
+        link.addEventListener("click", function () {
+            navLinks.classList.remove("active");
+        });
+    });
+
+});
