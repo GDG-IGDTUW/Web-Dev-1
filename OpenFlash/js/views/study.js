@@ -1,6 +1,17 @@
 import { StorageManager } from '../storage.js';
 import { createElement } from '../utils.js';
 
+// Store reference to the current keyboard handler for cleanup
+let currentKeydownHandler = null;
+
+// Cleanup function to remove the keyboard listener
+export function cleanup() {
+    if (currentKeydownHandler) {
+        document.removeEventListener('keydown', currentKeydownHandler);
+        currentKeydownHandler = null;
+    }
+}
+
 export function render(deckId) {
     const deck = StorageManager.getDeck(deckId);
     if (!deck) {
@@ -132,6 +143,7 @@ export function render(deckId) {
         
         // Re-bind study again
         container.querySelector('#study-again-btn').addEventListener('click', () => {
+            cleanup();
             container.innerHTML = '';
             // Re-render essentially by just calling render logic again or reloading route
             // Since we are inside the component, the cleanest SPA way without logic extraction is 
@@ -159,11 +171,17 @@ export function render(deckId) {
     });
 
     // Keyboard support
-    document.addEventListener('keydown', (e) => {
+    // Remove any existing listener first
+    cleanup();
+    
+    // Create a named handler for this session
+    currentKeydownHandler = (e) => {
         if (e.code === 'Space') {
             handleFlip();
         }
-    });
+    };
+    
+    document.addEventListener('keydown', currentKeydownHandler);
 
     // Initialize
     if (deck.cards.length === 0) {
