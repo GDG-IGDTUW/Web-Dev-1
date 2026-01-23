@@ -143,6 +143,7 @@ export function render(deckId) {
         
         // Re-bind study again
         container.querySelector('#study-again-btn').addEventListener('click', () => {
+            cleanup();
             container.innerHTML = '';
             // Re-render essentially by just calling render logic again or reloading route
             // Since we are inside the component, the cleanest SPA way without logic extraction is 
