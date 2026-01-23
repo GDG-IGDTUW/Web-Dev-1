@@ -9,8 +9,10 @@ const plugins = [
     questionCountPlugin,
     averageWordLengthPlugin,
     emotionDetectionPlugin,
+
     paragraphCountPlugin,
     countLettersPlugin
+
 ];
 
 // Demo texts for different difficulty levels
@@ -94,6 +96,13 @@ function loadDemo(difficulty) {
 
 // TODO for beginners: Implement keyboard shortcuts functionality
 // function handleKeyboardShortcuts(event) { ... }
+
+// Ctrl + Enter shortcut to click Analyse button
+document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && event.key === "Enter") {
+        document.getElementById("analyzeBtn").click();
+    }
+});
 
 // TODO for beginners: Implement dark mode toggle functionality  
 // function toggleDarkMode() { ... }
