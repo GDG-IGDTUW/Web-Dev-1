@@ -8,7 +8,10 @@ const plugins = [
     longSentencePlugin,
     questionCountPlugin,
     averageWordLengthPlugin,
-    emotionDetectionPlugin
+    emotionDetectionPlugin,
+    paragraphCountPlugin,
+    countLettersPlugin
+
 ];
 
 // Demo texts for different difficulty levels
@@ -27,6 +30,10 @@ let clearBtn;
 let exportBtn;
 let darkModeBtn;
 let highlightedSection;
+let isSpeaking = false;
+let ttsUtterance = null;
+let isDemoText = true;
+
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -34,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     textInput = document.getElementById('textInput');
     analyzeBtn = document.getElementById('analyzeBtn');
     clearBtn = document.getElementById('clearBtn');
+    const ttsBtn = document.getElementById('ttsBtn');
     exportBtn = document.getElementById('exportBtn');
     darkModeBtn = document.getElementById('darkModeBtn');
     highlightedSection = document.getElementById('highlightedSection');
@@ -41,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     analyzeBtn.addEventListener('click', analyzeText);
     clearBtn.addEventListener('click', clearText);
+    ttsBtn.addEventListener('click', toggleSpeech);
     exportBtn.addEventListener('click', () => {
         showError('Export functionality coming soon! Contributors welcome to implement this feature.');
     });
@@ -64,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Initialize with sample text for demo
-    textInput.value = "Welcome to the Smart Readability Dashboard! This is a simple tool that helps you analyze the readability of your text. You can paste any text here and see detailed statistics about word count, sentence length, reading time, and more. The tool uses basic natural language processing to identify nouns and verbs, and highlights potentially difficult sentences. This makes it perfect for writers, students, and anyone who wants to make their writing more accessible and easier to read.";
+    textInput.value = '';
     
     // TODO for beginners: Implement dark mode persistence with localStorage
     // TODO for beginners: Add keyboard shortcuts for better UX
@@ -93,6 +102,13 @@ function loadDemo(difficulty) {
 // TODO for beginners: Implement keyboard shortcuts functionality
 // function handleKeyboardShortcuts(event) { ... }
 
+// Ctrl + Enter shortcut to click Analyse button
+document.addEventListener("keydown", function (event) {
+    if (event.ctrlKey && event.key === "Enter") {
+        document.getElementById("analyzeBtn").click();
+    }
+});
+
 // TODO for beginners: Implement dark mode toggle functionality  
 // function toggleDarkMode() { ... }
 
@@ -103,28 +119,77 @@ function loadDemo(difficulty) {
 // function getReadabilityRecommendations(stats) { ... }
 
 function analyzeText() {
+    speechSynthesis.cancel();
+    isSpeaking = false;
+    document.getElementById('ttsBtn').textContent = "Preview Speech";
+
     const text = textInput.value.trim();
     
     if (!text) {
         resetStats();
         return;
     }
-    
+
     // Basic text analysis
     const basicStats = getBasicStats(text);
-    
-    // NLP analysis using Compromise.js
+
+    // NLP analysis
     const nlpStats = getNLPStats(text);
-    
-    // Update UI with results
+
+    // Update UI
     updateUI(basicStats, nlpStats, text);
-    
-    // Run plugins
+
+    updateReadabilityProgress(basicStats);
+
+    // Plugins
     runPlugins(text);
-    
+
     // Highlight text
     highlightText(text, basicStats);
 }
+
+
+function toggleSpeech() {
+    const text = textInput.value.trim();
+
+    if (!text) {
+        showError("Please enter some text first.");
+        return;
+    }
+
+    // If already speaking → STOP
+    if (isSpeaking) {
+        speechSynthesis.cancel();
+        isSpeaking = false;
+        ttsBtn.textContent = "Preview Speech";
+        return;
+    }
+
+    // Start speaking
+    speechSynthesis.cancel();
+    ttsUtterance = new SpeechSynthesisUtterance(text);
+
+    ttsUtterance.rate = 1;
+    ttsUtterance.pitch = 1;
+    ttsUtterance.volume = 1;
+
+    const voices = speechSynthesis.getVoices();
+    const englishVoice = voices.find(v => v.lang.startsWith('en'));
+    if (englishVoice) {
+        ttsUtterance.voice = englishVoice;
+    }
+
+    ttsUtterance.onend = () => {
+        isSpeaking = false;
+        ttsBtn.textContent = "Preview Speech";
+    };
+
+    speechSynthesis.speak(ttsUtterance);
+
+    isSpeaking = true;
+    ttsBtn.textContent = "Stop Speech";
+}
+
 
 function getBasicStats(text) {
     // Word count
@@ -320,6 +385,10 @@ function highlightText(text, basicStats) {
 }
 
 function clearText() {
+    speechSynthesis.cancel();
+    isSpeaking = false;
+    document.getElementById('ttsBtn').textContent = "Preview Speech";
+
     textInput.value = '';
     resetStats();
     highlightedSection.style.display = 'none';
@@ -439,3 +508,41 @@ function safePluginExecution(plugin, text) {
 // LEARNING: This is an example of the debounce pattern
 // Debouncing prevents functions from being called too frequently
 // It's commonly used for search inputs, resize events, and scroll events
+
+
+
+function updateReadabilityProgress(basicStats) {
+    // Example simple calculation (you can improve later)
+    // Using wordCount and longSentenceCount as placeholders for demo
+
+    const fleschScore = Math.min(100, Math.round(100 - basicStats.longSentenceCount * 2));
+    const fleschKincaidScore = Math.min(100, Math.round((basicStats.hardWordCount / basicStats.wordCount) * 100));
+    const gunningFogScore = Math.min(100, Math.round((basicStats.longSentenceCount + basicStats.hardWordCount) / basicStats.wordCount * 100));
+
+    // Update DOM elements and progress bars
+    const metrics = [
+        { id: 'fleschScore', value: fleschScore },
+        { id: 'fleschKincaidScore', value: fleschKincaidScore },
+        { id: 'gunningFogScore', value: gunningFogScore }
+    ];
+
+    metrics.forEach(metric => {
+        const textEl = document.getElementById(metric.id);
+        const fillEl = textEl.closest('.progress-container').querySelector('.progress-fill');
+
+        textEl.textContent = `${metric.value}%`;
+        fillEl.style.width = `${metric.value}%`;
+
+        // Optional: change color based on value
+        if (metric.value >= 75) {
+            fillEl.style.background = 'var(--success-color)';
+        } else if (metric.value >= 50) {
+            fillEl.style.background = 'var(--warning-color)';
+        } else {
+            fillEl.style.background = 'var(--danger-color)';
+        }
+    });
+}
+
+
+
