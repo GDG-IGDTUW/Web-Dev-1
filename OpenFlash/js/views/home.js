@@ -43,6 +43,7 @@ export function render() {
                 </div>
                 <div class="deck-actions">
                     <a href="#/study/${deck.id}" class="btn btn-primary">Study</a>
+                    <a href="#/quiz/${deck.id}" class="btn btn-primary">Quiz</a>
                     <a href="#/edit/${deck.id}" class="btn btn-outline">Edit</a>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="${deck.id}">REMOVE</button>
                 </div>
