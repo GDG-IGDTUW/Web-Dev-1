@@ -723,8 +723,67 @@ body.dark-mode {
 }
 
 
-@media (min-width: 768px) {
-    .progress-bar {
-        height: 12px;
+
+
+
+
+
+/* ============================= */
+/* Enhanced Input Field Styling */
+/* Issue #3 */
+/* ============================= */
+
+#textInput {
+    width: 100%;
+    min-height: 300px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    line-height: 1.6;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    outline: none;
+    resize: vertical;
+    background-color: var(--surface);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus state */
+#textInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Hover state */
+#textInput:hover {
+    border-color: var(--secondary-color);
+}
+
+/* Placeholder styling */
+#textInput::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Custom scrollbar */
+#textInput::-webkit-scrollbar {
+    width: 8px;
+}
+
+#textInput::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.4);
+    border-radius: 10px;
+}
+
+#textInput::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    #textInput {
+        min-height: 220px;
+        font-size: 0.95rem;
+        padding: 0.75rem;
     }
 }
