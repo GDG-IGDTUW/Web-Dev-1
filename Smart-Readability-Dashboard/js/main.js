@@ -3,14 +3,15 @@
 
 // Plugin system - manually add plugins to this array
 const plugins = [
-    wordCountPlugin,
-    readingTimePlugin,
-    longSentencePlugin,
-    questionCountPlugin,
-    averageWordLengthPlugin,
-    emotionDetectionPlugin,
-    paragraphCountPlugin,
-    countLettersPlugin
+    // wordCountPlugin,
+    // readingTimePlugin,
+    // longSentencePlugin,
+    // questionCountPlugin,
+    // averageWordLengthPlugin,
+    // emotionDetectionPlugin,
+    // paragraphCountPlugin,
+    // countLettersPlugin,
+    wordFrequencyPlugin
 
 ];
 
