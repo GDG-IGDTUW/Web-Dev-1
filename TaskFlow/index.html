@@ -19,18 +19,39 @@
             padding-bottom: 60px;
         }
 
-        /* ISSUE 1: Improve navbar design - current navbar is too basic */
-        .navbar {
-            background-color: white;
-            padding: 1rem 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+       /* ISSUE 1: Improved Navbar Design for taskflow final */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e293b;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 
-        .navbar h1 {
-            font-size: 1.5rem;
-            color: #333;
-        }
+.logo {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #38bdf8;
+    transform: translateY(-2px);
+}
 
         .container {
             max-width: 800px;
@@ -198,6 +219,20 @@
             padding: 3rem;
             color: #9ca3af;
         }
+
+/* ISSUE 1: Responsive navbar for smaller screens */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
         /* ================= DARK MODE ================= */
         body.dark {
             background-color: #111827;
@@ -236,6 +271,16 @@
     </style>
 </head>
 <body>
+ <!-- ISSUE 1: Improve navbar design - updated layout and styling -->
+<nav class="navbar">
+    <h1 class="logo">TaskFlow</h1>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">My Tasks</a>
+        <a href="#">Contact</a>
+    </div>
+</nav>
+
     <!-- ISSUE 1: Improve navbar design - current navbar is too basic -->
     <nav class="navbar">
         <h1>TaskFlow</h1>
@@ -448,6 +493,8 @@
             `).join('');
         }
         updateFooterStats();  }
+
+        
 
         // ISSUE 10: Implement drag and drop to reorder tasks
         
