@@ -258,6 +258,7 @@
                     placeholder="Add a new task..."
                     autocomplete="off"
                 >
+                  <input type="date" id="dueDate">
                 <button id="addTaskBtn">Add Task</button>
             </div>
         </div>
@@ -300,6 +301,8 @@
         const taskList = document.getElementById('taskList');
         const filterBtns = document.querySelectorAll('.filter-btn');
         const darkToggle = document.getElementById('darkToggle');
+        const dueDateInput = document.getElementById('dueDate');
+
 
         // Load saved preference
         if (localStorage.getItem('darkMode') === 'enabled') {
@@ -345,11 +348,14 @@
                 id: Date.now(),
                 title: taskTitle,
                 completed: false,
-                priority: 'medium'
+                priority: 'medium',
+                dueDate: dueDateInput.value || null 
             };
 
             tasks.push(newTask);
             taskInput.value = '';
+            dueDateInput.value = '';
+
             renderTasks();
         }
 
@@ -428,6 +434,8 @@
                         <span class="task-title ${task.completed ? 'completed' : ''}">
                             ${task.title}
                         </span>
+                         ${task.dueDate ? `<div style="font-size:12px;color:#6b7280;">📅 Due: ${task.dueDate}</div>` : ''}
+
                         <!-- ISSUE 6: Add priority badges (High/Medium/Low) with colors -->
                     </div>
                     <div class="task-actions">
