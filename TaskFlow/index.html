@@ -772,6 +772,15 @@
         body.dark-mode .empty-state {
             color: #6b7280;
         }
+
+        /* Responsive navbar */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1056,11 +1065,9 @@
             renderTasks();
             loadUserPreferences();
 
-            // Event Listeners
             // 1. Profile dropdown toggle
             profileBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                console.log('Profile button clicked');
                 dropdownMenu.classList.toggle('show');
                 settingsSubmenu.classList.remove('show');
                 notificationsSubmenu.classList.remove('show');
@@ -1079,7 +1086,6 @@
 
             // 3. Profile menu item
             profileMenuItem.addEventListener('click', function() {
-                console.log('My Profile clicked');
                 dropdownMenu.classList.remove('show');
                 mainContent.style.display = 'none';
                 profilePage.style.display = 'block';
@@ -1088,7 +1094,6 @@
             // 4. Settings menu item
             settingsMenuItem.addEventListener('click', function(e) {
                 e.stopPropagation();
-                console.log('Settings clicked');
                 dropdownMenu.classList.remove('show');
                 settingsSubmenu.classList.add('show');
             });
@@ -1096,14 +1101,12 @@
             // 5. Notifications menu item
             notificationsMenuItem.addEventListener('click', function(e) {
                 e.stopPropagation();
-                console.log('Notifications clicked');
                 dropdownMenu.classList.remove('show');
                 notificationsSubmenu.classList.add('show');
             });
 
             // 6. Logout menu item
             logoutMenuItem.addEventListener('click', function() {
-                console.log('Logout clicked');
                 dropdownMenu.classList.remove('show');
                 logoutModal.classList.add('show');
             });
@@ -1162,7 +1165,6 @@
             // 12. Language selector
             languageDisplay.addEventListener('click', function(e) {
                 e.stopPropagation();
-                console.log('Language selector clicked');
                 languageOptions.classList.toggle('show');
             });
 
@@ -1172,25 +1174,15 @@
                     e.stopPropagation();
                     const lang = this.getAttribute('data-lang');
                     
-                    // Update active state
                     document.querySelectorAll('.language-option').forEach(opt => {
                         opt.classList.remove('active');
                     });
                     this.classList.add('active');
                     
-                    // Update language label
                     languageLabel.textContent = lang;
-                    
-                    // Save to localStorage
                     localStorage.setItem('language', lang);
-                    
-                    // Close language options
                     languageOptions.classList.remove('show');
-                    
-                    // Show notification
                     showNotification(`Language changed to ${lang}`);
-                    
-                    // Update current language
                     currentLanguage = lang;
                 });
             });
@@ -1202,11 +1194,9 @@
                 const userEmail = document.getElementById('userEmail').value;
                 const userPhone = document.getElementById('userPhone').value;
                 
-                // Update profile icon
                 const profileIcon = document.querySelector('.profile-icon');
                 profileIcon.textContent = userName.charAt(0).toUpperCase();
                 
-                // Save to localStorage
                 localStorage.setItem('userName', userName);
                 localStorage.setItem('userEmail', userEmail);
                 localStorage.setItem('userPhone', userPhone);
@@ -1233,7 +1223,6 @@
 
             // Load saved preferences
             function loadUserPreferences() {
-                // Load theme
                 const savedTheme = localStorage.getItem('theme');
                 if (savedTheme === 'dark') {
                     document.body.classList.add('dark-mode');
@@ -1241,20 +1230,17 @@
                     themeLabel.textContent = 'Dark';
                 }
 
-                // Load notifications preference
                 const savedNotifications = localStorage.getItem('notifications');
                 if (savedNotifications === 'false') {
                     notificationsToggle.checked = false;
                     notificationsLabel.textContent = "Don't Allow";
                 }
 
-                // Load language
                 const savedLanguage = localStorage.getItem('language');
                 if (savedLanguage) {
                     currentLanguage = savedLanguage;
                     languageLabel.textContent = currentLanguage;
                     
-                    // Update active language option
                     document.querySelectorAll('.language-option').forEach(option => {
                         option.classList.remove('active');
                         if (option.getAttribute('data-lang') === currentLanguage) {
@@ -1263,7 +1249,6 @@
                     });
                 }
 
-                // Load user data
                 const savedName = localStorage.getItem('userName');
                 const savedEmail = localStorage.getItem('userEmail');
                 const savedPhone = localStorage.getItem('userPhone');
@@ -1278,7 +1263,6 @@
 
             // Notification function
             function showNotification(message) {
-                // Create notification element
                 const notification = document.createElement('div');
                 notification.style.cssText = `
                     position: fixed;
@@ -1297,17 +1281,14 @@
                     max-width: 300px;
                 `;
                 
-                // Add icon
                 const icon = document.createElement('span');
                 icon.textContent = 'ℹ️';
                 notification.appendChild(icon);
                 
-                // Add message
                 const messageSpan = document.createElement('span');
                 messageSpan.textContent = message;
                 notification.appendChild(messageSpan);
                 
-                // Add animation
                 const style = document.createElement('style');
                 style.textContent = `
                     @keyframes slideInRight {
@@ -1323,7 +1304,6 @@
                 
                 document.body.appendChild(notification);
                 
-                // Remove after 3 seconds
                 setTimeout(() => {
                     notification.style.animation = 'slideOutRight 0.3s ease';
                     setTimeout(() => {
@@ -1404,7 +1384,6 @@
                 `).join('');
             }
 
-            // Make functions globally available for inline onclick handlers
             window.deleteTask = deleteTask;
             window.toggleTask = toggleTask;
         });

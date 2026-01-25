@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Compromise.js CDN for basic NLP -->
     <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+
 </head>
 <body>
     <header>
@@ -26,6 +27,9 @@
             <div class="input-controls">
                 <button id="analyzeBtn" class="primary-btn">Analyze Text</button>
                 <button id="clearBtn" class="secondary-btn">Clear</button>
+
+                <!-- TTS Toggle Button (no icon for now) -->
+                <button id="ttsBtn" class="secondary-btn">Preview Speech</button>
             </div>
             
             <!-- Demo Content Buttons -->
@@ -87,6 +91,42 @@
                 </div>
             </div>
 
+            <!-- Progress Bars for Readability Metrics -->
+<div class="progress-stats">
+    <h4>📊 Readability Metrics Progress</h4>
+    
+    <div class="progress-container">
+        <div class="progress-label">
+            <span>Flesch Reading Ease</span>
+            <span id="fleschScore">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" data-value="0"></div>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-label">
+            <span>Flesch-Kincaid Grade Level</span>
+            <span id="fleschKincaidScore">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" data-value="0"></div>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-label">
+            <span>Gunning Fog Index</span>
+            <span id="gunningFogScore">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" data-value="0"></div>
+        </div>
+    </div>
+</div>
+
+
             <!-- Plugin Results -->
             <div class="plugin-results">
                 <h3>🔧 Plugin Analysis</h3>
@@ -138,6 +178,11 @@
     <script src="js/plugins/questionCount.js"></script>
     <script src="js/plugins/averageWordLength.js"></script>
     <script src="js/plugins/emotionDetection.js"></script>
+
+
+    <script src="js/plugins/paragraphCountPlugin.js"></script>
+    <script src="js/plugins/capitalLetters.js"></script>
+
     
     <!-- Main application -->
     <script src="js/main.js"></script>
