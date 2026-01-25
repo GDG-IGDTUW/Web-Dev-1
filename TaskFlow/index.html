@@ -107,10 +107,23 @@
 }
 
         /* ISSUE 4: Add filter buttons for All/Active/Completed tasks */
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* 1. BASE STYLE (Light Mode - Default) */
         .filter-section {
             display: flex;
-            gap: 0.5rem;
+            gap: 10px;
+            background: #0e0e0e03;
+            padding: 6px;
+            border-radius: 12px;
+            width: fit-content;
             margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.053);
         }
 
         .filter-btn {
@@ -119,13 +132,36 @@
             border-radius: 4px;
             cursor: pointer;
             background-color: #e5e7eb;
-            color: #333;
+            color: #000000 !important; /* Force black text in light mode */
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .filter-btn.active {
             background-color: #3b82f6;
-            color: white;
+            color: #000000 !important; /* Black text on blue for high contrast */
+            animation: pop 0.3s ease-out;
+
         }
+
+        /* 2. BASE STYLE (Dark Mode) */
+        body.dark .filter-section {
+            background-color: rgba(255, 255, 255, 0.05); /* Darker glass-look container */
+        }
+
+        body.dark .filter-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff !important; /* Forces white text in dark mode */
+        }
+
+        body.dark .filter-btn.active {
+            background-color: #3b82f6;
+            color: #ffffff !important; /* White text on blue for dark mode */
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            animation: pop 0.3s ease-out;
+        }
+        
+    
 
         /* ISSUE 5: Improve the task card design with better spacing and shadows */
         .task-list {
@@ -215,7 +251,7 @@
         }
 
         /* ISSUE 9: Add dark mode toggle functionality */
-        .dark-mode-toggle {
+        .darkMode-toggle {
             display: none; /* Will be implemented by contributors */
         }
 
