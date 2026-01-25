@@ -15,14 +15,30 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f3f4f6;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* ISSUE 1: Improve navbar design - current navbar is too basic */
+        body.dark-mode {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+
+        /* Navbar */
         .navbar {
             background-color: white;
             padding: 1rem 2rem;
             margin-bottom: 2rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+            position: relative;
+            z-index: 1000;
+        }
+
+        body.dark-mode .navbar {
+            background-color: #374151;
         }
 
         .navbar h1 {
@@ -30,20 +46,525 @@
             color: #333;
         }
 
+        body.dark-mode .navbar h1 {
+            color: #f9fafb;
+        }
+
+        /* User Profile Section */
+        .user-profile-container {
+            position: relative;
+            z-index: 1100;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            z-index: 1101;
+            position: relative;
+        }
+
+        .profile-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        body.dark-mode .profile-btn:hover {
+            background-color: #4b5563;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 220px;
+            z-index: 1100;
+            display: none;
+            overflow: hidden;
+            animation: slideDown 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.dark-mode .dropdown-menu {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f3f4f6;
+            text-decoration: none;
+            color: #333;
+            background-color: white;
+        }
+
+        body.dark-mode .dropdown-item {
+            color: #f9fafb;
+            border-bottom-color: #4b5563;
+            background-color: #374151;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        body.dark-mode .dropdown-item:hover {
+            background-color: #4b5563;
+        }
+
+        .dropdown-item-icon {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Submenus */
+        .dropdown-submenu {
+            position: absolute;
+            left: -220px;
+            top: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 220px;
+            display: none;
+            z-index: 1101;
+            border: 1px solid #e5e7eb;
+        }
+
+        body.dark-mode .dropdown-submenu {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .dropdown-submenu.show {
+            display: block;
+            animation: slideIn 0.2s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .submenu-back {
+            color: #3b82f6;
+            font-weight: 500;
+        }
+
+        .submenu-back:hover {
+            background-color: #f3f4f6;
+        }
+
+        body.dark-mode .submenu-back:hover {
+            background-color: #4b5563;
+        }
+
+        .toggle-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Enhanced Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .language-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1102;
+            border: 1px solid #e5e7eb;
+            margin-top: 5px;
+        }
+
+        body.dark-mode .language-options {
+            background-color: #374151;
+            border-color: #4b5563;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .language-options.show {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        body.dark-mode .language-option {
+            border-bottom-color: #4b5563;
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background-color: #f3f4f6;
+        }
+
+        body.dark-mode .language-option:hover {
+            background-color: #4b5563;
+        }
+
+        .language-option.active {
+            color: #3b82f6;
+            font-weight: 500;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        body.dark-mode .language-option.active {
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .language-flag {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Profile Page */
+        .profile-page {
+            display: none;
+        }
+
+        .profile-page.active {
+            display: block;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #3b82f6;
+        }
+
+        .profile-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .profile-form {
+            background-color: #374151;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        body.dark-mode .form-group label {
+            color: #f9fafb;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        body.dark-mode .form-group input {
+            background-color: #4b5563;
+            border-color: #6b7280;
+            color: #f9fafb;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .save-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .save-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* Logout Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            z-index: 1201;
+        }
+
+        body.dark-mode .modal {
+            background-color: #374151;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        body.dark-mode .modal h3 {
+            color: #f9fafb;
+        }
+
+        .modal p {
+            margin-bottom: 1.5rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        body.dark-mode .modal p {
+            color: #d1d5db;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            min-width: 120px;
+            font-weight: 500;
+        }
+
+        .modal-btn.confirm {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .modal-btn.confirm:hover {
+            background-color: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .modal-btn.cancel {
+            background-color: #e5e7eb;
+            color: #333;
+        }
+
+        body.dark-mode .modal-btn.cancel {
+            background-color: #4b5563;
+            color: #f9fafb;
+        }
+
+        .modal-btn.cancel:hover {
+            background-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        body.dark-mode .modal-btn.cancel:hover {
+            background-color: #6b7280;
+        }
+
+        /* Container */
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 0 1rem;
         }
 
-        /* ISSUE 2: Add user profile section in header */
-
-        /* ISSUE 3: Make the input field and button more visually appealing */
+        /* Task Manager Styles */
         .task-input-section {
             background-color: white;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            border-radius: 4px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .task-input-section {
+            background-color: #374151;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .input-wrapper {
@@ -53,61 +574,122 @@
 
         #taskInput {
             flex: 1;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
             font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode #taskInput {
+            background-color: #4b5563;
+            border-color: #6b7280;
+            color: #f9fafb;
+        }
+
+        #taskInput:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         #addTaskBtn {
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
         }
 
         #addTaskBtn:hover {
-            background-color: #2563eb;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px rgba(59, 130, 246, 0.3);
         }
 
-        /* ISSUE 4: Add filter buttons for All/Active/Completed tasks */
+        #addTaskBtn:active {
+            transform: translateY(0);
+        }
+
         .filter-section {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .filter-section {
+            background-color: #374151;
         }
 
         .filter-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.625rem 1.25rem;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .filter-btn {
+            background-color: #4b5563;
+            color: #d1d5db;
+        }
+
+        .filter-btn:hover {
             background-color: #e5e7eb;
-            color: #333;
+            transform: translateY(-1px);
+        }
+
+        body.dark-mode .filter-btn:hover {
+            background-color: #6b7280;
         }
 
         .filter-btn.active {
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
         }
 
-        /* ISSUE 5: Improve the task card design with better spacing and shadows */
         .task-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
         .task-item {
             background-color: white;
-            padding: 1rem;
-            border-radius: 4px;
+            padding: 1.25rem;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        body.dark-mode .task-item {
+            background-color: #374151;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        body.dark-mode .task-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .task-content {
@@ -118,14 +700,21 @@
         }
 
         .task-checkbox {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
+            border-radius: 4px;
+            accent-color: #3b82f6;
         }
 
         .task-title {
-            font-size: 1rem;
-            color: #333;
+            font-size: 1.1rem;
+            color: #111827;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .task-title {
+            color: #f9fafb;
         }
 
         .task-title.completed {
@@ -133,24 +722,29 @@
             color: #9ca3af;
         }
 
-        /* ISSUE 6: Add priority badges (High/Medium/Low) with colors */
-        .task-priority {
-            display: none; /* Will be implemented by contributors */
-        }
-
         .task-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
-        /* ISSUE 7: Add edit functionality for tasks */
         .edit-btn {
             background: none;
             border: none;
             color: #3b82f6;
             cursor: pointer;
-            padding: 0.25rem;
-            display: none; /* Will be implemented by contributors */
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover .edit-btn {
+            opacity: 1;
+        }
+
+        .edit-btn:hover {
+            color: #2563eb;
+            transform: scale(1.1);
         }
 
         .delete-btn {
@@ -158,192 +752,662 @@
             border: none;
             color: #ef4444;
             cursor: pointer;
-            padding: 0.25rem;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
         }
 
         .delete-btn:hover {
             color: #dc2626;
-        }
-
-        /* ISSUE 8: Add a footer showing task statistics */
-        .stats-footer {
-            display: none; /* Will be implemented by contributors */
-        }
-
-        /* ISSUE 9: Add dark mode toggle functionality */
-        .dark-mode-toggle {
-            display: none; /* Will be implemented by contributors */
-        }
-
-        /* ISSUE 13: Add search functionality */
-        .search-section {
-            display: none; /* Will be implemented by contributors */
+            transform: scale(1.1);
         }
 
         .empty-state {
             text-align: center;
-            padding: 3rem;
+            padding: 4rem 2rem;
             color: #9ca3af;
+            font-size: 1.1rem;
+        }
+
+        body.dark-mode .empty-state {
+            color: #6b7280;
         }
     </style>
 </head>
 <body>
-    <!-- ISSUE 1: Improve navbar design - current navbar is too basic -->
     <nav class="navbar">
         <h1>TaskFlow</h1>
-        <!-- ISSUE 2: Add user profile section in header -->
-    </nav>
+        <div class="user-profile-container">
+            <button class="profile-btn">
+                <div class="profile-icon">U</div>
+            </button>
+            
+            <div class="dropdown-menu">
+                <div class="dropdown-item profile-menu-btn">
+                    <span class="dropdown-item-icon">👤</span>
+                    <span>My Profile</span>
+                </div>
+                <div class="dropdown-item settings-menu-btn">
+                    <span class="dropdown-item-icon">⚙️</span>
+                    <span>Settings</span>
+                    <span style="margin-left: auto; font-size: 1.2rem;">›</span>
+                </div>
+                <div class="dropdown-item notifications-menu-btn">
+                    <span class="dropdown-item-icon">🔔</span>
+                    <span>Notification</span>
+                    <span style="margin-left: auto; font-size: 1.2rem;">›</span>
+                </div>
+                <div class="dropdown-item logout-menu-btn">
+                    <span class="dropdown-item-icon">🚪</span>
+                    <span>Log Out</span>
+                </div>
+            </div>
 
-    <div class="container">
-        <!-- ISSUE 3: Make the input field and button more visually appealing -->
-        <div class="task-input-section">
-            <div class="input-wrapper">
-                <input 
-                    type="text" 
-                    id="taskInput" 
-                    placeholder="Add a new task..."
-                    autocomplete="off"
-                >
-                <button id="addTaskBtn">Add Task</button>
+            <!-- Settings Submenu -->
+            <div class="dropdown-submenu settings-submenu">
+                <div class="dropdown-item submenu-back back-to-main-btn">
+                    <span style="font-size: 1.2rem;">‹</span>
+                    <span>Back</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>Theme</span>
+                    <div class="toggle-switch">
+                        <span class="theme-label">Light</span>
+                        <label class="switch">
+                            <input type="checkbox" class="theme-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="dropdown-item language-selector">
+                    <div class="language-display">
+                        <span>Language</span>
+                        <span class="language-label">English</span>
+                    </div>
+                </div>
+                
+                <!-- Language Options Dropdown -->
+                <div class="language-options">
+                    <div class="language-option active" data-lang="English" data-code="en">
+                        <span class="language-flag">🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                    <div class="language-option" data-lang="Spanish" data-code="es">
+                        <span class="language-flag">🇪🇸</span>
+                        <span>Español</span>
+                    </div>
+                    <div class="language-option" data-lang="French" data-code="fr">
+                        <span class="language-flag">🇫🇷</span>
+                        <span>Français</span>
+                    </div>
+                    <div class="language-option" data-lang="German" data-code="de">
+                        <span class="language-flag">🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="language-option" data-lang="Italian" data-code="it">
+                        <span class="language-flag">🇮🇹</span>
+                        <span>Italiano</span>
+                    </div>
+                    <div class="language-option" data-lang="Portuguese" data-code="pt">
+                        <span class="language-flag">🇵🇹</span>
+                        <span>Português</span>
+                    </div>
+                    <div class="language-option" data-lang="Russian" data-code="ru">
+                        <span class="language-flag">🇷🇺</span>
+                        <span>Русский</span>
+                    </div>
+                    <div class="language-option" data-lang="Dutch" data-code="nl">
+                        <span class="language-flag">🇳🇱</span>
+                        <span>Nederlands</span>
+                    </div>
+                    <div class="language-option" data-lang="Polish" data-code="pl">
+                        <span class="language-flag">🇵🇱</span>
+                        <span>Polski</span>
+                    </div>
+                    <div class="language-option" data-lang="Swedish" data-code="sv">
+                        <span class="language-flag">🇸🇪</span>
+                        <span>Svenska</span>
+                    </div>
+                    <div class="language-option" data-lang="Chinese" data-code="zh">
+                        <span class="language-flag">🇨🇳</span>
+                        <span>中文 (简体)</span>
+                    </div>
+                    <div class="language-option" data-lang="Japanese" data-code="ja">
+                        <span class="language-flag">🇯🇵</span>
+                        <span>日本語</span>
+                    </div>
+                    <div class="language-option" data-lang="Korean" data-code="ko">
+                        <span class="language-flag">🇰🇷</span>
+                        <span>한국어</span>
+                    </div>
+                    <div class="language-option" data-lang="Hindi" data-code="hi">
+                        <span class="language-flag">🇮🇳</span>
+                        <span>हिन्दी</span>
+                    </div>
+                    <div class="language-option" data-lang="Arabic" data-code="ar">
+                        <span class="language-flag">🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="language-option" data-lang="Turkish" data-code="tr">
+                        <span class="language-flag">🇹🇷</span>
+                        <span>Türkçe</span>
+                    </div>
+                    <div class="language-option" data-lang="Vietnamese" data-code="vi">
+                        <span class="language-flag">🇻🇳</span>
+                        <span>Tiếng Việt</span>
+                    </div>
+                    <div class="language-option" data-lang="Thai" data-code="th">
+                        <span class="language-flag">🇹🇭</span>
+                        <span>ไทย</span>
+                    </div>
+                    <div class="language-option" data-lang="Greek" data-code="el">
+                        <span class="language-flag">🇬🇷</span>
+                        <span>Ελληνικά</span>
+                    </div>
+                    <div class="language-option" data-lang="Hebrew" data-code="he">
+                        <span class="language-flag">🇮🇱</span>
+                        <span>עברית</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Submenu -->
+            <div class="dropdown-submenu notifications-submenu">
+                <div class="dropdown-item submenu-back back-to-main-btn">
+                    <span style="font-size: 1.2rem;">‹</span>
+                    <span>Back</span>
+                </div>
+                <div class="dropdown-item">
+                    <span>Notifications</span>
+                    <div class="toggle-switch">
+                        <span class="notifications-label">Allow</span>
+                        <label class="switch">
+                            <input type="checkbox" class="notifications-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
+    </nav>
 
-        <!-- ISSUE 13: Add search functionality to filter tasks -->
-        
-        <!-- ISSUE 4: Enhance filter buttons styling -->
-        <div class="filter-section">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="active">Active</button>
-            <button class="filter-btn" data-filter="completed">Completed</button>
+    <!-- Profile Page -->
+    <div class="container">
+        <div class="profile-page">
+            <div class="profile-header">
+                <button class="back-btn back-from-profile-btn">←</button>
+                <h2>My Profile</h2>
+            </div>
+            
+            <form class="profile-form">
+                <div class="form-group">
+                    <label for="userName">Name</label>
+                    <input type="text" id="userName" value="John Doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail">Email Address</label>
+                    <input type="email" id="userEmail" value="john@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userPhone">Mobile Number</label>
+                    <input type="tel" id="userPhone" value="+1 (555) 123-4567">
+                </div>
+                
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
         </div>
 
-        <!-- Task List -->
-        <div class="task-list" id="taskList">
-            <!-- Tasks will be added here dynamically -->
-        </div>
+        <!-- Main Task Manager Content -->
+        <div class="main-content">
+            <div class="task-input-section">
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        id="taskInput" 
+                        placeholder="Add a new task..."
+                        autocomplete="off"
+                    >
+                    <button id="addTaskBtn">Add Task</button>
+                </div>
+            </div>
 
-        <!-- ISSUE 8: Add a footer showing task statistics (total, completed, pending) -->
-        
-        <!-- ISSUE 9: Add dark mode toggle functionality -->
+            <div class="filter-section">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="active">Active</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+
+            <div class="task-list" id="taskList">
+                <!-- Tasks will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal-overlay logout-modal">
+        <div class="modal">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout from TaskFlow?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm confirm-logout-btn">Yes, Logout</button>
+                <button class="modal-btn cancel cancel-logout-btn">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Task Manager Application
-        let tasks = [
-            { id: 1, title: 'Sample Task 1', completed: false, priority: 'high' },
-            { id: 2, title: 'Sample Task 2', completed: true, priority: 'low' }
-        ];
-        let currentFilter = 'all';
-
-        // DOM Elements
-        const taskInput = document.getElementById('taskInput');
-        const addTaskBtn = document.getElementById('addTaskBtn');
-        const taskList = document.getElementById('taskList');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-
-        // Initialize
-        renderTasks();
-
-        // Event Listeners
-        addTaskBtn.addEventListener('click', addTask);
-        taskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTask();
-        });
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
-                renderTasks();
-            });
-        });
-
-        // Functions
-        function addTask() {
-            const taskTitle = taskInput.value.trim();
-            if (taskTitle === '') return;
-
-            const newTask = {
-                id: Date.now(),
-                title: taskTitle,
-                completed: false,
-                priority: 'medium'
-            };
-
-            tasks.push(newTask);
-            taskInput.value = '';
-            renderTasks();
-        }
-
-        function deleteTask(id) {
-            tasks = tasks.filter(task => task.id !== id);
-            renderTasks();
-        }
-
-        function toggleTask(id) {
-            tasks = tasks.map(task => 
-                task.id === id ? { ...task, completed: !task.completed } : task
-            );
-            renderTasks();
-        }
-
-        // ISSUE 7: Add edit functionality for tasks
-        function editTask(id) {
-            // To be implemented by contributors
-        }
-
-        function getFilteredTasks() {
-            if (currentFilter === 'active') {
-                return tasks.filter(task => !task.completed);
-            } else if (currentFilter === 'completed') {
-                return tasks.filter(task => task.completed);
-            }
-            return tasks;
-        }
-
-        // ISSUE 14: Implement animations for task addition/deletion
-        function renderTasks() {
-            const filteredTasks = getFilteredTasks();
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('TaskFlow loaded successfully!');
             
-            if (filteredTasks.length === 0) {
-                taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
-                return;
+            // Task Manager Application
+            let tasks = [
+                { id: 1, title: 'Sample Task 1', completed: false, priority: 'medium' },
+                { id: 2, title: 'Sample Task 2', completed: true, priority: 'low' }
+            ];
+            let currentFilter = 'all';
+            let currentLanguage = 'English';
+
+            // DOM Elements
+            const profileBtn = document.querySelector('.profile-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const profilePage = document.querySelector('.profile-page');
+            const mainContent = document.querySelector('.main-content');
+            const logoutModal = document.querySelector('.logout-modal');
+            const profileForm = document.querySelector('.profile-form');
+            
+            // Dropdown menu items
+            const profileMenuItem = document.querySelector('.profile-menu-btn');
+            const settingsMenuItem = document.querySelector('.settings-menu-btn');
+            const notificationsMenuItem = document.querySelector('.notifications-menu-btn');
+            const logoutMenuItem = document.querySelector('.logout-menu-btn');
+            
+            // Submenus
+            const settingsSubmenu = document.querySelector('.settings-submenu');
+            const notificationsSubmenu = document.querySelector('.notifications-submenu');
+            
+            // Back buttons
+            const backToMainBtns = document.querySelectorAll('.back-to-main-btn');
+            const backFromProfileBtn = document.querySelector('.back-from-profile-btn');
+            
+            // Modal buttons
+            const confirmLogoutBtn = document.querySelector('.confirm-logout-btn');
+            const cancelLogoutBtn = document.querySelector('.cancel-logout-btn');
+            
+            // Toggle elements
+            const themeToggle = document.querySelector('.theme-toggle');
+            const themeLabel = document.querySelector('.theme-label');
+            const notificationsToggle = document.querySelector('.notifications-toggle');
+            const notificationsLabel = document.querySelector('.notifications-label');
+            
+            // Language elements
+            const languageDisplay = document.querySelector('.language-display');
+            const languageLabel = document.querySelector('.language-label');
+            const languageOptions = document.querySelector('.language-options');
+            
+            // Task-related elements
+            const taskInput = document.getElementById('taskInput');
+            const addTaskBtn = document.getElementById('addTaskBtn');
+            const taskList = document.getElementById('taskList');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            // Initialize
+            renderTasks();
+            loadUserPreferences();
+
+            // Event Listeners
+            // 1. Profile dropdown toggle
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Profile button clicked');
+                dropdownMenu.classList.toggle('show');
+                settingsSubmenu.classList.remove('show');
+                notificationsSubmenu.classList.remove('show');
+                languageOptions.classList.remove('show');
+            });
+
+            // 2. Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.user-profile-container')) {
+                    dropdownMenu.classList.remove('show');
+                    settingsSubmenu.classList.remove('show');
+                    notificationsSubmenu.classList.remove('show');
+                    languageOptions.classList.remove('show');
+                }
+            });
+
+            // 3. Profile menu item
+            profileMenuItem.addEventListener('click', function() {
+                console.log('My Profile clicked');
+                dropdownMenu.classList.remove('show');
+                mainContent.style.display = 'none';
+                profilePage.style.display = 'block';
+            });
+
+            // 4. Settings menu item
+            settingsMenuItem.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Settings clicked');
+                dropdownMenu.classList.remove('show');
+                settingsSubmenu.classList.add('show');
+            });
+
+            // 5. Notifications menu item
+            notificationsMenuItem.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Notifications clicked');
+                dropdownMenu.classList.remove('show');
+                notificationsSubmenu.classList.add('show');
+            });
+
+            // 6. Logout menu item
+            logoutMenuItem.addEventListener('click', function() {
+                console.log('Logout clicked');
+                dropdownMenu.classList.remove('show');
+                logoutModal.classList.add('show');
+            });
+
+            // 7. Back buttons from submenus
+            backToMainBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    settingsSubmenu.classList.remove('show');
+                    notificationsSubmenu.classList.remove('show');
+                    languageOptions.classList.remove('show');
+                    dropdownMenu.classList.add('show');
+                });
+            });
+
+            // 8. Back from profile page
+            backFromProfileBtn.addEventListener('click', function() {
+                profilePage.style.display = 'none';
+                mainContent.style.display = 'block';
+            });
+
+            // 9. Logout modal buttons
+            confirmLogoutBtn.addEventListener('click', function() {
+                logoutModal.classList.remove('show');
+                alert('Logged out successfully!');
+            });
+
+            cancelLogoutBtn.addEventListener('click', function() {
+                logoutModal.classList.remove('show');
+            });
+
+            // 10. Theme toggle
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.classList.add('dark-mode');
+                    themeLabel.textContent = 'Dark';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    themeLabel.textContent = 'Light';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // 11. Notifications toggle
+            notificationsToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    notificationsLabel.textContent = 'Allow';
+                    localStorage.setItem('notifications', 'true');
+                } else {
+                    notificationsLabel.textContent = "Don't Allow";
+                    localStorage.setItem('notifications', 'false');
+                }
+            });
+
+            // 12. Language selector
+            languageDisplay.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Language selector clicked');
+                languageOptions.classList.toggle('show');
+            });
+
+            // 13. Language options selection
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const lang = this.getAttribute('data-lang');
+                    
+                    // Update active state
+                    document.querySelectorAll('.language-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Update language label
+                    languageLabel.textContent = lang;
+                    
+                    // Save to localStorage
+                    localStorage.setItem('language', lang);
+                    
+                    // Close language options
+                    languageOptions.classList.remove('show');
+                    
+                    // Show notification
+                    showNotification(`Language changed to ${lang}`);
+                    
+                    // Update current language
+                    currentLanguage = lang;
+                });
+            });
+
+            // 14. Profile form
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const userName = document.getElementById('userName').value;
+                const userEmail = document.getElementById('userEmail').value;
+                const userPhone = document.getElementById('userPhone').value;
+                
+                // Update profile icon
+                const profileIcon = document.querySelector('.profile-icon');
+                profileIcon.textContent = userName.charAt(0).toUpperCase();
+                
+                // Save to localStorage
+                localStorage.setItem('userName', userName);
+                localStorage.setItem('userEmail', userEmail);
+                localStorage.setItem('userPhone', userPhone);
+                
+                showNotification('Profile updated successfully!');
+                profilePage.style.display = 'none';
+                mainContent.style.display = 'block';
+            });
+
+            // 15. Task-related event listeners
+            addTaskBtn.addEventListener('click', addTask);
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addTask();
+            });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderTasks();
+                });
+            });
+
+            // Load saved preferences
+            function loadUserPreferences() {
+                // Load theme
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.checked = true;
+                    themeLabel.textContent = 'Dark';
+                }
+
+                // Load notifications preference
+                const savedNotifications = localStorage.getItem('notifications');
+                if (savedNotifications === 'false') {
+                    notificationsToggle.checked = false;
+                    notificationsLabel.textContent = "Don't Allow";
+                }
+
+                // Load language
+                const savedLanguage = localStorage.getItem('language');
+                if (savedLanguage) {
+                    currentLanguage = savedLanguage;
+                    languageLabel.textContent = currentLanguage;
+                    
+                    // Update active language option
+                    document.querySelectorAll('.language-option').forEach(option => {
+                        option.classList.remove('active');
+                        if (option.getAttribute('data-lang') === currentLanguage) {
+                            option.classList.add('active');
+                        }
+                    });
+                }
+
+                // Load user data
+                const savedName = localStorage.getItem('userName');
+                const savedEmail = localStorage.getItem('userEmail');
+                const savedPhone = localStorage.getItem('userPhone');
+                
+                if (savedName) {
+                    document.getElementById('userName').value = savedName;
+                    document.querySelector('.profile-icon').textContent = savedName.charAt(0).toUpperCase();
+                }
+                if (savedEmail) document.getElementById('userEmail').value = savedEmail;
+                if (savedPhone) document.getElementById('userPhone').value = savedPhone;
             }
 
-            taskList.innerHTML = filteredTasks.map(task => `
-                <div class="task-item">
-                    <div class="task-content">
-                        <input 
-                            type="checkbox" 
-                            class="task-checkbox" 
-                            ${task.completed ? 'checked' : ''}
-                            onchange="toggleTask(${task.id})"
-                        >
-                        <span class="task-title ${task.completed ? 'completed' : ''}">
-                            ${task.title}
-                        </span>
-                        <!-- ISSUE 6: Add priority badges (High/Medium/Low) with colors -->
-                    </div>
-                    <div class="task-actions">
-                        <!-- ISSUE 7: Add edit button and functionality -->
-                        <button class="delete-btn" onclick="deleteTask(${task.id})">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+            // Notification function
+            function showNotification(message) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background-color: #3b82f6;
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    z-index: 3000;
+                    animation: slideInRight 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    max-width: 300px;
+                `;
+                
+                // Add icon
+                const icon = document.createElement('span');
+                icon.textContent = 'ℹ️';
+                notification.appendChild(icon);
+                
+                // Add message
+                const messageSpan = document.createElement('span');
+                messageSpan.textContent = message;
+                notification.appendChild(messageSpan);
+                
+                // Add animation
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOutRight {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(notification);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.style.animation = 'slideOutRight 0.3s ease';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
 
-        // ISSUE 10: Implement drag and drop to reorder tasks
-        
-        // ISSUE 11: Add due date picker for each task
-        
-        // ISSUE 12: Create a settings page with user preferences
-        
-        // ISSUE 13: Add search functionality to filter tasks
-        
-        // ISSUE 15: Make the app responsive for mobile devices
+            // Task Functions
+            function addTask() {
+                const taskTitle = taskInput.value.trim();
+                if (taskTitle === '') return;
+
+                const newTask = {
+                    id: Date.now(),
+                    title: taskTitle,
+                    completed: false,
+                    priority: 'medium'
+                };
+
+                tasks.push(newTask);
+                taskInput.value = '';
+                renderTasks();
+                showNotification('Task added successfully!');
+            }
+
+            function deleteTask(id) {
+                tasks = tasks.filter(task => task.id !== id);
+                renderTasks();
+                showNotification('Task deleted!');
+            }
+
+            function toggleTask(id) {
+                tasks = tasks.map(task => 
+                    task.id === id ? { ...task, completed: !task.completed } : task
+                );
+                renderTasks();
+            }
+
+            function getFilteredTasks() {
+                if (currentFilter === 'active') {
+                    return tasks.filter(task => !task.completed);
+                } else if (currentFilter === 'completed') {
+                    return tasks.filter(task => task.completed);
+                }
+                return tasks;
+            }
+
+            function renderTasks() {
+                const filteredTasks = getFilteredTasks();
+                
+                if (filteredTasks.length === 0) {
+                    taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
+                    return;
+                }
+
+                taskList.innerHTML = filteredTasks.map(task => `
+                    <div class="task-item">
+                        <div class="task-content">
+                            <input 
+                                type="checkbox" 
+                                class="task-checkbox" 
+                                ${task.completed ? 'checked' : ''}
+                                onchange="toggleTask(${task.id})"
+                            >
+                            <span class="task-title ${task.completed ? 'completed' : ''}">
+                                ${task.title}
+                            </span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="delete-btn" onclick="deleteTask(${task.id})">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Make functions globally available for inline onclick handlers
+            window.deleteTask = deleteTask;
+            window.toggleTask = toggleTask;
+        });
     </script>
 </body>
 </html>
