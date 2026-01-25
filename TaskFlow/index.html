@@ -15,6 +15,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f3f4f6;
             min-height: 100vh;
+           
+            padding-bottom: 60px;
         }
 
        /* ISSUE 1: Improved Navbar Design for taskflow final */
@@ -188,7 +190,18 @@
 
         /* ISSUE 8: Add a footer showing task statistics */
         .stats-footer {
-            display: none; /* Will be implemented by contributors */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.95rem;
+            color: #374151;  /* Will be implemented by contributors */
         }
 
         /* ISSUE 9: Add dark mode toggle functionality */
@@ -220,6 +233,39 @@
         gap: 1rem;
     }
 }
+        /* ================= DARK MODE ================= */
+        body.dark {
+            background-color: #111827;
+            color: #e5e7eb;
+        }
+
+        body.dark .navbar,
+        body.dark .task-input-section,
+        body.dark .task-item {
+            background-color: #1f2933;
+        }
+
+        body.dark .navbar h1,
+        body.dark .task-title {
+            color: #e5e7eb;
+        }
+
+        body.dark #taskInput {
+            background-color: #111827;
+            color: #e5e7eb;
+            border-color: #374151;
+        }
+
+        body.dark .filter-btn {
+            background-color: #374151;
+            color: #e5e7eb;
+        }
+
+        body.dark .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        /* ============================================= */
 
 
     </style>
@@ -235,6 +281,17 @@
     </div>
 </nav>
 
+    <!-- ISSUE 1: Improve navbar design - current navbar is too basic -->
+    <nav class="navbar">
+        <h1>TaskFlow</h1>
+        <button id="darkToggle" style="
+            background:none;
+            border:none;
+            font-size:1.3rem;
+            cursor:pointer;
+        ">🌙</button>
+        <!-- ISSUE 2: Add user profile section in header -->
+    </nav>
 
     <div class="container">
         <!-- ISSUE 3: Make the input field and button more visually appealing -->
@@ -246,6 +303,7 @@
                     placeholder="Add a new task..."
                     autocomplete="off"
                 >
+                  <input type="date" id="dueDate">
                 <button id="addTaskBtn">Add Task</button>
             </div>
         </div>
@@ -253,7 +311,7 @@
         <!-- ISSUE 13: Add search functionality to filter tasks -->
         
         <!-- ISSUE 4: Enhance filter buttons styling -->
-        <div class="filter-section">
+        <div class="filter-section">    
             <button class="filter-btn active" data-filter="all">All</button>
             <button class="filter-btn" data-filter="active">Active</button>
             <button class="filter-btn" data-filter="completed">Completed</button>
@@ -265,7 +323,11 @@
         </div>
 
         <!-- ISSUE 8: Add a footer showing task statistics (total, completed, pending) -->
-        
+          <footer class="stats-footer">
+        <span id="totalTasks">Total: 0</span>
+        <span id="completedTasks">Completed: 0</span>
+        <span id="pendingTasks">Pending: 0</span>
+    </footer>
         <!-- ISSUE 9: Add dark mode toggle functionality -->
     </div>
 
@@ -276,13 +338,34 @@
             { id: 2, title: 'Sample Task 2', completed: true, priority: 'low' }
         ];
         let currentFilter = 'all';
+        let draggedTaskId = null;
 
         // DOM Elements
         const taskInput = document.getElementById('taskInput');
         const addTaskBtn = document.getElementById('addTaskBtn');
         const taskList = document.getElementById('taskList');
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const darkToggle = document.getElementById('darkToggle');
+        const dueDateInput = document.getElementById('dueDate');
 
+
+        // Load saved preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark');
+            darkToggle.textContent = '☀️';
+        }
+
+        // Toggle dark mode
+        darkToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const enabled = document.body.classList.contains('dark');
+            darkToggle.textContent = enabled ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', enabled ? 'enabled' : 'disabled');
+        });
+
+         const totalTasksEl = document.getElementById('totalTasks');
+        const completedTasksEl = document.getElementById('completedTasks');
+        const pendingTasksEl = document.getElementById('pendingTasks');
         // Initialize
         renderTasks();
 
@@ -310,11 +393,14 @@
                 id: Date.now(),
                 title: taskTitle,
                 completed: false,
-                priority: 'medium'
+                priority: 'medium',
+                dueDate: dueDateInput.value || null 
             };
 
             tasks.push(newTask);
             taskInput.value = '';
+            dueDateInput.value = '';
+
             renderTasks();
         }
 
@@ -328,7 +414,26 @@
                 task.id === id ? { ...task, completed: !task.completed } : task
             );
             renderTasks();
+            
         }
+
+        // ISSUE 10: Implement drag and drop to reorder tasks
+        function dragStart(id) {
+            draggedTaskId = id;
+        }
+
+        function dropTask(targetId) {
+            if (draggedTaskId === targetId) return;
+
+            const from = tasks.findIndex(t => t.id === draggedTaskId);
+            const to = tasks.findIndex(t => t.id === targetId);
+
+            const item = tasks.splice(from, 1)[0];
+            tasks.splice(to, 0, item);
+
+            renderTasks();
+        }
+
 
         // ISSUE 7: Add edit functionality for tasks
         function editTask(id) {
@@ -344,17 +449,26 @@
             return tasks;
         }
 
+        function updateFooterStats() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const pending = total - completed;
+
+            totalTasksEl.textContent = `Total: ${total}`;
+            completedTasksEl.textContent = `Completed: ${completed}`;
+            pendingTasksEl.textContent = `Pending: ${pending}`;
+        }
+
         // ISSUE 14: Implement animations for task addition/deletion
         function renderTasks() {
             const filteredTasks = getFilteredTasks();
-            
             if (filteredTasks.length === 0) {
                 taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
                 return;
             }
-
+            else{
             taskList.innerHTML = filteredTasks.map(task => `
-                <div class="task-item">
+                <div class="task-item" draggable="true" ondragstart="dragStart(${task.id})" ondragover="event.preventDefault()" ondrop="dropTask(${task.id})">
                     <div class="task-content">
                         <input 
                             type="checkbox" 
@@ -365,6 +479,8 @@
                         <span class="task-title ${task.completed ? 'completed' : ''}">
                             ${task.title}
                         </span>
+                         ${task.dueDate ? `<div style="font-size:12px;color:#6b7280;">📅 Due: ${task.dueDate}</div>` : ''}
+
                         <!-- ISSUE 6: Add priority badges (High/Medium/Low) with colors -->
                     </div>
                     <div class="task-actions">
@@ -376,6 +492,7 @@
                 </div>
             `).join('');
         }
+        updateFooterStats();  }
 
         
 

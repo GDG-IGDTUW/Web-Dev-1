@@ -10,8 +10,22 @@ const App = {
         this.handleRoute(); // Handle initial load
     },
 
+    async cleanupStudy() {
+        try {
+            const { cleanup } = await import('./views/study.js');
+            cleanup();
+        } catch (e) {
+            // Module not loaded yet, ignore
+        }
+    },
+
     handleRoute() {
         const hash = window.location.hash;
+        
+        // Cleanup study session when leaving the study view
+        if (!hash?.startsWith('#/study/')) {
+            this.cleanupStudy();
+        }
         
         if (!hash || hash === '#/' || hash === '#/welcome') {
             // Check if user has data, if so, redirect to dashboard unless they explicitly asked for welcome
@@ -55,7 +69,9 @@ const App = {
     },
 
     async renderStudy(id) {
-        const { render } = await import('./views/study.js');
+        // Cleanup any previous study session listeners
+        const { render, cleanup } = await import('./views/study.js');
+        cleanup();
         this.container.innerHTML = '';
         this.container.appendChild(render(id));
     }
