@@ -168,8 +168,31 @@
 
         /* ISSUE 6: Add priority badges (High/Medium/Low) with colors */
         .task-priority {
-            display: none; /* Will be implemented by contributors */
-        }
+            display: inline-block;  /* Make it visible */
+            padding: 0.2rem 0.5rem;        /* Small padding for badge */
+            margin-left: 0.5rem;           /* Space from task title */
+            border-radius: 12px;           /* Rounded corners */
+            font-size: 0.75rem;            /* Small text */
+            font-weight: 600;              /* Bold-ish */
+            color: #fff;                  /* White text for contrast */
+}
+
+.task-priority.high {
+    background-color: #e74c3c;     /* Red for High */
+}
+
+.task-priority.medium {
+    background-color: #f39c12;     /* Orange for Medium */
+}
+
+.task-priority.low {
+    background-color: #27ae60;     /* Green for Low */
+}
+.task-priority.selected {
+    border: 2px solid #000;   /* visual highlight */
+    transform: scale(1.1);    /* slightly bigger */
+}
+/* Will be implemented by contributors */
 
         .task-actions {
             display: flex;
@@ -492,8 +515,14 @@
                          ${task.dueDate ? `<div style="font-size:12px;color:#6b7280;">📅 Due: ${task.dueDate}</div>` : ''}
 
                         <!-- ISSUE 6: Add priority badges (High/Medium/Low) with colors -->
-                    </div>
-                    <div class="task-actions">
+                        <div class="task-priority-container">
+                   <button class="task-priority high">High</button>
+                    <button class="task-priority medium">Medium</button>
+                    <button class="task-priority low">Low</button>
+</div>
+<div class="task-actions">
+</div>
+
                         <!-- ISSUE 7: Add edit button and functionality -->
                         <button class="delete-btn" onclick="deleteTask(${task.id})">
                             🗑️
@@ -515,6 +544,6 @@
         // ISSUE 13: Add search functionality to filter tasks
         
         // ISSUE 15: Make the app responsive for mobile devices
-    </script>
+</script>    
 </body>
 </html>
