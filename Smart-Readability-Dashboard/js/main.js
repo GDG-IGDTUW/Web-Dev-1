@@ -3,6 +3,7 @@
 
 // Plugin system - manually add plugins to this array
 const plugins = [
+
     wordCountPlugin,
     readingTimePlugin,
     longSentencePlugin,
@@ -13,6 +14,7 @@ const plugins = [
     countLettersPlugin,
     exclamationCountPlugin,
     findLongestWord
+
 
 ];
 
