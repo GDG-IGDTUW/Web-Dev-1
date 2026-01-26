@@ -226,17 +226,26 @@ function getBasicStats(text) {
     // Readability level (simple rule-based approach)
     let level = 'Easy';
     let description = 'Your text is easy to read!';
+    let recommendation = ' ';
     
     const avgWordsPerSentence = wordCount / sentenceCount || 0;
     const hardWordRatio = hardWordCount / wordCount || 0;
     
-    if (avgWordsPerSentence > 20 || hardWordRatio > 0.3 || longSentenceCount > sentenceCount * 0.5) {
-        level = 'Hard';
-        description = 'Your text might be challenging to read. Consider shorter sentences and simpler words.';
-    } else if (avgWordsPerSentence > 15 || hardWordRatio > 0.15 || longSentenceCount > sentenceCount * 0.25) {
-        level = 'Medium';
-        description = 'Your text has moderate readability. Some improvements could help.';
-    }
+   if (avgWordsPerSentence > 20 || hardWordRatio > 0.3) {
+    level = 'Hard';
+    description = 'Your text might be challenging to read.';
+    recommendation = 'Break long sentences and replace complex words with simpler ones.';
+} 
+else if (avgWordsPerSentence > 15 || hardWordRatio > 0.15) {
+    level = 'Medium';
+    description = 'Your text has moderate readability.';
+    recommendation = 'Try shortening sentences and reducing difficult words.';
+} 
+else {
+    level = 'Easy';
+    description = 'Your text is easy to read!';
+    recommendation = 'Great job! Your writing is clear and easy to understand.';
+}
     
     return {
         wordCount,
@@ -404,6 +413,7 @@ function resetStats() {
     document.getElementById('hardWords').textContent = '0';
     document.getElementById('nounCount').textContent = '0';
     document.getElementById('verbCount').textContent = '0';
+    document.getElementById('readabilityRecommendation').textContent = '';
     
     // Reset readability level
     const readabilityBadge = document.getElementById('readabilityBadge');
@@ -412,6 +422,8 @@ function resetStats() {
     readabilityBadge.textContent = 'Easy';
     readabilityBadge.className = 'level-badge level-easy';
     readabilityDescription.textContent = 'Enter some text to analyze!';
+    document.getElementById('readabilityRecommendation').textContent = recommendation;
+
     
     // Clear plugin output
     document.getElementById('pluginOutput').innerHTML = '';
