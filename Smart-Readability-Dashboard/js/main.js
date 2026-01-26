@@ -10,7 +10,9 @@ const plugins = [
     averageWordLengthPlugin,
     emotionDetectionPlugin,
     paragraphCountPlugin,
-    countLettersPlugin
+    countLettersPlugin,
+    exclamationCountPlugin,
+    findLongestWord
 
 ];
 
