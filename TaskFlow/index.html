@@ -1093,6 +1093,11 @@
             renderTasks();
             loadUserPreferences();
 
+            // Expose task functions to global for inline handlers
+            window.deleteTask = deleteTask;
+            window.toggleTask = toggleTask;
+            window.editTask = editTask;
+
             // 1. Profile dropdown toggle
             profileBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -1341,6 +1346,45 @@
                     }, 300);
                 }, 3000);
             }
+            function getFilteredTasks() {
+                if (currentFilter === 'active') {
+                    return tasks.filter(task => !task.completed);
+                } else if (currentFilter === 'completed') {
+                    return tasks.filter(task => task.completed);
+                }
+                return tasks;
+            }
+
+            function renderTasks() {
+                const filteredTasks = getFilteredTasks();
+                
+                if (filteredTasks.length === 0) {
+                    taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
+                    return;
+                }
+
+                taskList.innerHTML = filteredTasks.map(task => `
+                    <div class="task-item">
+                        <div class="task-content">
+                            <input 
+                                type="checkbox" 
+                                class="task-checkbox" 
+                                ${task.completed ? 'checked' : ''}
+                                onchange="toggleTask(${task.id})"
+                            >
+                            <span class="task-title ${task.completed ? 'completed' : ''}">
+                                ${task.title}
+                            </span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="edit-btn" onclick="editTask(${task.id})">✏️</button>
+                            <button class="delete-btn" onclick="deleteTask(${task.id})">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+
 
             // Task Functions
             function addTask() {
@@ -1372,48 +1416,21 @@
                 );
                 renderTasks();
             }
-            else{
-            taskList.innerHTML = filteredTasks.map(task => `
-                <div class="task-item" draggable="true" ondragstart="dragStart(${task.id})" ondragover="event.preventDefault()" ondrop="dropTask(${task.id})">
-                    <div class="task-content">
-                        <input 
-                            type="checkbox" 
-                            class="task-checkbox" 
-                            ${task.completed ? 'checked' : ''}
-                            onchange="toggleTask(${task.id})"
-                        >
-                        <span class="task-title ${task.completed ? 'completed' : ''}">
-                            ${task.title}
-                        </span>
-                         ${task.dueDate ? `<div style="font-size:12px;color:#6b7280;">📅 Due: ${task.dueDate}</div>` : ''}
 
-                        <!-- ISSUE 6: Add priority badges (High/Medium/Low) with colors -->
-                        <div class="task-priority-container">
-                   <button class="task-priority high">High</button>
-                    <button class="task-priority medium">Medium</button>
-                    <button class="task-priority low">Low</button>
-</div>
-<div class="task-actions">
-</div>
+            function editTask(id) {
+                const task = tasks.find(t => t.id === id);
+                if (!task) return;
 
-                        <!-- ISSUE 7: Add edit button and functionality -->
-                        <button class="delete-btn" onclick="deleteTask(${task.id})">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        updateFooterStats();  }
+                const newTitle = prompt("Edit task:", task.title);
 
-            function getFilteredTasks() {
-                if (currentFilter === 'active') {
-                    return tasks.filter(task => !task.completed);
-                } else if (currentFilter === 'completed') {
-                    return tasks.filter(task => task.completed);
+                if (newTitle !== null && newTitle.trim() !== "") {
+                    task.title = newTitle.trim();
+                    renderTasks();
+                    showNotification("Task updated successfully!");
                 }
-                return tasks;
             }
+            
+            
 
         // ISSUE 10: Implement drag and drop to reorder tasks
         
@@ -1423,41 +1440,10 @@
         
         // ISSUE 13: Add search functionality to filter tasks
         
-        // ISSUE 15: Make the app responsive for mobile devices
-</script>    
-            function renderTasks() {
-                const filteredTasks = getFilteredTasks();
-                
-                if (filteredTasks.length === 0) {
-                    taskList.innerHTML = '<div class="empty-state">No tasks to display</div>';
-                    return;
-                }
-
-                taskList.innerHTML = filteredTasks.map(task => `
-                    <div class="task-item">
-                        <div class="task-content">
-                            <input 
-                                type="checkbox" 
-                                class="task-checkbox" 
-                                ${task.completed ? 'checked' : ''}
-                                onchange="toggleTask(${task.id})"
-                            >
-                            <span class="task-title ${task.completed ? 'completed' : ''}">
-                                ${task.title}
-                            </span>
-                        </div>
-                        <div class="task-actions">
-                            <button class="delete-btn" onclick="deleteTask(${task.id})">
-                                🗑️
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            window.deleteTask = deleteTask;
-            window.toggleTask = toggleTask;
+        // ISSUE 15: Make the app responsive for mobile devices 
+            
         });
     </script>
+
 </body>
 </html>
