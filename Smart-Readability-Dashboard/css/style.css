@@ -787,3 +787,8 @@ body.dark-mode {
         padding: 0.75rem;
     }
 }
+.recommendation-text {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
