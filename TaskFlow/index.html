@@ -206,6 +206,19 @@
                 </div>
             </div>
 
+            <!-- Search function-->
+            <div class="input-wrapper search-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search tasks..."
+                    autocomplete="off"
+                >
+                <button id="searchBtn" aria-label="Search">
+                    🔍
+                </button>
+            </div>
+
             <div class="filter-section">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="active">Active</button>
@@ -241,6 +254,7 @@
             ];
             let currentFilter = 'all';
             let currentLanguage = 'English';
+            let searchQuery = '';
 
             // DOM Elements
             const profileBtn = document.querySelector('.profile-btn');
@@ -284,6 +298,8 @@
             const addTaskBtn = document.getElementById('addTaskBtn');
             const taskList = document.getElementById('taskList');
             const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
 
             // Initialize
             renderTasks();
@@ -441,6 +457,28 @@
                 if (e.key === 'Enter') addTask();
             });
 
+            // Search input live filtering
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                renderTasks();
+            });
+
+            // Search button click
+            searchBtn.addEventListener('click', () => {
+                if (!searchQuery) {
+                    alert('Please enter a task to search');
+                    return;
+                }
+
+                const found = tasks.some(task =>
+                    task.title.toLowerCase().includes(searchQuery)
+                );
+
+                if (!found) {
+                    alert('No such task exists');
+                }
+            });
+
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
@@ -542,14 +580,6 @@
                     }, 300);
                 }, 3000);
             }
-            function getFilteredTasks() {
-                if (currentFilter === 'active') {
-                    return tasks.filter(task => !task.completed);
-                } else if (currentFilter === 'completed') {
-                    return tasks.filter(task => task.completed);
-                }
-                return tasks;
-            }
 
             function renderTasks() {
                 const filteredTasks = getFilteredTasks();
@@ -569,7 +599,7 @@
                                 onchange="toggleTask(${task.id})"
                             >
                             <span class="task-title ${task.completed ? 'completed' : ''}">
-                                ${task.title}
+                                ${highlightMatch(task.title)}
                             </span>
                         </div>
                         <div class="task-actions">
@@ -580,6 +610,16 @@
                 `).join('');
             }
 
+<<<<<<< HEAD
+=======
+            // highlight search matches in task titles
+            function highlightMatch(text) {
+                if (!searchQuery) return text;
+
+                const regex = new RegExp(`(${searchQuery})`, 'gi');
+                return text.replace(regex, `<span class="search-highlight">$1</span>`);
+            }
+>>>>>>> main
 
 
             // Task Functions
@@ -634,6 +674,24 @@
                 }
             }
 
+            function getFilteredTasks() {
+            let filtered = [...tasks];
+
+            if (currentFilter === 'active') {
+                filtered = filtered.filter(task => !task.completed);
+            } else if (currentFilter === 'completed') {
+                filtered = filtered.filter(task => task.completed);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(task =>
+                    task.title.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            return filtered;
+            }
+
             function editTask(id) {
                 const task = tasks.find(t => t.id === id);
                 if (!task) return;
@@ -677,6 +735,17 @@
 
             // ISSUE 15: Make the app responsive for mobile devices 
 
+<<<<<<< HEAD
+=======
+        // ISSUE 10: Implement drag and drop to reorder tasks
+        
+        // ISSUE 11: Add due date picker for each task
+        
+        // ISSUE 12: Create a settings page with user preferences
+        
+        // ISSUE 15: Make the app responsive for mobile devices 
+            
+>>>>>>> main
         });
         function launchConfetti(x, y) {
             const colors = ["#22c55e", "#3b82f6", "#facc15", "#ec4899", "#a855f7"];
