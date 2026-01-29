@@ -809,6 +809,77 @@
                 gap: 0.5rem;
             }
         }
+        /* search bar styling */
+        /* ===== Search Feature Styles ===== */
+
+        .search-wrapper {
+            margin-top: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode #searchInput {
+            background-color: #4b5563;
+            border-color: #6b7280;
+            color: #f9fafb;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.2);
+        }
+
+        #searchBtn {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            border: none;
+            padding: 0.875rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(250, 204, 21, 0.25);
+        }
+
+        #searchBtn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px rgba(250, 204, 21, 0.35);
+        }
+
+        #searchBtn:active {
+            transform: translateY(0);
+        }
+
+        /* Highlight Effect */
+        .search-highlight {
+            background: #f3620e;
+            padding: 0 3px;
+            border-radius: 4px;
+            font-weight: 600;
+            animation: highlightPulse 0.4s ease;
+        }
+
+        @keyframes highlightPulse {
+            0% { background-color: #f2d919; }
+            100% { background-color: #f0ce20; }
+        }
+
+        /* No Search Results */
+        .no-search-results {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            font-size: 1.05rem;
+            color: #9ca3af;
+        }
+
     </style>
 </head>
 <body>
@@ -1010,6 +1081,19 @@
                 </div>
             </div>
 
+            <!-- Search function-->
+            <div class="input-wrapper search-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search tasks..."
+                    autocomplete="off"
+                >
+                <button id="searchBtn" aria-label="Search">
+                    🔍
+                </button>
+            </div>
+
             <div class="filter-section">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="active">Active</button>
@@ -1045,6 +1129,7 @@
             ];
             let currentFilter = 'all';
             let currentLanguage = 'English';
+            let searchQuery = '';
 
             // DOM Elements
             const profileBtn = document.querySelector('.profile-btn');
@@ -1088,6 +1173,8 @@
             const addTaskBtn = document.getElementById('addTaskBtn');
             const taskList = document.getElementById('taskList');
             const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
 
             // Initialize
             renderTasks();
@@ -1245,6 +1332,28 @@
                 if (e.key === 'Enter') addTask();
             });
 
+            // Search input live filtering
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                renderTasks();
+            });
+
+            // Search button click
+            searchBtn.addEventListener('click', () => {
+                if (!searchQuery) {
+                    alert('Please enter a task to search');
+                    return;
+                }
+
+                const found = tasks.some(task =>
+                    task.title.toLowerCase().includes(searchQuery)
+                );
+
+                if (!found) {
+                    alert('No such task exists');
+                }
+            });
+
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
@@ -1346,14 +1455,6 @@
                     }, 300);
                 }, 3000);
             }
-            function getFilteredTasks() {
-                if (currentFilter === 'active') {
-                    return tasks.filter(task => !task.completed);
-                } else if (currentFilter === 'completed') {
-                    return tasks.filter(task => task.completed);
-                }
-                return tasks;
-            }
 
             function renderTasks() {
                 const filteredTasks = getFilteredTasks();
@@ -1373,7 +1474,7 @@
                                 onchange="toggleTask(${task.id})"
                             >
                             <span class="task-title ${task.completed ? 'completed' : ''}">
-                                ${task.title}
+                                ${highlightMatch(task.title)}
                             </span>
                         </div>
                         <div class="task-actions">
@@ -1383,7 +1484,14 @@
                     </div>
                 `).join('');
             }
-            
+
+            // highlight search matches in task titles
+            function highlightMatch(text) {
+                if (!searchQuery) return text;
+
+                const regex = new RegExp(`(${searchQuery})`, 'gi');
+                return text.replace(regex, `<span class="search-highlight">$1</span>`);
+            }
 
 
             // Task Functions
@@ -1417,6 +1525,24 @@
                 renderTasks();
             }
 
+            function getFilteredTasks() {
+            let filtered = [...tasks];
+
+            if (currentFilter === 'active') {
+                filtered = filtered.filter(task => !task.completed);
+            } else if (currentFilter === 'completed') {
+                filtered = filtered.filter(task => task.completed);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(task =>
+                    task.title.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            return filtered;
+            }
+
             function editTask(id) {
                 const task = tasks.find(t => t.id === id);
                 if (!task) return;
@@ -1437,8 +1563,6 @@
         // ISSUE 11: Add due date picker for each task
         
         // ISSUE 12: Create a settings page with user preferences
-        
-        // ISSUE 13: Add search functionality to filter tasks
         
         // ISSUE 15: Make the app responsive for mobile devices 
             
