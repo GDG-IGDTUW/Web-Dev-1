@@ -16,6 +16,7 @@ export function render(deckId) {
     const cleanDeckId = deckId.split('?')[0];
     const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
     const shuffleEnabled = urlParams.get('shuffle') === 'true';
+    const isCramMode = urlParams.get('mode') === 'cram';
 
     const deck = StorageManager.getDeck(cleanDeckId);
 
@@ -40,9 +41,13 @@ export function render(deckId) {
     // Header
     const header = createElement('header', 'view-header');
     header.innerHTML = `
-        <h1>Studying: ${deck.title}</h1>
-        <a href="#/dashboard" class="btn btn-outline">Exit</a>
-    `;
+    <h1>
+        Studying: ${deck.title}
+        ${isCramMode ? '<span class="mode-badge">CRAM</span>' : ''}
+    </h1>
+    <a href="#/dashboard" class="btn btn-outline">Exit</a>
+`;
+
     container.appendChild(header);
 
     // Progress Indicator
@@ -114,26 +119,30 @@ export function render(deckId) {
     };
 
     const handleRating = (correct) => {
-        // Update stats
-        const currentProgress = StorageManager.getDeckProgress(cleanDeckId);
-        currentProgress.viewed++;
-        currentProgress.total = sessionCards.length
-        ; // Ensure total is up to date
-        
         if (correct) {
-            currentProgress.correct++;
             sessionStats.correct++;
         } else {
-            currentProgress.incorrect++;
             sessionStats.incorrect++;
         }
-        
-        StorageManager.saveDeckProgress(cleanDeckId, currentProgress);
-        
-        // Next card
+
+        if (!isCramMode) {
+            const currentProgress = StorageManager.getDeckProgress(cleanDeckId);
+            currentProgress.viewed++;
+            currentProgress.total = sessionCards.length;
+    
+            if (correct) {
+                currentProgress.correct++;
+            } else {
+                currentProgress.incorrect++;
+            }
+    
+            StorageManager.saveDeckProgress(cleanDeckId, currentProgress);
+        }
+    
         currentIndex++;
         showCard(currentIndex);
     };
+    
 
     const finishSession = () => {
         scene.style.display = 'none';
