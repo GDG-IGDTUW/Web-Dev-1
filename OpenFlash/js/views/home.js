@@ -57,9 +57,21 @@ export function render() {
 <button class="btn btn-primary study-btn" data-id="${deck.id}">
   Study
 </button>
+<button
+  class="btn btn-outline cram-btn"
+  data-id="${deck.id}"
+  title="Quick revision. Does not affect progress."
+>
+  Cram
+</button>
+
 
                     <a href="#/edit/${deck.id}" class="btn btn-outline">Edit</a>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="${deck.id}">REMOVE</button>
+                    <small class="cram-hint">
+  Cram mode • Progress not saved
+</small>
+
                 </div>
             `;
 
@@ -68,6 +80,12 @@ export function render() {
             // Add delete listener
             deckActions.addEventListener('click', (e) => {
                 console.log('Clicked deck actions', e.target);
+                if (e.target.classList.contains('cram-btn')) {
+                    const deckId = e.target.dataset.id;
+                    window.location.hash = `#/study/${deckId}?mode=cram`;
+                    return;
+                }
+                
                 if (e.target.classList.contains('study-btn')) {
                     const deckId = e.target.dataset.id;
                     const shuffleCheckbox = deckActions.querySelector('.shuffle-checkbox');
