@@ -162,3 +162,63 @@ textarea:focus {
 .fade-in {
     animation: fadeIn 0.3s ease-out forwards;
 }
+.quiz-view {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+}
+
+.quiz-container {
+    background: var(--surface-1);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--space-lg);
+}
+
+.quiz-question {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-1);
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.option-btn {
+    padding: var(--space-md);
+    border: 2px solid var(--surface-3);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    color: var(--text-1);
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+}
+
+.option-btn.correct {
+    border-color: var(--success);
+    background: rgba(64, 192, 87, 0.1);
+    color: var(--success);
+}
+
+.option-btn.incorrect {
+    border-color: var(--danger);
+    background: rgba(250, 82, 82, 0.1);
+    color: var(--danger);
+}
