@@ -7,24 +7,33 @@
   
   /* Department dropdown styles */
   .dropdown-toggle, .dropdown-menu {
-    width: 100%; /* Ensure dropdown button and menu have the same width */
+    width: 100%;
   }
   
   /* Center the department dropdown button */
   .dropdown-toggle {
     text-align: center;
+    background-color: var(--background-primary);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+  
+  .dropdown-menu {
+    background-color: var(--background-primary);
+    border: 1px solid var(--border-color);
   }
   
   .room-card, .time-slot-card {
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 5px var(--card-shadow);
     transition: box-shadow 0.3s ease;
     margin-bottom: 20px;
+    background-color: var(--card-bg);
   }
   
   .room-card:hover, .time-slot-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 10px var(--card-shadow-hover);
   }
   
   .booked-slots, .time-slot-card {
@@ -34,7 +43,7 @@
   
   .booked-slot {
     font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
+    color: var(--error-color);
   }
   
   .select-room-btn, .select-slot-btn, .confirm-booking-btn {
@@ -51,75 +60,26 @@
     margin-bottom: 15px;
     font-size: 1rem;
     border-radius: 5px;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
   }
   
   .confirm-booking-btn {
     font-size: 1rem;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
     border: none;
     padding: 10px;
+    box-shadow: 0px 2px 5px var(--card-shadow);
   }
   
-
-/* ClassroomBooking.css */
-
-/* Align text in department dropdown items */
-.dropdown-item {
-    text-align: center;
+  .confirm-booking-btn:disabled {
+    background-color: var(--background-tertiary);
   }
   
-  /* Department dropdown styles */
-  .dropdown-toggle, .dropdown-menu {
-    width: 100%; /* Ensure dropdown button and menu have the same width */
-  }
-  
-  /* Center the department dropdown button */
-  .dropdown-toggle {
-    text-align: center;
-  }
-  
-  .room-card, .time-slot-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    margin-bottom: 20px;
-  }
-  
-  .room-card:hover, .time-slot-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .booked-slots, .time-slot-card {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .booked-slot {
-    font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
-  }
-  
-  .select-room-btn, .select-slot-btn, .confirm-booking-btn {
-    width: 100%;
-    border-radius: 5px;
-  }
-  
-  .event-input-container {
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .event-name-input {
-    margin-bottom: 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-  }
-  
-  .confirm-booking-btn {
-    font-size: 1rem;
-    padding: 10px;
+  .confirm-booking-btn:hover {
+    background-color: var(--primary-hover);
   }
   
   .toast {
@@ -131,27 +91,27 @@
   .title {
     font-size: 2rem;
     font-weight: bold;
-    color: #0056b3;
+    color: var(--primary-color);
   }
   
   .room-title {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 10px;
+    color: var(--text-primary);
   }
   
-
-/* Update button styles for booked slots */
-.select-slot-btn.booked {
-    background-color: #6c757d; /* Grey color for booked slots */
-    border-color: #6c757d;
-    pointer-events: none; /* Disable click */
+  /* Update button styles for booked slots */
+  .select-slot-btn.booked {
+    background-color: var(--text-tertiary);
+    border-color: var(--text-tertiary);
+    pointer-events: none;
   }
   
   .select-slot-btn.available {
-    background-color: #28a745; /* Green color for available slots */
-    border-color: #28a745;
-    pointer-events: auto; /* Enable click */
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    pointer-events: auto;
   }
   
   .select-slot-btn:disabled {
@@ -159,353 +119,48 @@
     opacity: 0.6;
   }
   
-
-/* ClassroomBooking.css */
-
-/* Align text in department dropdown items */
-.dropdown-item {
-    text-align: center;
-  }
-  
-  /* Department dropdown styles */
-  .dropdown-toggle, .dropdown-menu {
-    width: 100%; /* Ensure dropdown button and menu have the same width */
-  }
-  
-  /* Center the department dropdown button */
-  .dropdown-toggle {
-    text-align: center;
-  }
-  
-  .room-card, .time-slot-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    margin-bottom: 20px;
-  }
-  
-  .room-card:hover, .time-slot-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .booked-slots, .time-slot-card {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .booked-slot {
-    font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
-  }
-  
-  .select-room-btn, .select-slot-btn, .confirm-booking-btn {
-    width: 100%;
-    border-radius: 5px;
-  }
-  
-  .event-input-container {
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .event-name-input {
-    margin-bottom: 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-  }
-  
-  .confirm-booking-btn {
-    font-size: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-  }
-  
-
-/* ClassroomBooking.css */
-.dropdown-toggle, .dropdown-menu {
-    width: 100%; /* Make both the dropdown toggle and menu take up full width */
-  }
-  
-  .dropdown-menu {
-    margin-top: 0; /* Optional: to reduce space between the button and dropdown */
-  }
-  
-  .dropdown-toggle::after {
-    margin-left: 0.5rem; /* Optional: Adjust the dropdown indicator position */
-  }
-  
-/* ClassroomBooking.css */
-.classroom-booking-container {
-    background-color: #f4f7fa;
+  .classroom-booking-container {
+    background-color: var(--background-secondary);
     padding: 20px;
     border-radius: 10px;
-  }
-  
-  .title {
-    font-size: 2rem;
-    color: #0056b3;
-    margin-bottom: 30px;
-  }
-  
-  .room-card, .time-slot-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    margin-bottom: 20px;
-  }
-  
-  .room-card:hover, .time-slot-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .booked-slots, .time-slot-card {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .booked-slot {
-    font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
-  }
-  
-  .select-room-btn, .select-slot-btn, .confirm-booking-btn {
-    width: 100%;
-    border-radius: 5px;
-  }
-  
-  .event-input-container {
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .event-name-input {
-    margin-bottom: 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-  }
-  
-  .confirm-booking-btn {
-    font-size: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .confirm-booking-btn:disabled {
-    background-color: #e0e0e0;
-  }
-  
-  .confirm-booking-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .toast-body {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  /* Custom styles for Select Slot button when selected */
-  button:active, .select-slot-btn:focus {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-/* ClassroomBooking.css */
-.classroom-booking-container {
-    background-color: #f4f7fa;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  .title {
-    font-size: 2rem;
-    color: #0056b3;
-    margin-bottom: 30px;
-  }
-  
-  .room-card, .time-slot-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    margin-bottom: 20px;
-  }
-  
-  .room-card:hover, .time-slot-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .booked-slots, .time-slot-card {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .booked-slot {
-    font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
-  }
-  
-  .select-room-btn, .select-slot-btn, .confirm-booking-btn {
-    width: 100%;
-    border-radius: 5px;
-  }
-  
-  .event-input-container {
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  .event-name-input {
-    margin-bottom: 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-  }
-  
-  .confirm-booking-btn {
-    font-size: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .confirm-booking-btn:disabled {
-    background-color: #e0e0e0;
-  }
-  
-  .confirm-booking-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .toast-body {
-    background-color: #28a745;
-    color: white;
-  }
-  
-.classroom-booking-container {
-    background-color: #f4f7fa;
-    padding: 20px;
-  }
-  
-  .title {
-    font-size: 2rem;
-    color: #0056b3;
-  }
-  
-  .room-card, .time-slot-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .room-card:hover, .time-slot-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .booked-slots, .time-slot-card {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .booked-slot {
-    font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
-  }
-  
-  .select-room-btn, .select-slot-btn, .confirm-booking-btn {
-    width: 100%;
-  }
-  
-  .confirm-booking-btn {
-    margin-top: 15px;
-  }
-  /* ClassroomBooking.css */
-.classroom-booking-container {
-    background-color: #f4f7fa;
-    padding: 20px;
-  }
-  
-  .title {
-    font-size: 2rem;
-    color: #0056b3;
-  }
-  
-  .dropdown-toggle {
-    background-color: #ffffff;
-    color: #0056b3;
-    border: 1px solid #0056b3;
-    border-radius: 5px;
-    width: 100%;
-  }
-  
-  .dropdown-menu {
-    background-color: #ffffff;
-  }
-  
-  .room-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .room-card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .room-title {
-    color: #333;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-  
-  .booked-slots {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .booked-slot {
-    font-size: 0.9rem;
-    color: #ff6347; /* Tomato red for booked slots */
   }
   
   .book-room-btn {
     width: 100%;
-    background-color: #28a745;
-    border-color: #28a745;
-    color: white;
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: var(--text-inverse);
     padding: 10px;
     font-size: 1rem;
   }
   
   .book-room-btn:disabled {
-    background-color: #d6e8d7;
-    border-color: #d6e8d7;
+    background-color: var(--background-tertiary);
+    border-color: var(--background-tertiary);
   }
   
   .booking-modal .modal-header {
-    background-color: #0056b3;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
   }
   
   .confirm-btn {
-    background-color: #ff7f50; /* Orange Accent */
-    border-color: #ff7f50;
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
   }
   
   .confirm-btn:disabled {
-    background-color: #d6d6d6;
+    background-color: var(--background-tertiary);
   }
   
   .toast-body {
-    background-color: #28a745;
-    color: white;
+    background-color: var(--success-color);
+    color: var(--text-inverse);
     font-size: 1rem;
   }
   
+  /* Custom styles for Select Slot button when selected */
+  button:active, .select-slot-btn:focus {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }

@@ -6,14 +6,15 @@
   h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: var(--text-primary);
   }
   
   .development-banner {
-    background-color: #ffcc00;
+    background-color: var(--warning-color);
     padding: 10px;
     text-align: center;
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
     border-radius: 5px;
     margin-bottom: 20px;
   }
@@ -32,16 +33,18 @@
     font-size: 16px;
     margin-right: 10px;
     width: 200px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
   }
   
   .enrollment-input button {
     padding: 10px 15px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #007BFF;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
     border: none;
     border-radius: 5px;
   }
@@ -52,43 +55,46 @@
   
   .attendance-details h3 {
     margin-top: 20px;
-    color: #333;
+    color: var(--text-primary);
   }
   
   .attendance-details p {
     font-size: 16px;
     margin: 10px 0;
+    color: var(--text-primary);
   }
   
   .attendance-details table {
     margin: 20px auto;
     width: 80%;
     border-collapse: collapse;
+    background-color: var(--card-bg);
   }
   
   .attendance-details th,
   .attendance-details td {
     padding: 10px;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
   }
   
   .attendance-details th {
-    background-color: #007BFF;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
   }
   
   .attendance-details tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: var(--background-secondary);
   }
   
   .attendance-details tr:hover {
-    background-color: #ddd;
+    background-color: var(--background-tertiary);
   }
   
   .attendance-details tr[style*="background-color: red"] {
-    background-color: red !important;
-    color: white !important;
+    background-color: var(--error-color) !important;
+    color: var(--text-inverse) !important;
   }
   
   /* Preview Button Styles */
@@ -101,13 +107,12 @@
     padding: 20px 40px;
     font-size: 24px;
     cursor: pointer;
-    background-color: #007BFF;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
     border: none;
     border-radius: 5px;
   }
   
   .preview-button button:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
   }
-  
