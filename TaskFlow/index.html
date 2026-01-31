@@ -15,7 +15,13 @@
     </div>
     <nav class="navbar">
         <h1>TaskFlow</h1>
-        <div class="user-profile-container">
+        <button class="hamburger-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-right">
+            <div class="user-profile-container">
             <button class="profile-btn">
                 <div class="profile-icon">U</div>
             </button>
@@ -167,8 +173,10 @@
                 </div>
             </div>
         </div>
+    </div>
     </nav>
-
+<!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay"></div>
     <!-- Profile Page -->
     <div class="container">
         <div class="profile-page">
@@ -826,6 +834,84 @@
             scale(1)
         `;
             });
+        // ========================================
+            // MOBILE MENU FUNCTIONALITY - Issue #15
+            // ========================================
+            
+            const hamburger = document.querySelector('.hamburger-menu');
+            const navRight = document.querySelector('.nav-right');
+            const mobileOverlay = document.querySelector('.mobile-overlay');
+
+            // Toggle mobile menu
+            if (hamburger && navRight) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    hamburger.classList.toggle('active');
+                    navRight.classList.toggle('active');
+                    
+                    // Toggle overlay if it exists
+                    if (mobileOverlay) {
+                        mobileOverlay.classList.toggle('active');
+                    }
+                    
+                    // Prevent body scroll when menu is open
+                    if (navRight.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                // Close menu when clicking overlay
+                if (mobileOverlay) {
+                    mobileOverlay.addEventListener('click', function() {
+                        hamburger.classList.remove('active');
+                        navRight.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                }
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        if (!navRight.contains(e.target) && 
+                            !hamburger.contains(e.target) && 
+                            navRight.classList.contains('active')) {
+                            hamburger.classList.remove('active');
+                            navRight.classList.remove('active');
+                            if (mobileOverlay) {
+                                mobileOverlay.classList.remove('active');
+                            }
+                            document.body.style.overflow = '';
+                        }
+                    }
+                });
+
+                // Close menu and cleanup when resizing to desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        hamburger.classList.remove('active');
+                        navRight.classList.remove('active');
+                        if (mobileOverlay) {
+                            mobileOverlay.classList.remove('active');
+                        }
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                // Close mobile menu when navigating to profile
+                if (profileMenuItem) {
+                    profileMenuItem.addEventListener('click', function() {
+                        hamburger.classList.remove('active');
+                        navRight.classList.remove('active');
+                        if (mobileOverlay) {
+                            mobileOverlay.classList.remove('active');
+                        }
+                        document.body.style.overflow = '';
+                    });
+                }
+            }
         })
     </script>
 
