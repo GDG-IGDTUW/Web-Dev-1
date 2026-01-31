@@ -1378,3 +1378,505 @@ body.dark-mode .empty-state {
         opacity: 0;
     }
 }
+/* ========================================
+   RESPONSIVE DESIGN STYLES
+   Issue #15: Full Mobile Responsiveness
+   ======================================== */
+
+/* Hamburger Menu Button */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1102;
+    position: relative;
+}
+
+.hamburger-menu span {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+body.dark-mode .hamburger-menu span {
+    background-color: #f9fafb;
+}
+
+/* Hamburger Animation */
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1099;
+    backdrop-filter: blur(2px);
+}
+
+.mobile-overlay.active {
+    display: block;
+}
+
+/* Nav Right Container */
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+/* ========================================
+   TABLET: 768px and below
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* === NAVBAR === */
+    .navbar {
+        padding: 1rem 1.5rem;
+    }
+
+    .navbar h1 {
+        font-size: 1.3rem;
+    }
+
+    /* Show hamburger menu */
+    .hamburger-menu {
+        display: flex;
+    }
+
+    /* Mobile slide-in menu */
+    .nav-right {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 280px;
+        background-color: white;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+        transition: right 0.3s ease-in-out;
+        padding: 5rem 1rem 2rem;
+        z-index: 1100;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    body.dark-mode .nav-right {
+        background-color: #374151;
+    }
+
+    .nav-right.active {
+        right: 0;
+    }
+
+    /* === USER PROFILE IN MOBILE MENU === */
+    .user-profile-container {
+        width: 100%;
+    }
+
+    .profile-btn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 1rem;
+        border-radius: 8px;
+    }
+
+    /* Dropdowns in mobile */
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        margin-top: 0.5rem;
+    }
+
+    .dropdown-submenu {
+        position: static;
+        width: 100%;
+        margin-top: 0.5rem;
+        box-shadow: none;
+    }
+
+    /* === CONTAINER === */
+    .container {
+        max-width: 100%;
+        padding: 0.75rem;
+    }
+
+    /* === TASK INPUT SECTION === */
+    .task-input-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .input-wrapper {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    #taskInput {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.875rem;
+    }
+
+    #addTaskBtn {
+        width: 100%;
+        padding: 0.875rem;
+        font-size: 1rem;
+    }
+
+    /* === SEARCH WRAPPER === */
+    .search-wrapper {
+        flex-direction: row !important;
+        gap: 0.5rem !important;
+    }
+
+    #searchInput {
+        flex: 1;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    #searchBtn {
+        padding: 0.75rem 1rem;
+        font-size: 1.2rem;
+    }
+
+    /* === FILTER SECTION === */
+    .filter-section {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .filter-btn {
+        flex: 1 1 calc(33.333% - 0.5rem);
+        min-width: 85px;
+        padding: 0.625rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    /* === TASK ITEMS === */
+    .task-list {
+        gap: 0.75rem;
+    }
+
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .task-content {
+        width: 100%;
+    }
+
+    .task-title {
+        font-size: 1rem;
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    /* Make edit/delete buttons always visible on mobile */
+    .edit-btn,
+    .delete-btn {
+        opacity: 1 !important;
+        font-size: 1.1rem;
+    }
+
+    /* Disable 3D hover effects on mobile */
+    .task-item:hover {
+        transform: translateY(-2px) !important;
+    }
+
+    /* === PROFILE PAGE === */
+    .profile-page {
+        padding: 0;
+    }
+
+    .profile-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .profile-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .profile-form {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .form-group input {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    /* === MODAL === */
+    .modal {
+        width: 90%;
+        max-width: 350px;
+        padding: 1.5rem;
+    }
+
+    .modal h3 {
+        font-size: 1.3rem;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .modal-btn {
+        width: 100%;
+    }
+
+    /* === EMPTY STATE === */
+    .empty-state {
+        padding: 3rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
+   MOBILE: 480px and below
+   ======================================== */
+
+@media (max-width: 480px) {
+    /* Even smaller screens */
+    .navbar {
+        padding: 0.875rem 1rem;
+    }
+
+    .navbar h1 {
+        font-size: 1.2rem;
+    }
+
+    .nav-right {
+        width: 260px;
+    }
+
+    .container {
+        padding: 0.5rem;
+    }
+
+    .task-input-section {
+        padding: 0.875rem;
+    }
+
+    #taskInput,
+    #addTaskBtn {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .task-item {
+        padding: 0.875rem;
+    }
+
+    .task-title {
+        font-size: 0.95rem;
+    }
+
+    .task-checkbox {
+        width: 18px;
+        height: 18px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+
+    .profile-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .dropdown-item {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.9rem;
+    }
+
+    /* Reduce bubble animations */
+    .bubble-bg {
+        opacity: 0.4;
+    }
+}
+
+/* ========================================
+   LANDSCAPE MODE (phones in landscape)
+   ======================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .navbar {
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .nav-right {
+        height: 100vh;
+        overflow-y: auto;
+        padding: 3rem 1rem 1rem;
+    }
+
+    .task-item {
+        padding: 0.75rem;
+    }
+
+    .container {
+        padding: 0.5rem;
+    }
+}
+
+/* ========================================
+   LARGE DESKTOP (1440px and above)
+   ======================================== */
+
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1200px;
+    }
+
+    .navbar {
+        padding: 1.25rem 3rem;
+    }
+
+    .task-item {
+        padding: 1.5rem;
+    }
+}
+
+/* ========================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ======================================== */
+
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .task-checkbox {
+        width: 24px;
+        height: 24px;
+    }
+
+    .filter-btn,
+    #addTaskBtn {
+        min-height: 44px;
+    }
+
+    .profile-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Disable hover effects on touch */
+    .task-item:hover {
+        transform: none !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .task-item:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Always show action buttons */
+    .edit-btn,
+    .delete-btn {
+        opacity: 1 !important;
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .navbar,
+    .hamburger-menu,
+    .mobile-overlay,
+    .task-input-section,
+    .search-wrapper,
+    .filter-section,
+    .task-actions,
+    .bubble-bg,
+    body::before {
+        display: none !important;
+    }
+
+    .task-item {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        margin-bottom: 0.5rem;
+    }
+
+    body {
+        background: white !important;
+    }
+
+    .task-list {
+        gap: 0.5rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+/* Focus styles for keyboard navigation */
+@media (max-width: 768px) {
+    .hamburger-menu:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
+
+    .filter-btn:focus,
+    #addTaskBtn:focus,
+    .task-checkbox:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .nav-right,
+    .hamburger-menu span,
+    .mobile-overlay {
+        transition: none !important;
+    }
+}
