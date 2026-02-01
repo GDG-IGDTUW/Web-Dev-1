@@ -1880,3 +1880,131 @@ body.dark-mode .hamburger-menu span {
         transition: none !important;
     }
 }
+
+/* ================= SETTINGS PAGE ================= */
+
+.settings-page {
+    min-height: 100vh;
+    background: var(--bg-color);
+}
+
+.settings-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.settings-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1.2rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.settings-card small {
+    opacity: 0.7;
+}
+
+.settings-card select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 0.6rem;
+}
+
+.settings-card.danger {
+    border: 1px solid #ef4444;
+    background: rgba(239,68,68,0.05);
+}
+
+.danger-btn {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 10px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    margin-bottom: 0.6rem;
+    cursor: pointer;
+}
+
+.danger-btn.outline {
+    background: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+}
+
+.danger-btn:hover {
+    opacity: 0.9;
+}
+
+/* =======================
+   DARK MODE FIX
+======================= */
+body.dark-mode {
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+/* text everywhere */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label,
+body.dark-mode small {
+    color: #f8fafc;
+}
+
+/* inputs */
+body.dark-mode input,
+body.dark-mode select {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border: 1px solid #334155;
+}
+
+/* buttons */
+body.dark-mode button {
+    background-color: #2563eb;
+    color: white;
+}
+
+body.dark-mode button:hover {
+    background-color: #1d4ed8;
+}
+
+/* cards */
+body.dark-mode .settings-card,
+body.dark-mode .task-item,
+body.dark-mode .dropdown-menu,
+body.dark-mode .dropdown-submenu {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+.export-btn {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.export-btn:hover {
+    background: #4338ca;
+}
