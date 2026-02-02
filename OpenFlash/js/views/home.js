@@ -4,7 +4,7 @@ import { Toast } from '../toast.js';
 
 export function render() {
     const container = createElement('div', 'home-view fade-in');
-    
+
     // Header
     const header = createElement('header', 'view-header');
     header.innerHTML = `
@@ -42,42 +42,66 @@ export function render() {
                 </div>
                 </div>
                 <div class="deck-actions">
-                    <a href="#/study/${deck.id}" class="btn btn-primary">Study</a>
+                
+<label class="shuffle-switch">
+  <input
+    type="checkbox"
+    class="shuffle-checkbox"
+    data-id="${deck.id}"
+  />
+  <span class="slider"></span>
+  <span class="label-text">Shuffle</span>
+</label>
+
+
+<button class="btn btn-primary study-btn" data-id="${deck.id}">
+  Study
+</button>
+
                     <a href="#/edit/${deck.id}" class="btn btn-outline">Edit</a>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="${deck.id}">REMOVE</button>
                 </div>
             `;
-            
+
             const deckActions = card.querySelector('.deck-actions');
-            
+
             // Add delete listener
             deckActions.addEventListener('click', (e) => {
                 console.log('Clicked deck actions', e.target);
+                if (e.target.classList.contains('study-btn')) {
+                    const deckId = e.target.dataset.id;
+                    const shuffleCheckbox = deckActions.querySelector('.shuffle-checkbox');
+                    const shuffleEnabled = shuffleCheckbox?.checked;
+
+                    window.location.hash = `#/study/${deckId}${shuffleEnabled ? '?shuffle=true' : ''}`;
+                    return;
+                }
+
                 if (e.target.classList.contains('delete-btn')) {
                     const btn = e.target;
                     const originalContent = btn.innerHTML;
-                    
+
                     // Switch to confirm mode
                     btn.classList.add('hidden'); // or remove
-                    
+
                     const confirmGroup = createElement('div', 'confirm-group');
                     confirmGroup.style.display = 'inline-flex';
                     confirmGroup.style.gap = '0.5rem';
-                    
+
                     const confirmBtn = createElement('button', 'btn btn-danger btn-sm', 'Yes');
                     const cancelBtn = createElement('button', 'btn btn-outline btn-sm', 'No');
-                    
+
                     confirmGroup.appendChild(confirmBtn);
                     confirmGroup.appendChild(cancelBtn);
-                    
+
                     btn.parentNode.appendChild(confirmGroup);
                     btn.style.display = 'none'; // hide original button
-                    
+
                     // Handle Confirm
                     confirmBtn.addEventListener('click', () => {
                         try {
                             StorageManager.deleteDeck(deck.id);
-                             // Re-render
+                            // Re-render
                             const newContent = render();
                             const app = document.getElementById('app');
                             app.innerHTML = '';
@@ -88,7 +112,7 @@ export function render() {
                             Toast.show('Error deleting: ' + err.message, 'error');
                         }
                     });
-                    
+
                     // Handle Cancel
                     cancelBtn.addEventListener('click', () => {
                         confirmGroup.remove();
