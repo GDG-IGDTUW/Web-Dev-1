@@ -58,9 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     analyzeBtn.addEventListener('click', analyzeText);
     clearBtn.addEventListener('click', clearText);
     ttsBtn.addEventListener('click', toggleSpeech);
-    exportBtn.addEventListener('click', () => {
-        showError('Export functionality coming soon! Contributors welcome to implement this feature.');
-    });
+    exportBtn.addEventListener('click', exportReportAsJSON);
     darkModeBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         if (document.body.classList.contains('dark-mode')) {
@@ -160,6 +158,64 @@ document.addEventListener("keydown", function (event) {
 
 // TODO for beginners: Implement export functionality
 // function exportResults() { ... }
+
+// Export readability report as JSON
+function exportReportAsJSON() {
+    const text = textInput.value.trim();
+    
+    if (!text) {
+        showError('Please analyze some text first before exporting!');
+        return;
+    }
+    
+    // Get current analysis data
+    const basicStats = getBasicStats(text);
+    const nlpStats = getNLPStats(text);
+    
+    // Create JSON report object
+    const report = {
+        timestamp: new Date().toISOString(),
+        textSample: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
+        basicStatistics: {
+            wordCount: basicStats.wordCount,
+            sentenceCount: basicStats.sentenceCount,
+            readingTime: basicStats.readingTime,
+            longSentenceCount: basicStats.longSentenceCount,
+            hardWordCount: basicStats.hardWordCount
+        },
+        readabilityAnalysis: {
+            level: basicStats.level,
+            description: basicStats.description
+        },
+        nlpAnalysis: {
+            nounCount: nlpStats.nounCount,
+            verbCount: nlpStats.verbCount
+        }
+    };
+    
+    // Convert to JSON string with formatting
+    const jsonString = JSON.stringify(report, null, 2);
+    
+    // Create a Blob from the JSON string
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    
+    // Create a download link
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = `readability-report-${Date.now()}.json`;
+    
+    // Trigger download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    
+    // Clean up
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+    
+    // Show success message
+    showSuccess('Report exported successfully as JSON!');
+}
 
 // TODO for beginners: Implement readability recommendations
 // function getReadabilityRecommendations(stats) { ... }
