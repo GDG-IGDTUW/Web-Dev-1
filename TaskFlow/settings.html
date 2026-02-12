@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow | Settings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="settings-page">
+
+    <nav class="navbar settings-nav">
+        <h1>Settings</h1>
+    </nav>
+
+
+    <div class="settings-container">
+
+        <!-- Theme -->
+        <div class="settings-card">
+            <div class="settings-row">
+                <span>Theme</span>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <small>Switch between light and dark mode</small>
+        </div>
+
+        <!-- Notifications -->
+        <div class="settings-card">
+            <div class="settings-row">
+                <span>Notifications</span>
+                <label class="switch">
+                    <input type="checkbox" id="notificationToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <small>Enable or disable notifications</small>
+        </div>
+
+        <!-- Language -->
+        <div class="settings-card">
+            <span>Language</span>
+            <select id="languageSelect">
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+            </select>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-card danger">
+            <button id="clearTasksBtn" class="danger-btn">Clear All Tasks</button>
+            <button id="resetPrefsBtn" class="danger-btn outline">Reset Preferences</button>
+        </div>
+
+        <!--Export to PDF-->
+        <!-- Export -->
+        <div class="settings-card">
+            <span>Export Tasks</span>
+            <button id="exportPdfBtn" class="export-btn">Export to PDF</button>
+            <small>Download all tasks as a PDF file</small>
+        </div>
+
+
+    </div>
+    <!-- PDF Export Content -->
+    <div id="pdfContent" style="
+    display: none;
+    width: 210mm;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: white;
+">
+        <h2 id="pdfHeading">TaskFlow - Task List</h2>
+        <ul id="pdfTaskList"></ul>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="settings.js"></script>
+
+</body>
+
+</html>

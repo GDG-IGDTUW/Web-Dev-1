@@ -30,7 +30,15 @@ const AttendanceTracker = () => {
   const [showContent, setShowContent] = useState(false); // State for showing content
 
   const handleSearch = async () => {
-    if (!enrollmentNumber) return alert("Please enter an enrollment number.");
+    if (!enrollmentNumber) {
+      alert("Please enter an enrollment number.");
+      return;
+    }
+
+    if (!/^\d+$/.test(enrollmentNumber)) {
+      alert("Invalid input: Enrollment number must be numeric.");
+      return;
+    }
     
     try {
         const response = await fetch(`http://localhost:5000/api/attendance/${enrollmentNumber}`);
@@ -119,8 +127,11 @@ const AttendanceTracker = () => {
               </table>
             </div>
           ) : (
-            enrollmentNumber && <p>No record found for this enrollment number.</p>
-          )}
+  enrollmentNumber && /^\d+$/.test(enrollmentNumber) && (
+    <p>No record found for this enrollment number.</p>
+  )
+)}
+
         </>
       )}
     </div>

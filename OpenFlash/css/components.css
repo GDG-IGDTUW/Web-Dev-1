@@ -30,6 +30,7 @@
     display: flex;
     gap: var(--space-sm);
     margin-top: auto;
+    flex-wrap: wrap;
 }
 
 .btn-outline {
@@ -192,4 +193,68 @@
 .stats-box {
     margin: var(--space-md) 0;
     font-size: 1.2rem;
+}
+.shuffle-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.shuffle-checkbox {
+    display: none;
+}
+
+.slider {
+    width: 34px;
+    height: 18px;
+    background: #ccc;
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.2s;
+}
+
+.slider::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+}
+
+.shuffle-checkbox:checked + .slider {
+    background: var(--primary);
+}
+
+.shuffle-checkbox:checked + .slider::after {
+    transform: translateX(16px);
+}
+.mode-badge {
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+    background: #f59e0b;
+    color: white;
+    border-radius: 4px;
+}
+.cram-btn {
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.cram-btn:hover {
+    background: #f59e0b;
+    color: white;
+}
+
+.cram-hint {
+    width: 100%;
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 0.25rem;
 }

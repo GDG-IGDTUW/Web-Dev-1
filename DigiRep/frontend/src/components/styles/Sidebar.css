@@ -1,0 +1,143 @@
+/* Root App Layout */
+.app-root {
+  display: flex;
+  min-height: 100vh;
+  background: #f2f4f7;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Sidebar Base */
+.sidebar {
+  position: fixed; /* always fixed on left */
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, #1e3a8a, #1e40af);
+  color: #ffffff;
+  padding: 20px;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Sidebar Header */
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-nav a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.sidebar-nav a.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-weight: 600;
+}
+/* Hamburger Button */
+.hamburger {
+  display: none; /* hide by default */
+  position: fixed;
+  top: 10px;      /* give a little more space from top */
+  right: 10px; /* we will change this later */
+  width: 36px;
+  height: 36px;
+  background: #1e3a8a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.hamburger .span{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.hamburger:hover {
+  background: #1e40af;
+  transform: scale(1.05);
+}
+
+/* Right-side Content */
+/* Main Content (Right Side) */
+.page-wrapper {
+  margin-left: 250px; /* space for fixed sidebar on desktop */
+  padding: 24px; /* inner spacing for content */
+  width: calc(100% - 250px); /* remaining width after sidebar */
+  min-height: 100vh;
+  background: transparent; /* no white border */
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mobile */
+@media(max-width: 768px) {
+  .app-root {
+    display: block;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 250px;
+  }
+
+  .app-root.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .app-root .page-wrapper {
+    margin-left: 0;
+    width: 100%;
+    padding: 16px;
+  }
+
+  .hamburger {
+    display: flex; /* visible only on mobile */
+    align-items: center;
+    justify-content: center;
+    left: auto;   /* reset left */
+    right: 10px;  /* place it on the right side of screen */
+    top: 10px;
+  }
+}
+
+/* Tablet / Medium */
+@media(max-width:1024px){
+  .sidebar{
+    width: 220px;
+  }
+  .page-wrapper{
+    margin-left: 220px;
+    width: calc(100% - 220px);
+  }
+}
