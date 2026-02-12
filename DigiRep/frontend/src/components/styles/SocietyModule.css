@@ -6,7 +6,7 @@
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--text-primary);
     font-size: 28px;
 }
 
@@ -20,11 +20,11 @@ h2 {
     font-size: 18px;
     margin: 10px;
     cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--success-color);
+    color: var(--text-inverse);
     border: none;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 8px var(--card-shadow);
     transition: background-color 0.3s ease, transform 0.2s;
 }
 
@@ -43,16 +43,16 @@ h2 {
     font-size: 18px;
     margin: 0 10px;
     cursor: pointer;
-    background-color: #007BFF;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
     border: none;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 8px var(--card-shadow);
     transition: background-color 0.3s ease, transform 0.2s;
 }
 
 .section-buttons button:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
 
@@ -62,24 +62,24 @@ h2 {
 }
 
 .about-section, .events-list {
-    background-color: #f9f9f9;
+    background-color: var(--card-bg);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 12px var(--card-shadow);
     max-width: 800px;
     margin: 0 auto;
 }
 
 .about-section h3, .events-list h3 {
     font-size: 26px;
-    color: #333;
+    color: var(--text-primary);
     margin-bottom: 15px;
     font-weight: 600;
 }
 
 .about-section p, .events-list ul {
     font-size: 16px;
-    color: #555;
+    color: var(--text-secondary);
 }
 
 .about-section p {
@@ -87,9 +87,9 @@ h2 {
 }
 
 .about-section .highlight {
-    color: #007BFF; /* Highlight color for president and team heads */
+    color: var(--primary-color);
     font-weight: 600;
-    border-bottom: 2px solid #007BFF;
+    border-bottom: 2px solid var(--primary-color);
     display: inline-block;
 }
 
@@ -100,30 +100,30 @@ h2 {
 }
 
 .events-list li {
-    background-color: #fff;
+    background-color: var(--background-primary);
     padding: 20px;
     margin: 12px 0;
     border-radius: 10px;
-    border: 1px solid #ddd;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    box-shadow: 0px 4px 8px var(--card-shadow);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .events-list li:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 8px 16px var(--card-shadow-hover);
 }
 
 .events-list li strong {
-    color: #007BFF;
+    color: var(--primary-color);
     font-size: 18px;
 }
 
 .subscribe-section {
-    background-color: #f9f9f9;
+    background-color: var(--card-bg);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 12px var(--card-shadow);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -140,20 +140,22 @@ h2 {
     width: 100%;
     margin-bottom: 20px;
     border-radius: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     transition: border 0.3s ease;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
 }
 
 .subscribe-section input:focus {
-    border: 1px solid #007BFF;
+    border: 1px solid var(--primary-color);
     outline: none;
 }
 
 .subscribe-section button {
     padding: 12px 20px;
     font-size: 18px;
-    background-color: #007BFF;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -162,18 +164,18 @@ h2 {
 }
 
 .subscribe-section button:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
 
 .subscribe-section p {
     margin-top: 20px;
     font-size: 18px;
-    color: #4CAF50;
+    color: var(--success-color);
     font-weight: 600;
 }
 
 /* Add space between the buttons and the displayed content below */
 .section-buttons {
-    margin-bottom: 30px; /* Add space below the section buttons */
+    margin-bottom: 30px;
 }

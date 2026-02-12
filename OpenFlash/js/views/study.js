@@ -1,8 +1,25 @@
 import { StorageManager } from '../storage.js';
 import { createElement } from '../utils.js';
 
+// Store reference to the current keyboard handler for cleanup
+let currentKeydownHandler = null;
+
+// Cleanup function to remove the keyboard listener
+export function cleanup() {
+    if (currentKeydownHandler) {
+        document.removeEventListener('keydown', currentKeydownHandler);
+        currentKeydownHandler = null;
+    }
+}
+
 export function render(deckId) {
-    const deck = StorageManager.getDeck(deckId);
+    const cleanDeckId = deckId.split('?')[0];
+    const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
+    const shuffleEnabled = urlParams.get('shuffle') === 'true';
+    const isCramMode = urlParams.get('mode') === 'cram';
+
+    const deck = StorageManager.getDeck(cleanDeckId);
+
     if (!deck) {
         window.location.hash = '#/dashboard';
         return createElement('div');
@@ -13,21 +30,31 @@ export function render(deckId) {
     let currentIndex = 0;
     let isFlipped = false;
     let sessionStats = { viewed: 0, correct: 0, incorrect: 0 };
-    
+    let sessionCards = [...deck.cards];
+
+    if (shuffleEnabled) {
+        sessionCards = shuffleArray(sessionCards);
+    }
+
     const container = createElement('div', 'study-view fade-in');
     
     // Header
     const header = createElement('header', 'view-header');
     header.innerHTML = `
-        <h1>Studying: ${deck.title}</h1>
-        <a href="#/dashboard" class="btn btn-outline">Exit</a>
-    `;
+    <h1>
+        Studying: ${deck.title}
+        ${isCramMode ? '<span class="mode-badge">CRAM</span>' : ''}
+    </h1>
+    <a href="#/dashboard" class="btn btn-outline">Exit</a>
+`;
+
     container.appendChild(header);
 
     // Progress Indicator
     const progressIndicator = createElement('div', 'study-progress');
     const updateProgress = () => {
-        progressIndicator.textContent = `Card ${currentIndex + 1} of ${deck.cards.length}`;
+        progressIndicator.textContent = `Card ${currentIndex + 1} of ${sessionCards.length
+        }`;
     };
     updateProgress();
     container.appendChild(progressIndicator);
@@ -63,12 +90,13 @@ export function render(deckId) {
 
     // Logic
     const showCard = (index) => {
-        if (index >= deck.cards.length) {
+        if (index >= sessionCards.length
+        ) {
             finishSession();
             return;
         }
         
-        const card = deck.cards[index];
+        const card = sessionCards[index];
         frontFace.textContent = card.front;
         backFace.textContent = card.back;
         
@@ -91,25 +119,30 @@ export function render(deckId) {
     };
 
     const handleRating = (correct) => {
-        // Update stats
-        const currentProgress = StorageManager.getDeckProgress(deck.id);
-        currentProgress.viewed++;
-        currentProgress.total = deck.cards.length; // Ensure total is up to date
-        
         if (correct) {
-            currentProgress.correct++;
             sessionStats.correct++;
         } else {
-            currentProgress.incorrect++;
             sessionStats.incorrect++;
         }
-        
-        StorageManager.saveDeckProgress(deck.id, currentProgress);
-        
-        // Next card
+
+        if (!isCramMode) {
+            const currentProgress = StorageManager.getDeckProgress(cleanDeckId);
+            currentProgress.viewed++;
+            currentProgress.total = sessionCards.length;
+    
+            if (correct) {
+                currentProgress.correct++;
+            } else {
+                currentProgress.incorrect++;
+            }
+    
+            StorageManager.saveDeckProgress(cleanDeckId, currentProgress);
+        }
+    
         currentIndex++;
         showCard(currentIndex);
     };
+    
 
     const finishSession = () => {
         scene.style.display = 'none';
@@ -132,12 +165,13 @@ export function render(deckId) {
         
         // Re-bind study again
         container.querySelector('#study-again-btn').addEventListener('click', () => {
+            cleanup();
             container.innerHTML = '';
             // Re-render essentially by just calling render logic again or reloading route
             // Since we are inside the component, the cleanest SPA way without logic extraction is 
             // to trigger a route reload or just recursively call render (but we need to replace content).
             // Simplest: 
-            const newContent = render(deckId);
+            window.location.hash = `#/study/${cleanDeckId}${shuffleEnabled ? '?shuffle=true' : ''}`;
             const app = document.getElementById('app');
             app.innerHTML = '';
             app.appendChild(newContent);
@@ -159,14 +193,20 @@ export function render(deckId) {
     });
 
     // Keyboard support
-    document.addEventListener('keydown', (e) => {
+    // Remove any existing listener first
+    cleanup();
+    
+    // Create a named handler for this session
+    currentKeydownHandler = (e) => {
         if (e.code === 'Space') {
             handleFlip();
         }
-    });
+    };
+    
+    document.addEventListener('keydown', currentKeydownHandler);
 
     // Initialize
-    if (deck.cards.length === 0) {
+    if (sessionCards.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
                 <p>This deck has no cards.</p>
@@ -178,4 +218,13 @@ export function render(deckId) {
     }
 
     return container;
+}
+
+function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
 }

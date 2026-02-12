@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Compromise.js CDN for basic NLP -->
     <script src="https://unpkg.com/compromise@latest/builds/compromise.min.js"></script>
+
 </head>
+
 <body>
     <header>
         <h1>📊 Smart Readability Dashboard</h1>
@@ -18,16 +21,21 @@
         <!-- Left Panel: Text Input -->
         <section class="input-panel">
             <h2>📝 Enter Your Text</h2>
-            <textarea 
-                id="textInput" 
-                placeholder="Paste or type your text here to analyze its readability..."
-                rows="20"
-            ></textarea>
+            <textarea id="textInput" placeholder="Paste or type your text here to analyze its readability..."
+                rows="20"></textarea>
+            <h2>🆚 Compare With Another Text</h2>
+            <textarea id="textInput2" placeholder="Paste second text for comparison..." rows="10"></textarea>
+
+            <button id="compareBtn" class="primary-btn">Compare Texts</button>
+
             <div class="input-controls">
                 <button id="analyzeBtn" class="primary-btn">Analyze Text</button>
                 <button id="clearBtn" class="secondary-btn">Clear</button>
+
+                <!-- TTS Toggle Button (no icon for now) -->
+                <button id="ttsBtn" class="secondary-btn">Preview Speech</button>
             </div>
-            
+
             <!-- Demo Content Buttons -->
             <div class="demo-section">
                 <h3>📚 Try Demo Content</h3>
@@ -42,7 +50,7 @@
         <!-- Right Panel: Smart Stats -->
         <section class="stats-panel">
             <h2>📈 Smart Stats</h2>
-            
+
             <!-- Quick Overview -->
             <div class="stats-grid">
                 <div class="stat-card">
@@ -57,6 +65,11 @@
                     <div class="stat-value" id="readingTime">0 min</div>
                     <div class="stat-label">Reading Time</div>
                 </div>
+                <div id="comparisonResult" class="comparison-result" style="display:none;">
+                    <h3>🆚 Comparison Result</h3>
+                    <p id="comparisonSummary"></p>
+                </div>
+
             </div>
 
             <!-- Readability Level -->
@@ -64,6 +77,9 @@
                 <h3>📊 Readability Level</h3>
                 <div id="readabilityBadge" class="level-badge level-easy">Easy</div>
                 <p id="readabilityDescription">Your text is easy to read!</p>
+                <p id="readabilityRecommendation"></p>
+                <p id="readabilityRecommendation" class="recommendation-text">
+                    Start typing to get readability suggestions.</p>
             </div>
 
             <!-- Detailed Analysis -->
@@ -86,6 +102,42 @@
                     <strong id="verbCount">0</strong>
                 </div>
             </div>
+
+            <!-- Progress Bars for Readability Metrics -->
+            <div class="progress-stats">
+                <h4>📊 Readability Metrics Progress</h4>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Flesch Reading Ease</span>
+                        <span id="fleschScore">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-value="0"></div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Flesch-Kincaid Grade Level</span>
+                        <span id="fleschKincaidScore">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-value="0"></div>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Gunning Fog Index</span>
+                        <span id="gunningFogScore">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-value="0"></div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Plugin Results -->
             <div class="plugin-results">
@@ -132,14 +184,21 @@
     </footer>
 
     <!-- Load plugins -->
+    <script src="js/plugins/wordFrequency.js"></script>
     <script src="js/plugins/wordCount.js"></script>
     <script src="js/plugins/readingTime.js"></script>
     <script src="js/plugins/longSentence.js"></script>
     <script src="js/plugins/questionCount.js"></script>
     <script src="js/plugins/averageWordLength.js"></script>
     <script src="js/plugins/emotionDetection.js"></script>
-    
+    <script src="js/plugins/exclamationCount.js"></script>
+    <script src="js/plugins/longestWord.js"></script>
+    <script src="js/plugins/paragraphCountPlugin.js"></script>
+    <script src="js/plugins/capitalLetters.js"></script>
+
+
     <!-- Main application -->
     <script src="js/main.js"></script>
 </body>
+
 </html>
