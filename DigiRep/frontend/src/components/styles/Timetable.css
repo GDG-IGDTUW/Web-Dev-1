@@ -9,6 +9,8 @@ h1, h2 {
 }
 
 .tt-btn {
+    background-color: #4CAF50;
+    color: #FFFFFF;
     background-color: var(--success-color);
     color: var(--text-inverse);
     border: none;
@@ -25,6 +27,8 @@ h1, h2 {
 }
 
 .tt-btn-selected {
+    background-color: #FF9800;
+    color: #FFFFFF;
     background-color: var(--warning-color);
     color: var(--text-inverse);
 }
@@ -52,12 +56,201 @@ table th {
     margin-top: 20px;
 }
 
-input {
+input, select {
     padding: 10px;
     margin: 10px;
     border: 1px solid var(--border-color);
     border-radius: 5px;
     width: 200px;
+    font-size: 1rem;
+}
+
+input:focus, select:focus {
+    border-color: #1E88E5;
+    outline: none;
+}
+
+.grid-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    gap: 2px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    min-width: max-content;
+}
+
+.grid-header {
+    background-color: transparent;
+}
+
+.grid-day-header {
+    background-color: #1E88E5;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.grid-hour-header {
+    background-color: #64B5F6;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-slot {
+    background-color: #FFFFFF;
+    border: 2px solid #1E88E5;
+    padding: 12px;
+    min-height: 80px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.grid-slot.occupied {
+    background-color: #C8E6C9;
+    border-color: #4CAF50;
+}
+
+.grid-slot.occupied:hover {
+    background-color: #A5D6A7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.grid-slot.empty {
+    background-color: #F5F5F5;
+    color: #999;
+    cursor: default;
+}
+
+.grid-slot.dragging {
+    opacity: 0.5;
+    background-color: #FFE082;
+    border-color: #FF9800;
+}
+
+.slot-content {
+    text-align: center;
+    width: 100%;
+}
+
+.slot-subject {
+    font-weight: bold;
+    color: #1E88E5;
+    margin-bottom: 4px;
+}
+
+.slot-info {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.slot-empty {
+    color: #999;
+    font-size: 1.2rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #1E88E5;
+}
+
+.modal-content h2 {
+    color: #1E88E5;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #1E88E5;
+    padding-bottom: 10px;
+}
+
+.modal-details {
+    text-align: left;
+    line-height: 1.8;
+}
+
+.modal-details p {
+    margin: 10px 0;
+    color: #333;
+}
+
+.modal-details strong {
+    color: #1E88E5;
+}
+
+.login-section {
+    margin-top: 30px;
+}
+
+.login-section form {
+    display: inline-block;
+    padding: 20px;
+    background-color: #F5F5F5;
+    border-radius: 8px;
     background-color: var(--background-primary);
     color: var(--text-primary);
 }
