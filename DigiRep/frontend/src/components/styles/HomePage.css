@@ -1,6 +1,6 @@
 .home-page {
     text-align: center;
-    background-color: #f5f5f5;
+    background-color: var(--background-secondary);
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -9,13 +9,13 @@
 }
 
 h1 {
-    color: #1E88E5;
+    color: var(--primary-color);
     font-size: 3rem;
     margin-bottom: 10px;
 }
 
 .tagline {
-    color: #616161;
+    color: var(--text-secondary);
     font-size: 1.2rem;
     margin-bottom: 20px;
 }
@@ -26,17 +26,19 @@ h1 {
 }
 
 button {
-    background-color: #43A047; /* Accent Green */
-    color: #FFFFFF;
+    background-color: var(--success-color); /* Accent Green */
+    color: var(--text-inverse);
     border: none;
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
+    box-shadow: 2px 2px 5px var(--card-shadow);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
     background-color: #1B5E20; /* Darker Green */
+    transform: translateY(-2px);
+    box-shadow: 2px 4px 8px var(--card-shadow-hover);
 }

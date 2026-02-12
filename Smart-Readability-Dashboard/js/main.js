@@ -11,19 +11,18 @@ const plugins = [
     averageWordLengthPlugin,
     emotionDetectionPlugin,
     paragraphCountPlugin,
-    countLettersPlugin,
+    capitalLettersPlugin,
     exclamationCountPlugin,
     findLongestWord
-
 
 ];
 
 // Demo texts for different difficulty levels
 const DEMO_TEXTS = {
     easy: `The cat sat on the mat. It was a sunny day. The birds sang in the trees. Children played in the park. Everyone was happy. The flowers looked beautiful. This is simple text that is easy to read.`,
-    
+
     medium: `Technology has revolutionized the way we communicate and interact with each other. Social media platforms have created new opportunities for connection while also presenting unique challenges for privacy and mental health. These digital tools require us to develop new skills for navigating online relationships effectively.`,
-    
+
     hard: `The implementation of sophisticated algorithms in contemporary computational linguistics necessitates comprehensive understanding of probabilistic models and their underlying mathematical foundations, particularly in the context of natural language processing applications that demonstrate unprecedented capabilities in semantic analysis and syntactic disambiguation through machine learning methodologies.`
 };
 
@@ -40,7 +39,7 @@ let isDemoText = true;
 
 
 // Initialize the app when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get DOM elements
     textInput = document.getElementById('textInput');
     analyzeBtn = document.getElementById('analyzeBtn');
@@ -49,14 +48,17 @@ document.addEventListener('DOMContentLoaded', function() {
     exportBtn = document.getElementById('exportBtn');
     darkModeBtn = document.getElementById('darkModeBtn');
     highlightedSection = document.getElementById('highlightedSection');
-    
+    const textInput2 = document.getElementById("textInput2");
+    const compareBtn = document.getElementById("compareBtn");
+
+    compareBtn.addEventListener("click", compareTexts);
+
+
     // Add event listeners
     analyzeBtn.addEventListener('click', analyzeText);
     clearBtn.addEventListener('click', clearText);
     ttsBtn.addEventListener('click', toggleSpeech);
-    exportBtn.addEventListener('click', () => {
-        showError('Export functionality coming soon! Contributors welcome to implement this feature.');
-    });
+    exportBtn.addEventListener('click', exportReportAsJSON);
     darkModeBtn.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         if (document.body.classList.contains('dark-mode')) {
@@ -65,36 +67,74 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('theme', 'light');
         }
     });
-    
+
     // TODO for beginners: Implement keyboard shortcuts functionality
     // document.addEventListener('keydown', handleKeyboardShortcuts);
-    
+
     // Auto-analyze on input (with debouncing)
     let timeout;
-    textInput.addEventListener('input', function() {
+    textInput.addEventListener('input', function () {
         clearTimeout(timeout);
         timeout = setTimeout(analyzeText, 500); // Wait 500ms after user stops typing
     });
-    
+
     // Initialize with sample text for demo
     textInput.value = '';
-    
+
     // TODO for beginners: Implement dark mode persistence with localStorage
     // TODO for beginners: Add keyboard shortcuts for better UX
-    
+
     // Run initial analysis
     analyzeText();
 });
+
+function compareTexts() {
+    const text1 = textInput.value.trim();
+    const text2 = textInput2.value.trim();
+
+    if (!text1 || !text2) {
+        showError("Please enter both texts to compare.");
+        return;
+    }
+
+    const stats1 = getBasicStats(text1);
+    const stats2 = getBasicStats(text2);
+
+    let winner = "";
+
+    if (stats1.level === stats2.level) {
+        winner = "Both texts have similar readability.";
+    } else if (
+        (stats1.level === "Easy") ||
+        (stats1.level === "Medium" && stats2.level === "Hard")
+    ) {
+        winner = "Text 1 is easier to read.";
+    } else {
+        winner = "Text 2 is easier to read.";
+    }
+
+    const summary = `
+        Words: ${stats1.wordCount} vs ${stats2.wordCount}<br>
+        Sentences: ${stats1.sentenceCount} vs ${stats2.sentenceCount}<br>
+        Reading Time: ${stats1.readingTime} vs ${stats2.readingTime}<br>
+        Readability: ${stats1.level} vs ${stats2.level}<br><br>
+        <strong>${winner}</strong>
+    `;
+
+    document.getElementById("comparisonSummary").innerHTML = summary;
+    document.getElementById("comparisonResult").style.display = "block";
+}
+
 
 // Demo text loader function
 function loadDemo(difficulty) {
     if (DEMO_TEXTS[difficulty]) {
         textInput.value = DEMO_TEXTS[difficulty];
         analyzeText();
-        
+
         // Smooth scroll to top
         textInput.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
+
         // Brief highlight effect
         textInput.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.3)';
         setTimeout(() => {
@@ -119,6 +159,64 @@ document.addEventListener("keydown", function (event) {
 // TODO for beginners: Implement export functionality
 // function exportResults() { ... }
 
+// Export readability report as JSON
+function exportReportAsJSON() {
+    const text = textInput.value.trim();
+    
+    if (!text) {
+        showError('Please analyze some text first before exporting!');
+        return;
+    }
+    
+    // Get current analysis data
+    const basicStats = getBasicStats(text);
+    const nlpStats = getNLPStats(text);
+    
+    // Create JSON report object
+    const report = {
+        timestamp: new Date().toISOString(),
+        textSample: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
+        basicStatistics: {
+            wordCount: basicStats.wordCount,
+            sentenceCount: basicStats.sentenceCount,
+            readingTime: basicStats.readingTime,
+            longSentenceCount: basicStats.longSentenceCount,
+            hardWordCount: basicStats.hardWordCount
+        },
+        readabilityAnalysis: {
+            level: basicStats.level,
+            description: basicStats.description
+        },
+        nlpAnalysis: {
+            nounCount: nlpStats.nounCount,
+            verbCount: nlpStats.verbCount
+        }
+    };
+    
+    // Convert to JSON string with formatting
+    const jsonString = JSON.stringify(report, null, 2);
+    
+    // Create a Blob from the JSON string
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    
+    // Create a download link
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = `readability-report-${Date.now()}.json`;
+    
+    // Trigger download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    
+    // Clean up
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+    
+    // Show success message
+    showSuccess('Report exported successfully as JSON!');
+}
+
 // TODO for beginners: Implement readability recommendations
 // function getReadabilityRecommendations(stats) { ... }
 
@@ -128,7 +226,7 @@ function analyzeText() {
     document.getElementById('ttsBtn').textContent = "Preview Speech";
 
     const text = textInput.value.trim();
-    
+
     if (!text) {
         resetStats();
         return;
@@ -199,15 +297,15 @@ function getBasicStats(text) {
     // Word count
     const words = text.split(/\s+/).filter(word => word.length > 0);
     const wordCount = words.length;
-    
+
     // Sentence count
     const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
     const sentenceCount = sentences.length;
-    
+
     // Reading time (200 words per minute)
     const readingTimeMinutes = Math.ceil(wordCount / 200);
     const readingTime = readingTimeMinutes < 1 ? "< 1 min" : `${readingTimeMinutes} min`;
-    
+
     // Long sentences (>20 words)
     let longSentenceCount = 0;
     sentences.forEach(sentence => {
@@ -216,7 +314,7 @@ function getBasicStats(text) {
             longSentenceCount++;
         }
     });
-    
+
     // Hard words (>8 characters)
     let hardWordCount = 0;
     words.forEach(word => {
@@ -226,31 +324,31 @@ function getBasicStats(text) {
             hardWordCount++;
         }
     });
-    
+
     // Readability level (simple rule-based approach)
     let level = 'Easy';
     let description = 'Your text is easy to read!';
     let recommendation = ' ';
-    
+
     const avgWordsPerSentence = wordCount / sentenceCount || 0;
     const hardWordRatio = hardWordCount / wordCount || 0;
-    
-   if (avgWordsPerSentence > 20 || hardWordRatio > 0.3) {
-    level = 'Hard';
-    description = 'Your text might be challenging to read.';
-    recommendation = 'Break long sentences and replace complex words with simpler ones.';
-} 
-else if (avgWordsPerSentence > 15 || hardWordRatio > 0.15) {
-    level = 'Medium';
-    description = 'Your text has moderate readability.';
-    recommendation = 'Try shortening sentences and reducing difficult words.';
-} 
-else {
-    level = 'Easy';
-    description = 'Your text is easy to read!';
-    recommendation = 'Great job! Your writing is clear and easy to understand.';
-}
-    
+
+    if (avgWordsPerSentence > 20 || hardWordRatio > 0.3) {
+        level = 'Hard';
+        description = 'Your text might be challenging to read.';
+        recommendation = 'Break long sentences and replace complex words with simpler ones.';
+    }
+    else if (avgWordsPerSentence > 15 || hardWordRatio > 0.15) {
+        level = 'Medium';
+        description = 'Your text has moderate readability.';
+        recommendation = 'Try shortening sentences and reducing difficult words.';
+    }
+    else {
+        level = 'Easy';
+        description = 'Your text is easy to read!';
+        recommendation = 'Great job! Your writing is clear and easy to understand.';
+    }
+
     return {
         wordCount,
         sentenceCount,
@@ -269,7 +367,7 @@ function getNLPStats(text) {
         const doc = nlp(text);
         const nouns = doc.nouns().out('array');
         const verbs = doc.verbs().out('array');
-        
+
         return {
             nounCount: nouns.length,
             verbCount: verbs.length,
@@ -292,21 +390,21 @@ function updateUI(basicStats, nlpStats, text) {
     document.getElementById('wordCount').textContent = basicStats.wordCount;
     document.getElementById('sentenceCount').textContent = basicStats.sentenceCount;
     document.getElementById('readingTime').textContent = basicStats.readingTime;
-    
+
     // Update readability level
     const readabilityBadge = document.getElementById('readabilityBadge');
     const readabilityDescription = document.getElementById('readabilityDescription');
-    
+
     readabilityBadge.textContent = basicStats.level;
     readabilityBadge.className = `level-badge level-${basicStats.level.toLowerCase()}`;
     readabilityDescription.textContent = basicStats.description;
-    
+
     // Update detailed stats
     document.getElementById('longSentences').textContent = basicStats.longSentenceCount;
     document.getElementById('hardWords').textContent = basicStats.hardWordCount;
     document.getElementById('nounCount').textContent = nlpStats.nounCount;
     document.getElementById('verbCount').textContent = nlpStats.verbCount;
-    
+
     // Add fade-in animation
     const statsPanel = document.querySelector('.stats-panel');
     statsPanel.classList.remove('fade-in');
@@ -316,83 +414,83 @@ function updateUI(basicStats, nlpStats, text) {
 function runPlugins(text) {
     const pluginOutput = document.getElementById('pluginOutput');
     pluginOutput.innerHTML = '';
-    
+
     plugins.forEach((plugin, index) => {
         const result = safePluginExecution(plugin, text);
-        
+
         const pluginResult = document.createElement('div');
         pluginResult.className = 'plugin-result';
-        
+
         // Add tooltip with plugin information
         pluginResult.title = `Plugin ${index + 1}: ${plugin.name || 'Unnamed Plugin'}`;
-        
+
         pluginResult.innerHTML = `
             <span class="plugin-label">${result.label}</span>
             <span class="plugin-value">${result.value}</span>
         `;
-        
+
         pluginOutput.appendChild(pluginResult);
     });
 }
 
 function highlightText(text, basicStats) {
     const highlightedText = document.getElementById('highlightedText');
-    
+
     if (!text) {
         highlightedSection.style.display = 'none';
         return;
     }
-    
+
     let highlightedHTML = '';
-    
+
     // Split text into sentences for highlighting
     const sentences = basicStats.sentences;
-    
+
     sentences.forEach(sentence => {
         if (!sentence.trim()) return;
-        
+
         // Check if sentence is long (>20 words)
         const words = sentence.trim().split(/\s+/).filter(word => word.length > 0);
         const isLongSentence = words.length > 20;
-        
+
         // Process each word in the sentence
         let processedSentence = '';
         words.forEach((word, index) => {
             // Remove punctuation to check word length
             const cleanWord = word.replace(/[^\w]/g, '');
             const isHardWord = cleanWord.length > 8;
-            
+
             if (isHardWord) {
                 processedSentence += `<span class="hard-word">${word}</span>`;
             } else {
                 processedSentence += word;
             }
-            
+
             // Add space between words (except for the last word)
             if (index < words.length - 1) {
                 processedSentence += ' ';
             }
         });
-        
+
         // Wrap long sentences
         if (isLongSentence) {
             highlightedHTML += `<span class="long-sentence">${processedSentence}</span>`;
         } else {
             highlightedHTML += processedSentence;
         }
-        
+
         // Add sentence ending
         highlightedHTML += '. ';
     });
-    
+
     highlightedText.innerHTML = highlightedHTML;
     highlightedSection.style.display = 'block';
-    
+
     // Smooth scroll to highlighted section
     setTimeout(() => {
-        highlightedSection.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
+        highlightedSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
         });
     }, 300);
 }
@@ -418,17 +516,17 @@ function resetStats() {
     document.getElementById('nounCount').textContent = '0';
     document.getElementById('verbCount').textContent = '0';
     document.getElementById('readabilityRecommendation').textContent = '';
-    
+
     // Reset readability level
     const readabilityBadge = document.getElementById('readabilityBadge');
     const readabilityDescription = document.getElementById('readabilityDescription');
-    
+
     readabilityBadge.textContent = 'Easy';
     readabilityBadge.className = 'level-badge level-easy';
     readabilityDescription.textContent = 'Enter some text to analyze!';
-    document.getElementById('readabilityRecommendation').textContent = recommendation;
+    document.getElementById('readabilityRecommendation').textContent = '';
 
-    
+
     // Clear plugin output
     document.getElementById('pluginOutput').innerHTML = '';
 }
@@ -438,10 +536,10 @@ function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = '❌ ' + message;
-    
+
     const container = document.querySelector('.stats-panel');
     container.insertBefore(errorDiv, container.firstChild);
-    
+
     // Remove error after 5 seconds
     setTimeout(() => {
         if (errorDiv.parentNode) {
@@ -459,10 +557,10 @@ function showSuccess(message) {
         border-left-color: #16a34a;
     `;
     successDiv.textContent = '✅ ' + message;
-    
+
     const container = document.querySelector('.stats-panel');
     container.insertBefore(successDiv, container.firstChild);
-    
+
     // Remove success message after 3 seconds
     setTimeout(() => {
         if (successDiv.parentNode) {
@@ -477,12 +575,12 @@ function measureAnalysisTime(analysisFunction, ...args) {
     const result = analysisFunction(...args);
     const endTime = performance.now();
     const analysisTime = endTime - startTime;
-    
+
     // Update performance indicator
-    const perfIndicator = document.querySelector('.performance-indicator') || 
-                         createPerformanceIndicator();
+    const perfIndicator = document.querySelector('.performance-indicator') ||
+        createPerformanceIndicator();
     perfIndicator.textContent = `Analysis completed in ${analysisTime.toFixed(1)}ms`;
-    
+
     return result;
 }
 
@@ -499,10 +597,10 @@ function safePluginExecution(plugin, text) {
         const startTime = performance.now();
         const result = plugin(text);
         const endTime = performance.now();
-        
+
         // TODO for beginners: Add performance monitoring for individual plugins
         // console.log(`Plugin ${plugin.name} took ${endTime - startTime}ms`);
-        
+
         return result;
     } catch (error) {
         console.error('Plugin execution error:', error);
