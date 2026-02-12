@@ -721,3 +721,130 @@ body.dark-mode {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+
+
+
+
+/* ============================= */
+/* Enhanced Input Field Styling */
+/* Issue #3 */
+/* ============================= */
+
+#textInput {
+    width: 100%;
+    min-height: 300px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    line-height: 1.6;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    outline: none;
+    resize: vertical;
+    background-color: var(--surface);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus state */
+#textInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Hover state */
+#textInput:hover {
+    border-color: var(--secondary-color);
+}
+
+/* Placeholder styling */
+#textInput::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Custom scrollbar */
+#textInput::-webkit-scrollbar {
+    width: 8px;
+}
+
+#textInput::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.4);
+    border-radius: 10px;
+}
+
+#textInput::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    #textInput {
+        min-height: 220px;
+        font-size: 0.95rem;
+        padding: 0.75rem;
+    }
+}
+.recommendation-text {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+/* ============================= */
+/* Comparison Section Styling */
+/* ============================= */
+
+.comparison-box {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.dark-mode .comparison-box {
+    background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.comparison-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.comparison-item {
+    padding: 0.5rem 0.6rem;
+    background: var(--surface);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.comparison-result {
+    margin-top: 0.8rem;
+    padding: 0.6rem;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 6px;
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--success-color);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}

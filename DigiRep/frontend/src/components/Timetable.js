@@ -251,8 +251,44 @@ const Timetable = () => {
       setDraggedSlot(slot);
       setDragSource({ day, time });
       e.dataTransfer.effectAllowed = "move";
+  const handleUpdate = async (e) => {
+  e.preventDefault();
+  const newSubject = e.target.newSubject.value.trim();
+  const newTime = e.target.newTime.value.trim();
+
+  if (newSubject && newTime && selectedYear && selectedDepartment && selectedDay) {
+    const newSchedule = `${newSubject} - ${newTime}`;
+    setUpdatedTimetable((prev) => ({
+      ...prev,
+      [selectedDepartment]: {
+        ...prev[selectedDepartment],
+        [selectedYear]: {
+          ...prev[selectedDepartment][selectedYear],
+          [selectedDay]: [...(prev[selectedDepartment][selectedYear][selectedDay] || []), newSchedule],
+        },
+      },
+    }));
+    e.target.reset();
+
+    alert("Timetable updated successfully!");
+
+    // Call backend to notify students
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/notify-timetable-update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ link: window.location.href })
+      });
+      alert("Students have been notified via email!");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to notify students.");
     }
-  };
+  } else {
+    alert("Please fill in all fields and select year, department, and day!");
+  }
+};
+
 
   const handleDragOver = (e) => {
     e.preventDefault();

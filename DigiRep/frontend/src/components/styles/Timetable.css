@@ -4,13 +4,15 @@
 }
 
 h1, h2 {
-    color: #1E88E5;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
 .tt-btn {
     background-color: #4CAF50;
     color: #FFFFFF;
+    background-color: var(--success-color);
+    color: var(--text-inverse);
     border: none;
     padding: 10px 20px;
     margin: 5px;
@@ -27,23 +29,27 @@ h1, h2 {
 .tt-btn-selected {
     background-color: #FF9800;
     color: #FFFFFF;
+    background-color: var(--warning-color);
+    color: var(--text-inverse);
 }
 
 table {
     margin: 20px auto;
     border-collapse: collapse;
     width: 80%;
+    background-color: var(--card-bg);
 }
 
 table th, table td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     padding: 8px;
     text-align: center;
+    color: var(--text-primary);
 }
 
 table th {
-    background-color: #1E88E5;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-inverse);
 }
 
 .update-form, .login-section form {
@@ -53,7 +59,7 @@ table th {
 input, select {
     padding: 10px;
     margin: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     width: 200px;
     font-size: 1rem;
@@ -245,3 +251,11 @@ input:focus, select:focus {
     padding: 20px;
     background-color: #F5F5F5;
     border-radius: 8px;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
