@@ -1,5 +1,5 @@
 import { StorageManager } from '../storage.js';
-import { createElement } from '../utils.js';
+import { createElement, calculateNextReview } from '../utils.js';
 
 // Store reference to the current keyboard handler for cleanup
 let currentKeydownHandler = null;
@@ -25,36 +25,66 @@ export function render(deckId) {
         return createElement('div');
     }
 
-    // Load progress to resume or start fresh?
-    // For simplicity, we just start fresh session logic but update cumulative stats.
-    let currentIndex = 0;
-    let isFlipped = false;
-    let sessionStats = { viewed: 0, correct: 0, incorrect: 0 };
-    let sessionCards = [...deck.cards];
+    // Filter cards for spaced repetition (only if NOT cram mode)
+    let sessionCards;
+    if (isCramMode) {
+        // Cram mode: show all cards
+        sessionCards = [...deck.cards];
+    } else {
+        // SM-2 mode: filter cards due for review
+        const cardProgress = StorageManager.getCardProgress(cleanDeckId);
+        const now = Date.now();
+        sessionCards = deck.cards.filter((card) => {
+            const progress = cardProgress[card.id];
+            return !progress || !progress.nextReviewDate || progress.nextReviewDate <= now;
+        });
+    }
 
     if (shuffleEnabled) {
         sessionCards = shuffleArray(sessionCards);
     }
+
+    // Check if no cards are due
+    if (!isCramMode && sessionCards.length === 0) {
+        const container = createElement('div', 'study-view fade-in');
+        const header = createElement('header', 'view-header');
+        header.innerHTML = `
+            <h1>Studying: ${deck.title}</h1>
+            <a href="#/dashboard" class="btn btn-outline">Back</a>
+        `;
+        container.appendChild(header);
+        
+        const complete = createElement('div', 'session-complete');
+        complete.innerHTML = `
+            <h2>✅ All cards reviewed!</h2>
+            <p>Come back later for your next review session.</p>
+            <a href="#/dashboard" class="btn btn-primary">Back to Dashboard</a>
+        `;
+        container.appendChild(complete);
+        return container;
+    }
+
+    let currentIndex = 0;
+    let isFlipped = false;
+    let sessionStats = { viewed: 0, correct: 0, incorrect: 0 };
 
     const container = createElement('div', 'study-view fade-in');
     
     // Header
     const header = createElement('header', 'view-header');
     header.innerHTML = `
-    <h1>
-        Studying: ${deck.title}
-        ${isCramMode ? '<span class="mode-badge">CRAM</span>' : ''}
-    </h1>
-    <a href="#/dashboard" class="btn btn-outline">Exit</a>
-`;
-
+        <h1>
+            Studying: ${deck.title}
+            ${isCramMode ? '<span class="mode-badge">CRAM</span>' : ''}
+        </h1>
+        <a href="#/dashboard" class="btn btn-outline">Exit</a>
+    `;
     container.appendChild(header);
 
     // Progress Indicator
     const progressIndicator = createElement('div', 'study-progress');
     const updateProgress = () => {
-        progressIndicator.textContent = `Card ${currentIndex + 1} of ${sessionCards.length
-        }`;
+        progressIndicator.textContent = `Card ${currentIndex + 1} of ${sessionCards.length}`;
     };
     updateProgress();
     container.appendChild(progressIndicator);
@@ -78,7 +108,7 @@ export function render(deckId) {
     flipBtn.style.width = '100%';
     
     const ratingBtns = createElement('div', 'rating-btns');
-    ratingBtns.style.display = 'none'; // Hidden initially
+    ratingBtns.style.display = 'none';
     ratingBtns.innerHTML = `
         <button class="btn btn-danger" id="btn-incorrect">Again</button>
         <button class="btn btn-primary" style="background-color: var(--success); color: white;" id="btn-correct">Good</button>
@@ -90,8 +120,7 @@ export function render(deckId) {
 
     // Logic
     const showCard = (index) => {
-        if (index >= sessionCards.length
-        ) {
+        if (index >= sessionCards.length) {
             finishSession();
             return;
         }
@@ -118,31 +147,49 @@ export function render(deckId) {
         }
     };
 
-    const handleRating = (correct) => {
-        if (correct) {
+    const handleRating = (isCorrect) => {
+        const card = sessionCards[currentIndex];
+        
+        if (isCorrect) {
             sessionStats.correct++;
         } else {
             sessionStats.incorrect++;
         }
 
+        // Update SM-2 progress (only if NOT cram mode)
         if (!isCramMode) {
-            const currentProgress = StorageManager.getDeckProgress(cleanDeckId);
-            currentProgress.viewed++;
-            currentProgress.total = sessionCards.length;
-    
-            if (correct) {
-                currentProgress.correct++;
+            const cardProgress = StorageManager.getCardProgress(cleanDeckId);
+            const currentProgress = cardProgress[card.id] || {
+                repetition: 0,
+                interval: 0,
+                easeFactor: 2.5
+            };
+
+            const quality = isCorrect ? 1 : 0;
+            const newProgress = calculateNextReview(
+                quality,
+                currentProgress.repetition,
+                currentProgress.interval,
+                currentProgress.easeFactor
+            );
+
+            StorageManager.saveCardProgress(cleanDeckId, card.id, newProgress);
+
+            // Update deck-level progress
+            const deckProgress = StorageManager.getDeckProgress(cleanDeckId);
+            deckProgress.viewed = (deckProgress.viewed || 0) + 1;
+            deckProgress.total = deck.cards.length;
+            if (isCorrect) {
+                deckProgress.correct = (deckProgress.correct || 0) + 1;
             } else {
-                currentProgress.incorrect++;
+                deckProgress.incorrect = (deckProgress.incorrect || 0) + 1;
             }
-    
-            StorageManager.saveDeckProgress(cleanDeckId, currentProgress);
+            StorageManager.saveDeckProgress(cleanDeckId, deckProgress);
         }
-    
+
         currentIndex++;
         showCard(currentIndex);
     };
-    
 
     const finishSession = () => {
         scene.style.display = 'none';
@@ -151,10 +198,10 @@ export function render(deckId) {
         
         const completeContainer = createElement('div', 'session-complete');
         completeContainer.innerHTML = `
-            <h2>Session Complete!</h2>
+            <h2>🎉 Session Complete!</h2>
             <div class="stats-box">
-                <p>Correct: ${sessionStats.correct}</p>
-                <p>Incorrect: ${sessionStats.incorrect}</p>
+                <p>✅ Correct: ${sessionStats.correct}</p>
+                <p>❌ Again: ${sessionStats.incorrect}</p>
             </div>
             <div class="actions">
                 <button class="btn btn-primary" id="study-again-btn">Study Again</button>
@@ -163,18 +210,9 @@ export function render(deckId) {
         `;
         container.appendChild(completeContainer);
         
-        // Re-bind study again
         container.querySelector('#study-again-btn').addEventListener('click', () => {
             cleanup();
-            container.innerHTML = '';
-            // Re-render essentially by just calling render logic again or reloading route
-            // Since we are inside the component, the cleanest SPA way without logic extraction is 
-            // to trigger a route reload or just recursively call render (but we need to replace content).
-            // Simplest: 
-            window.location.hash = `#/study/${cleanDeckId}${shuffleEnabled ? '?shuffle=true' : ''}`;
-            const app = document.getElementById('app');
-            app.innerHTML = '';
-            app.appendChild(newContent);
+            location.reload();
         });
     };
 
@@ -193,16 +231,12 @@ export function render(deckId) {
     });
 
     // Keyboard support
-    // Remove any existing listener first
     cleanup();
-    
-    // Create a named handler for this session
     currentKeydownHandler = (e) => {
         if (e.code === 'Space') {
             handleFlip();
         }
     };
-    
     document.addEventListener('keydown', currentKeydownHandler);
 
     // Initialize
@@ -210,7 +244,7 @@ export function render(deckId) {
         container.innerHTML = `
             <div class="empty-state">
                 <p>This deck has no cards.</p>
-                <a href="#/edit/${deckId}" class="btn btn-primary">Add Cards</a>
+                <a href="#/edit/${cleanDeckId}" class="btn btn-primary">Add Cards</a>
             </div>
         `;
     } else {

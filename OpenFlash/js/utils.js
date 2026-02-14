@@ -61,3 +61,45 @@ export function formatDate(timestamp) {
         year: 'numeric'
     }).format(date);
 }
+/**
+ * SM-2 Algorithm for spaced repetition
+ * @param {number} quality - 0 (Again) or 1 (Good)
+ * @param {number} repetition - Current repetition count
+ * @param {number} interval - Current interval in days
+ * @param {number} easeFactor - Current ease factor (1.3 to 2.5)
+ * @returns {Object} {repetition, interval, easeFactor, nextReviewDate}
+ */
+export function calculateNextReview(quality, repetition, interval, easeFactor) {
+    let newRepetition = repetition;
+    let newInterval = interval;
+    let newEaseFactor = easeFactor;
+
+    if (quality === 0) {
+        // Again - reset
+        newRepetition = 0;
+        newInterval = 1;
+    } else {
+        // Good
+        newRepetition = repetition + 1;
+        
+        if (newRepetition === 1) {
+            newInterval = 1;
+        } else if (newRepetition === 2) {
+            newInterval = 6;
+        } else {
+            newInterval = Math.round(interval * easeFactor);
+        }
+        
+        // Update ease factor
+        newEaseFactor = Math.max(1.3, easeFactor + (0.1 - (1 - quality) * (0.08 + (1 - quality) * 0.02)));
+    }
+
+    const nextReviewDate = Date.now() + (newInterval * 24 * 60 * 60 * 1000);
+
+    return {
+        repetition: newRepetition,
+        interval: newInterval,
+        easeFactor: newEaseFactor,
+        nextReviewDate
+    };
+}

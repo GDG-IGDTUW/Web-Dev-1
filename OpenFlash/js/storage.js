@@ -50,6 +50,8 @@ export const StorageManager = {
             localStorage.setItem(KEYS.DECKS, JSON.stringify(decks));
             
             // Also cleanup progress
+            const cardProgressKey = `${KEYS.PROGRESS}_cards_${id}`;
+            localStorage.removeItem(cardProgressKey);
             const progress = this.getAllProgress();
             if (progress[id]) {
                 delete progress[id];
@@ -91,5 +93,32 @@ export const StorageManager = {
         const all = this.getAllProgress();
         all[deckId] = stats;
         localStorage.setItem(KEYS.PROGRESS, JSON.stringify(all));
+    },
+    /**
+     * Get card-level progress for a deck
+     * @param {string} deckId 
+     * @returns {Object} Map of cardId -> {repetition, interval, easeFactor, nextReviewDate}
+     */
+    getCardProgress(deckId) {
+        const key = `${KEYS.PROGRESS}_cards_${deckId}`;
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : {};
+        } catch (e) {
+            return {};
+        }
+    },
+
+    /**
+     * Save card progress
+     * @param {string} deckId 
+     * @param {string} cardId 
+     * @param {Object} progress 
+     */
+    saveCardProgress(deckId, cardId, progress) {
+        const key = `${KEYS.PROGRESS}_cards_${deckId}`;
+        const allProgress = this.getCardProgress(deckId);
+        allProgress[cardId] = progress;
+        localStorage.setItem(key, JSON.stringify(allProgress));
     }
 };
