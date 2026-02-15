@@ -3,28 +3,10 @@ import { Button, Dropdown, Form, Container, Row, Col, Card, Toast } from 'react-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/ClassroomModule.css';
 
-const roomsData = {
-  'CSE-ECE': [
-    { room: 'Room 101', bookedSlots: { '9 AM - 10 AM': 'Class: Data Structures', '2 PM - 3 PM': 'Class: Physics' } },
-    { room: 'Room 102', bookedSlots: { '11 AM - 12 PM': 'Society Event: Coding Workshop' } },
-  ],
-  IT: [
-    { room: 'Room 103', bookedSlots: {} },
-    { room: 'Room 104', bookedSlots: { '1 PM - 2 PM': 'Class: Algorithms' } },
-  ],
-  EXAM: [
-    { room: 'Room 201', bookedSlots: { '9 AM - 10 AM': 'Final Exam' } },
-    { room: 'Room 202', bookedSlots: {} },
-  ],
-  MAE: [
-    { room: 'Room 301', bookedSlots: { '9 AM - 10 AM': 'Lab: Mechanical Engineering' } },
-    { room: 'Room 302', bookedSlots: { '2 PM - 3 PM': 'Class: Thermodynamics' } },
-  ],
-};
-
 const departments = ['CSE-ECE', 'IT', 'EXAM', 'MAE'];
 
 const ClassroomBooking = () => {
+  const [roomsData, setRoomsData] = useState({});
   const [selectedDept, setSelectedDept] = useState('');
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
@@ -32,12 +14,41 @@ const ClassroomBooking = () => {
   const [showToast, setShowToast] = useState(false);
   const [availableRooms, setAvailableRooms] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Fetch rooms data from backend on component mount
+    const fetchRoomsData = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const response = await fetch('http://localhost:5000/api/classrooms');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch classroom data');
+        }
+        
+        const data = await response.json();
+        setRoomsData(data);
+      } catch (error) {
+        console.error("Error fetching rooms data:", error);
+        setError("Unable to load classroom data. Please try again later.");
+        // Fallback to empty object if fetch fails
+        setRoomsData({});
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoomsData();
+  }, []);
 
   useEffect(() => {
     if (selectedDept) {
       setAvailableRooms(roomsData[selectedDept] || []);
     }
-  }, [selectedDept]);
+  }, [selectedDept, roomsData]);
 
   const handleRoomSelection = (room) => {
     setSelectedRoom(room);
@@ -75,6 +86,24 @@ const ClassroomBooking = () => {
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
   };
+
+  if (loading) {
+    return (
+      <Container className="classroom-booking-container">
+        <h2 className="text-center my-4 title">Classroom Booking System</h2>
+        <p className="text-center">Loading classroom data...</p>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="classroom-booking-container">
+        <h2 className="text-center my-4 title">Classroom Booking System</h2>
+        <p className="text-center text-danger">{error}</p>
+      </Container>
+    );
+  }
 
   return (
     <Container className="classroom-booking-container">

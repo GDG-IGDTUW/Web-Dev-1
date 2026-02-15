@@ -1,33 +1,11 @@
 import React, { useState } from "react";
 import "./styles/AttendanceTracker.css";
 
-const attendanceData = [
-  {
-    enrollment: "1",
-    name: "Jane Smith",
-    subjects: {
-      Math: 90,
-      English: 70,
-      Science: 95,
-      History: 80,
-    },
-  },
-  {
-    enrollment: "2",
-    name: "John Doe",
-    subjects: {
-      Math: 75,
-      English: 80,
-      Science: 70,
-      History: 65,
-    },
-  },
-];
-
 const AttendanceTracker = () => {
   const [enrollmentNumber, setEnrollmentNumber] = useState("");
   const [studentAttendance, setStudentAttendance] = useState(null);
   const [showContent, setShowContent] = useState(false); // State for showing content
+  const [error, setError] = useState("");
 
   const handleSearch = async () => {
     if (!enrollmentNumber) {
@@ -41,6 +19,7 @@ const AttendanceTracker = () => {
     }
     
     try {
+        setError("");
         const response = await fetch(`http://localhost:5000/api/attendance/${enrollmentNumber}`);
         const data = await response.json();
         
@@ -52,6 +31,8 @@ const AttendanceTracker = () => {
         }
     } catch (error) {
         console.error("Fetch error:", error);
+        setError("Unable to connect to the server. Please try again later.");
+        setStudentAttendance(null);
     }
 };
   const handleKeyPress = (event) => {
@@ -94,6 +75,8 @@ const AttendanceTracker = () => {
             <button onClick={handleSearch}>Search</button>
           </div>
 
+          {error && <p className="error-message">{error}</p>}
+
           {studentAttendance ? (
             <div className="attendance-details">
               <h3>{studentAttendance.name}</h3>
@@ -127,7 +110,7 @@ const AttendanceTracker = () => {
               </table>
             </div>
           ) : (
-  enrollmentNumber && /^\d+$/.test(enrollmentNumber) && (
+  enrollmentNumber && /^\d+$/.test(enrollmentNumber) && !error && (
     <p>No record found for this enrollment number.</p>
   )
 )}
