@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./styles/AttendanceTracker.css";
+import API_URL from "../config";
 
 const attendanceData = [
   {
@@ -41,7 +42,7 @@ const AttendanceTracker = () => {
     }
     
     try {
-        const response = await fetch(`http://localhost:5000/api/attendance/${enrollmentNumber}`);
+        const response = await fetch(`${API_URL}/api/attendance/${enrollmentNumber}`);
         const data = await response.json();
         
         if (response.ok) {
