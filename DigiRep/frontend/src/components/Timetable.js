@@ -211,6 +211,7 @@ const sampleTimetable = {
 const Timetable = () => {
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
   const [isCR, setIsCR] = useState(false);
   const [updatedTimetable, setUpdatedTimetable] = useState(sampleTimetable);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -228,7 +229,12 @@ const Timetable = () => {
     if (userId === "CR-CSE1" && password === "CR-CSE1@27") {
       setIsCR(true);
       alert("Login successful! You can now update the timetable.");
-    } elgetSlotForTimeDay = (day, time) => {
+    } else {
+      alert("Invalid credentials!");
+    }
+  };
+
+  const getSlotForTimeDay = (day, time) => {
     return updatedTimetable[selectedDepartment]?.[selectedYear]?.[day]?.find(
       (slot) => slot.time === time
     ) || null;
@@ -251,6 +257,9 @@ const Timetable = () => {
       setDraggedSlot(slot);
       setDragSource({ day, time });
       e.dataTransfer.effectAllowed = "move";
+    }
+  };
+
   const handleUpdate = async (e) => {
   e.preventDefault();
   const newSubject = e.target.newSubject.value.trim();
@@ -323,7 +332,37 @@ const Timetable = () => {
     setDragSource(null);
     alert("Class rescheduled successfully!");
   };
-timetable-display">
+
+  return (
+    <div className="timetable-container">
+      <h1>Interactive Timetable</h1>
+
+      {!selectedYear && (
+        <div className="year-selector">
+          <h2>Select Year</h2>
+          <button className="tt-btn" onClick={() => setSelectedYear("2027")}>
+            2027
+          </button>
+        </div>
+      )}
+
+      {selectedYear && !selectedDepartment && (
+        <div className="department-selector">
+          <h2>Select Department</h2>
+          {Object.keys(sampleTimetable).map((dept) => (
+            <button
+              key={dept}
+              className="tt-btn"
+              onClick={() => setSelectedDepartment(dept)}
+            >
+              {dept}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {selectedDepartment && (
+        <div className="timetable-display">
           <h2>Interactive Timetable Grid {isCR && "(Drag to reschedule)"}</h2>
           <div className="grid-container">
             <div className="grid">
@@ -417,7 +456,9 @@ timetable-display">
           </form>
         )}
         {isCR && (
-          <button className="tt-btn" onClick={() => setIsCR(false)}>Logout</button
+          <button className="tt-btn" onClick={() => setIsCR(false)}>Logout</button>
+        )}
+      </div>
 
       {selectedYear && (
         <div className="department-selector">
