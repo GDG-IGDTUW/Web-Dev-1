@@ -16,10 +16,40 @@
 
 <body>
     <div id="app">
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search decks..." 
+                oninput="searchDecks()" 
+            />
+        </div>
+
+        <!-- Deck list (example decks) -->
+        <div id="deckContainer">
+
+            <div class="deck">
+                <h3 class="deck-title">JavaScript Basics</h3>
+                <p class="deck-desc">Learn variables, functions, and arrays</p>
+            </div>
+
+            <div class="deck">
+                <h3 class="deck-title">HTML Fundamentals</h3>
+                <p class="deck-desc">Structure web pages using HTML</p>
+            </div>
+
+            <div class="deck">
+                <h3 class="deck-title">CSS Styling</h3>
+                <p class="deck-desc">Design beautiful websites</p>
+            </div>
+
+        </div>
+
         <!-- Views will be rendered here -->
     </div>
 
     <script type="module" src="js/app.js?v=3"></script>
+    
 </body>
 
 </html>
