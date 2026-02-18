@@ -236,3 +236,9 @@ textarea:focus {
     padding: 10px;
     font-size: 16px;
 }
+:root {
+  --primary-color: #6a0dad; /* default purple */
+}
+background-color: var(--primary-color);
+color: var(--primary-color);
+border-color: var(--primary-color);
