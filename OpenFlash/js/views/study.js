@@ -1,8 +1,15 @@
 import { StorageManager } from '../storage.js';
 import { createElement } from '../utils.js';
+import { Toast } from '../toast.js';
+
 
 // Store reference to the current keyboard handler for cleanup
 let currentKeydownHandler = null;
+
+let isEditing = false;
+let editingCardId = null;
+
+
 
 // Cleanup function to remove the keyboard listener
 export function cleanup() {
@@ -37,7 +44,7 @@ export function render(deckId) {
     }
 
     const container = createElement('div', 'study-view fade-in');
-    
+
     // Header
     const header = createElement('header', 'view-header');
     header.innerHTML = `
@@ -54,7 +61,7 @@ export function render(deckId) {
     const progressIndicator = createElement('div', 'study-progress');
     const updateProgress = () => {
         progressIndicator.textContent = `Card ${currentIndex + 1} of ${sessionCards.length
-        }`;
+            }`;
     };
     updateProgress();
     container.appendChild(progressIndicator);
@@ -62,10 +69,14 @@ export function render(deckId) {
     // Flashcard Container
     const scene = createElement('div', 'scene');
     const cardElement = createElement('div', 'flashcard');
-    
+
     const frontFace = createElement('div', 'card-face card-front');
     const backFace = createElement('div', 'card-face card-back');
-    
+
+    const editBtn = createElement('button', 'edit-btn', '✏️');
+    scene.appendChild(editBtn);
+
+
     cardElement.appendChild(frontFace);
     cardElement.appendChild(backFace);
     scene.appendChild(cardElement);
@@ -73,10 +84,10 @@ export function render(deckId) {
 
     // Controls
     const controls = createElement('div', 'study-controls');
-    
+
     const flipBtn = createElement('button', 'btn btn-primary', 'Flip Card');
     flipBtn.style.width = '100%';
-    
+
     const ratingBtns = createElement('div', 'rating-btns');
     ratingBtns.style.display = 'none'; // Hidden initially
     ratingBtns.innerHTML = `
@@ -95,11 +106,19 @@ export function render(deckId) {
             finishSession();
             return;
         }
-        
+
         const card = sessionCards[index];
         frontFace.textContent = card.front;
         backFace.textContent = card.back;
-        
+
+        // reset edit state when moving to another card
+        isEditing = false;
+        editingCardId = null;
+        editBtn.textContent = '✏️';
+        frontFace.contentEditable = false;
+        backFace.contentEditable = false;
+
+
         // Reset state
         isFlipped = false;
         cardElement.classList.remove('is-flipped');
@@ -109,9 +128,11 @@ export function render(deckId) {
     };
 
     const handleFlip = () => {
+        if (isEditing) return;
+
         isFlipped = !isFlipped;
         cardElement.classList.toggle('is-flipped');
-        
+
         if (isFlipped) {
             flipBtn.style.display = 'none';
             ratingBtns.style.display = 'flex';
@@ -119,36 +140,43 @@ export function render(deckId) {
     };
 
     const handleRating = (correct) => {
+        if (isEditing) return;
         if (correct) {
             sessionStats.correct++;
         } else {
             sessionStats.incorrect++;
         }
 
+
+
         if (!isCramMode) {
             const currentProgress = StorageManager.getDeckProgress(cleanDeckId);
             currentProgress.viewed++;
             currentProgress.total = sessionCards.length;
-    
+
             if (correct) {
                 currentProgress.correct++;
             } else {
                 currentProgress.incorrect++;
             }
-    
+
             StorageManager.saveDeckProgress(cleanDeckId, currentProgress);
         }
-    
+
         currentIndex++;
         showCard(currentIndex);
     };
-    
+
 
     const finishSession = () => {
         scene.style.display = 'none';
         controls.style.display = 'none';
         progressIndicator.style.display = 'none';
-        
+
+        isEditing = false;
+        editingCardId = null;
+
+
         const completeContainer = createElement('div', 'session-complete');
         completeContainer.innerHTML = `
             <h2>Session Complete!</h2>
@@ -162,7 +190,7 @@ export function render(deckId) {
             </div>
         `;
         container.appendChild(completeContainer);
-        
+
         // Re-bind study again
         container.querySelector('#study-again-btn').addEventListener('click', () => {
             cleanup();
@@ -170,23 +198,26 @@ export function render(deckId) {
             // Re-render essentially by just calling render logic again or reloading route
             // Since we are inside the component, the cleanest SPA way without logic extraction is 
             // to trigger a route reload or just recursively call render (but we need to replace content).
-            // Simplest: 
             window.location.hash = `#/study/${cleanDeckId}${shuffleEnabled ? '?shuffle=true' : ''}`;
-            const app = document.getElementById('app');
-            app.innerHTML = '';
-            app.appendChild(newContent);
+
         });
     };
 
     // Event Listeners
-    scene.addEventListener('click', handleFlip);
+    scene.addEventListener('click', (e) => {
+        // Do NOT flip if clicking edit button
+        if (e.target.closest('.edit-btn')) return;
+
+        handleFlip();
+    });
+
     flipBtn.addEventListener('click', handleFlip);
-    
+
     ratingBtns.querySelector('#btn-correct').addEventListener('click', (e) => {
         e.stopPropagation();
         handleRating(true);
     });
-    
+
     ratingBtns.querySelector('#btn-incorrect').addEventListener('click', (e) => {
         e.stopPropagation();
         handleRating(false);
@@ -195,14 +226,19 @@ export function render(deckId) {
     // Keyboard support
     // Remove any existing listener first
     cleanup();
-    
+
     // Create a named handler for this session
     currentKeydownHandler = (e) => {
+        // If editing, allow normal typing
+        if (isEditing) return;
+
         if (e.code === 'Space') {
+            e.preventDefault();
             handleFlip();
         }
     };
-    
+
+
     document.addEventListener('keydown', currentKeydownHandler);
 
     // Initialize
@@ -216,9 +252,56 @@ export function render(deckId) {
     } else {
         showCard(0);
     }
+    editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.stopPropagation();
+        if (!isEditing) {
+            // ENTER EDIT MODE
+            isEditing = true;
+
+            // store REAL card id (works even when shuffled)
+            editingCardId = sessionCards[currentIndex].id;
+
+            frontFace.contentEditable = true;
+            backFace.contentEditable = true;
+
+            frontFace.focus();
+            editBtn.textContent = '💾';
+        } else {
+            // SAVE EDIT
+            const updatedFront = frontFace.textContent.trim();
+            const updatedBack = backFace.textContent.trim();
+
+            if (!updatedFront || !updatedBack) {
+                Toast.show('Card cannot be empty', 'error');
+                return;
+            }
+
+            // find correct card in original deck
+            const cardToUpdate = deck.cards.find(c => c.id === editingCardId);
+
+            if (cardToUpdate) {
+                cardToUpdate.front = updatedFront;
+                cardToUpdate.back = updatedBack;
+
+                StorageManager.saveDeck(deck);
+                Toast.show('Card updated!', 'success');
+            }
+
+            // exit edit mode
+            isEditing = false;
+            editingCardId = null;
+
+            frontFace.contentEditable = false;
+            backFace.contentEditable = false;
+            editBtn.textContent = '✏️';
+        }
+    });
+
 
     return container;
 }
+
 
 function shuffleArray(array) {
     const arr = [...array];
