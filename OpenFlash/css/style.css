@@ -231,7 +231,7 @@ textarea:focus {
   background: white;
   border: none;
   cursor: pointer;
-  z-index: 10;          /* ⭐ ADD THIS */
+  z-index: 10;         
   padding: 6px 8px;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
