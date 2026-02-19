@@ -37,7 +37,7 @@ export function render(deckId) {
     }
 
     const container = createElement('div', 'study-view fade-in');
-    
+
     // Header
     const header = createElement('header', 'view-header');
     header.innerHTML = `
@@ -54,7 +54,7 @@ export function render(deckId) {
     const progressIndicator = createElement('div', 'study-progress');
     const updateProgress = () => {
         progressIndicator.textContent = `Card ${currentIndex + 1} of ${sessionCards.length
-        }`;
+            }`;
     };
     updateProgress();
     container.appendChild(progressIndicator);
@@ -62,10 +62,14 @@ export function render(deckId) {
     // Flashcard Container
     const scene = createElement('div', 'scene');
     const cardElement = createElement('div', 'flashcard');
-    
+
     const frontFace = createElement('div', 'card-face card-front');
     const backFace = createElement('div', 'card-face card-back');
-    
+
+    const speakBtn = createElement('button', 'speak-btn', '🔊');
+    scene.appendChild(speakBtn);
+
+
     cardElement.appendChild(frontFace);
     cardElement.appendChild(backFace);
     scene.appendChild(cardElement);
@@ -73,10 +77,10 @@ export function render(deckId) {
 
     // Controls
     const controls = createElement('div', 'study-controls');
-    
+
     const flipBtn = createElement('button', 'btn btn-primary', 'Flip Card');
     flipBtn.style.width = '100%';
-    
+
     const ratingBtns = createElement('div', 'rating-btns');
     ratingBtns.style.display = 'none'; // Hidden initially
     ratingBtns.innerHTML = `
@@ -95,11 +99,11 @@ export function render(deckId) {
             finishSession();
             return;
         }
-        
+
         const card = sessionCards[index];
         frontFace.textContent = card.front;
         backFace.textContent = card.back;
-        
+
         // Reset state
         isFlipped = false;
         cardElement.classList.remove('is-flipped');
@@ -111,7 +115,7 @@ export function render(deckId) {
     const handleFlip = () => {
         isFlipped = !isFlipped;
         cardElement.classList.toggle('is-flipped');
-        
+
         if (isFlipped) {
             flipBtn.style.display = 'none';
             ratingBtns.style.display = 'flex';
@@ -129,26 +133,26 @@ export function render(deckId) {
             const currentProgress = StorageManager.getDeckProgress(cleanDeckId);
             currentProgress.viewed++;
             currentProgress.total = sessionCards.length;
-    
+
             if (correct) {
                 currentProgress.correct++;
             } else {
                 currentProgress.incorrect++;
             }
-    
+
             StorageManager.saveDeckProgress(cleanDeckId, currentProgress);
         }
-    
+
         currentIndex++;
         showCard(currentIndex);
     };
-    
+
 
     const finishSession = () => {
         scene.style.display = 'none';
         controls.style.display = 'none';
         progressIndicator.style.display = 'none';
-        
+
         const completeContainer = createElement('div', 'session-complete');
         completeContainer.innerHTML = `
             <h2>Session Complete!</h2>
@@ -162,7 +166,7 @@ export function render(deckId) {
             </div>
         `;
         container.appendChild(completeContainer);
-        
+
         // Re-bind study again
         container.querySelector('#study-again-btn').addEventListener('click', () => {
             cleanup();
@@ -178,15 +182,30 @@ export function render(deckId) {
         });
     };
 
+    const speakCurrentCard = () => {
+        const text = isFlipped
+            ? backFace.textContent
+            : frontFace.textContent;
+
+        if (!text) return;
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+
+        speechSynthesis.cancel(); // stop previous speech
+        speechSynthesis.speak(utterance);
+    };
+
+
     // Event Listeners
     scene.addEventListener('click', handleFlip);
     flipBtn.addEventListener('click', handleFlip);
-    
+
     ratingBtns.querySelector('#btn-correct').addEventListener('click', (e) => {
         e.stopPropagation();
         handleRating(true);
     });
-    
+
     ratingBtns.querySelector('#btn-incorrect').addEventListener('click', (e) => {
         e.stopPropagation();
         handleRating(false);
@@ -195,14 +214,14 @@ export function render(deckId) {
     // Keyboard support
     // Remove any existing listener first
     cleanup();
-    
+
     // Create a named handler for this session
     currentKeydownHandler = (e) => {
         if (e.code === 'Space') {
             handleFlip();
         }
     };
-    
+
     document.addEventListener('keydown', currentKeydownHandler);
 
     // Initialize
@@ -216,6 +235,12 @@ export function render(deckId) {
     } else {
         showCard(0);
     }
+    speakBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // prevent card flip
+        speakCurrentCard();
+    });
+
 
     return container;
 }
