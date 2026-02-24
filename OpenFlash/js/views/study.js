@@ -264,7 +264,13 @@ export function render(deckId) {
             frontFace.contentEditable = true;
             backFace.contentEditable = true;
 
-            frontFace.focus();
+            // Focus on the currently visible face
+            if (isFlipped) {
+                backFace.focus();
+            } else {
+                frontFace.focus();
+            }
+
             editBtn.textContent = '💾';
         } else {
             // SAVE EDIT
