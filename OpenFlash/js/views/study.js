@@ -254,7 +254,6 @@ export function render(deckId) {
     }
     editBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        e.stopPropagation();
         if (!isEditing) {
             // ENTER EDIT MODE
             isEditing = true;
