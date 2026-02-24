@@ -222,3 +222,23 @@ textarea:focus {
     background: rgba(250, 82, 82, 0.1);
     color: var(--danger);
 }
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+.search-container {
+    margin: 20px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+:root {
+  --primary-color: #6a0dad; /* default purple */
+}
+background-color: var(--primary-color);
+color: var(--primary-color);
+border-color: var(--primary-color);
