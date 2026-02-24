@@ -228,11 +228,12 @@ textarea:focus {
   top: 10px;
   left: 10px;
   font-size: 18px;
-  background: white;
+  background: var(--surface-1);
+  color: var(--text-1);
   border: none;
   cursor: pointer;
   z-index: 10;
   padding: 6px 8px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
 }
