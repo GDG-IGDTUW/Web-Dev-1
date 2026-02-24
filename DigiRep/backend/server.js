@@ -2,10 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { sendTimetableUpdateEmail } = require("./services/emailService");
 const cors = require('cors');
+const jwt = require("jsonwebtoken");
+
+// Import auth routes
+const authRoutes = require("./routes/auth");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Hardcoded JWT secret (must match auth.js)
+const JWT_SECRET = "supersecretkey123";
 
 // Replace 'digital_cr' with your Compass database name
 const dbUrl = 'mongodb://localhost:27017/digital_cr'; 
@@ -14,7 +21,44 @@ mongoose.connect(dbUrl)
   .then(() => console.log('Connected to MongoDB via Compass'))
   .catch((err) => console.error('Connection error:', err));
 
-// Define a Schema for Attendance (matching your frontend data)
+
+/* ================= JWT MIDDLEWARE ================= */
+
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid or expired token" });
+  }
+};
+
+const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    next();
+  };
+};
+
+
+/* ================= AUTH ROUTES ================= */
+
+app.use("/api/auth", authRoutes);
+
+
+/* ================= ATTENDANCE SCHEMA ================= */
+
 const attendanceSchema = new mongoose.Schema({
     enrollment: String,
     name: String,
@@ -28,7 +72,9 @@ const attendanceSchema = new mongoose.Schema({
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 
-// API Route to fetch student by enrollment
+
+/* ================= ATTENDANCE ROUTE ================= */
+
 app.get('/api/attendance/:id', async (req, res) => {
     try {
         const student = await Attendance.findOne({ enrollment: req.params.id });
@@ -39,11 +85,15 @@ app.get('/api/attendance/:id', async (req, res) => {
     }
 });
 
-// API Route to fetch all classrooms data
-app.get('/api/classrooms', async (req, res) => {
+
+/* ================= CLASSROOM ROUTES ================= */
+
+app.get(
+  '/api/classrooms',
+  verifyToken,
+  authorizeRoles("CR", "Society Head"),
+  async (req, res) => {
     try {
-        // For now, return sample data
-        // Later, fetch from database when classroom schema is created
         const roomsData = {
             'CSE-ECE': [
                 { room: 'Room 101', bookedSlots: { '9 AM - 10 AM': 'Class: Data Structures', '2 PM - 3 PM': 'Class: Physics' } },
@@ -68,17 +118,11 @@ app.get('/api/classrooms', async (req, res) => {
     }
 });
 
-// const studentEmails = [
-//   "student1@example.com",
-//   "student2@example.com",
-//   "student3@example.com"
-// ];
 
-// studentEmails will be fetched from the database
+/* ================= TIMETABLE NOTIFICATION ================= */
 
-// Endpoint to notify students of timetable update
 app.post("/notify-timetable-update", async (req, res) => {
-  const { link } = req.body; // Link to the updated timetable
+  const { link } = req.body;
   if (!link) return res.status(400).json({ message: "Link is required" });
 
   try {
@@ -88,5 +132,8 @@ app.post("/notify-timetable-update", async (req, res) => {
     res.status(500).json({ message: "Failed to send notifications" });
   }
 });
+
+
+/* ================= START SERVER ================= */
 
 app.listen(5000, () => console.log('Server running on port 5000'));
