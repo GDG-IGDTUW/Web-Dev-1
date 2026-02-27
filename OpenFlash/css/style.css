@@ -222,3 +222,18 @@ textarea:focus {
     background: rgba(250, 82, 82, 0.1);
     color: var(--danger);
 }
+
+.speak-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 18px;
+  background: var(--surface-1);
+  color: var(--text-1);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
